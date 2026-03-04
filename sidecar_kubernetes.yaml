@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bft-clock-sidecar-demo
+  labels:
+    app: bft-clock-sidecar-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bft-clock-sidecar-demo
+  template:
+    metadata:
+      labels:
+        app: bft-clock-sidecar-demo
+    spec:
+      containers:
+        # ---------------------------------------------------------
+        # Primary application container
+        # ---------------------------------------------------------
+        - name: primary-app
+          image: yourorg/primary-app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BFT_CLOCK_ENDPOINT
+              value: "http://127.0.0.1:9090/api/v1/time"
+
+        # ---------------------------------------------------------
+        # BFT Trusted Clock Sidecar
+        # ---------------------------------------------------------
+        - name: bft-clock-sidecar
+          image: yourorg/bft-clock-sidecar:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+              name: bft-clock
+          env:
+            # HMAC key for NTP authority authentication
+            - name: UML001_HMAC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bft-clock-secrets
+                  key: hmac_key
+
+            # Optional: override drift threshold
+            - name: BFT_MAX_DRIFT_SECONDS
+              value: "3600"
+
+            # Optional: override sync interval
+            - name: BFT_SYNC_INTERVAL
+              value: "60"
+
+          volumeMounts:
+            - name: bft-clock-data
+              mountPath: /var/lib/bft-clock
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            initialDelaySeconds: 3
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+      # ---------------------------------------------------------
+      # Persistent storage for audit vault
+      # ---------------------------------------------------------
+      volumes:
+        - name: bft-clock-data
+          persistentVolumeClaim:
+            claimName: bft-clock-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bft-clock-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bft-clock-secrets
+type: Opaque
+stringData:
+  hmac_key: "REPLACE_WITH_64_HEX_CHARS"

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:vault:EncryptedEnvelope",
+  "title": "EncryptedVaultEntry",
+  "type": "object",
+  "required": [
+    "ciphertext",
+    "nonce",
+    "tag",
+    "aad_hash"
+  ],
+  "properties": {
+    "ciphertext": {
+      "type": "string",
+      "description": "Base64 encoded ciphertext"
+    },
+    "nonce": {
+      "type": "string",
+      "description": "Base64 encoded 96-bit nonce"
+    },
+    "tag": {
+      "type": "string",
+      "description": "Base64 encoded GCM authentication tag"
+    },
+    "aad_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA256 hash of authenticated data"
+    }
+  },
+  "additionalProperties": false
+}

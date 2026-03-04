@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:crypto:KeyMetadata",
+  "title": "CryptoKeyMetadata",
+  "type": "object",
+  "required": [
+    "key_id",
+    "algorithm",
+    "created_at",
+    "rotation_policy"
+  ],
+  "properties": {
+    "key_id": { "type": "string" },
+    "algorithm": {
+      "type": "string",
+      "enum": ["AES-256-GCM", "Ed25519", "SHA-256"]
+    },
+    "created_at": { "type": "integer", "minimum": 0 },
+    "rotation_policy": {
+      "type": "string",
+      "enum": ["manual", "time-based", "usage-based"]
+    }
+  },
+  "additionalProperties": false
+}

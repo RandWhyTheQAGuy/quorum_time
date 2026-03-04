@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:vault:LogEntry",
+  "title": "ColdVaultLogEntry",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "agreed_time",
+    "drift_step",
+    "total_drift",
+    "previous_hash",
+    "entry_hash"
+  ],
+  "properties": {
+    "timestamp": { "type": "integer", "minimum": 0 },
+    "agreed_time": { "type": "integer", "minimum": 0 },
+    "drift_step": { "type": "integer" },
+    "total_drift": { "type": "integer" },
+    "previous_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "entry_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

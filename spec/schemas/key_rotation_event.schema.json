@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uml001.org/schema/key_rotation_event.json",
+  "title": "KeyRotationEvent",
+  "type": "object",
+  "required": [
+    "key_version",
+    "rotation_time_unix"
+  ],
+  "properties": {
+    "key_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "rotation_time_unix": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}

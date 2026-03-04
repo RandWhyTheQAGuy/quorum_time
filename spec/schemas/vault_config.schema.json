@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:vault:Config",
+  "title": "ColdVaultConfig",
+  "type": "object",
+  "required": [
+    "base_directory",
+    "max_file_size_bytes",
+    "max_file_age_seconds",
+    "fsync_on_write",
+    "encryption_enabled",
+    "sign_rotation"
+  ],
+  "properties": {
+    "base_directory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_file_size_bytes": {
+      "type": "integer",
+      "minimum": 1024
+    },
+    "max_file_age_seconds": {
+      "type": "integer",
+      "minimum": 60
+    },
+    "fsync_on_write": {
+      "type": "boolean"
+    },
+    "encryption_enabled": {
+      "type": "boolean"
+    },
+    "sign_rotation": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

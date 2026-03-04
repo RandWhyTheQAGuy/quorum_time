@@ -1,0 +1,71 @@
+# ============================================================
+# Stage 1: Build the BFT Trusted Clock HTTP sidecar
+# ============================================================
+FROM ubuntu:22.04 AS build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build toolchain and basic deps
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        cmake \
+        git \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+
+# Copy your project sources
+# Adjust these paths to match your repo layout
+COPY . /src
+
+# Example: build a single binary from main_sidecar.cpp and your libs
+# Assumes:
+#  - bft_quorum_clock.cpp/.h
+#  - ntp_observation_fetcher.cpp/.h
+#  - vault.cpp/.h
+#  - crypto_utils.cpp/.h
+#  - httplib.h (header-only, already in include path)
+#  - nlohmann/json.hpp (header-only, already in include path)
+RUN g++ -std=c++20 -O2 -Wall -Wextra \
+    -I./include \
+    main_sidecar.cpp \
+    bft_quorum_clock.cpp \
+    ntp_observation_fetcher.cpp \
+    vault.cpp \
+    crypto_utils.cpp \
+    -o /usr/local/bin/bft-clock-sidecar \
+    -pthread
+
+# ============================================================
+# Stage 2: Runtime image
+# ============================================================
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Minimal runtime deps (CA certs for NTP/TLS if needed)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Non-root user
+RUN useradd -r -u 10001 -g root bftclock
+
+# Create data directory for vault
+RUN mkdir -p /var/lib/bft-clock && chown -R bftclock:root /var/lib/bft-clock
+
+# Copy binary from build stage
+COPY --from=build /usr/local/bin/bft-clock-sidecar /usr/local/bin/bft-clock-sidecar
+
+USER bftclock
+
+# Sidecar listens only on loopback; port is for Kubernetes service discovery
+EXPOSE 9090
+
+# Health endpoints:
+#  - GET /health
+#  - GET /api/v1/time
+ENTRYPOINT ["/usr/local/bin/bft-clock-sidecar"]

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uml001.org/schema/crypto_config.json",
+  "title": "CryptoConfig",
+  "type": "object",
+  "required": ["mode"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["HMAC", "ED25519", "TPM_SEALED_ED25519"]
+    },
+    "tpm_key_label": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

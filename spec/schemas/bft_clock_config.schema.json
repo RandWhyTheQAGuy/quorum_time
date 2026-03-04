@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uml001.org/schema/bft_clock_config.json",
+  "title": "BFTQuorumTrustedClockConfig",
+  "type": "object",
+  "required": [
+    "min_quorum",
+    "max_cluster_skew",
+    "max_drift_step",
+    "max_total_drift",
+    "fail_closed"
+  ],
+  "properties": {
+    "min_quorum": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_cluster_skew": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_drift_step": {
+      "type": "integer"
+    },
+    "max_total_drift": {
+      "type": "integer"
+    },
+    "fail_closed": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BFT Quorum Clock Configuration and Payloads",
+  "description": "Schemas for configuring the BFT clock and validating inbound time observations.",
+  "type": "object",
+  "definitions": {
+    "Config": {
+      "type": "object",
+      "description": "Startup configuration for the BFT Clock node.",
+      "properties": {
+        "min_quorum": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Minimum number of valid observations required to form a consensus. Must satisfy formal BFT bounds N >= 3F + 1."
+        },
+        "max_cluster_skew": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Maximum allowable spread (in seconds) between the highest and lowest timestamps in a trimmed cluster."
+        },
+        "max_drift_step": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum seconds the clock will correct itself in a single sync event (Anti-shock clamp)."
+        },
+        "max_total_drift": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum absolute cumulative drift allowed from the baseline OS clock (Anti-creep ceiling)."
+        },
+        "sequence_ttl_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Time to live for sequence replay windows before they are safely expired."
+        },
+        "fail_closed": {
+          "type": "boolean",
+          "description": "If true, the system will hard-abort when safety bounds like max_total_drift are breached."
+        }
+      },
+      "required": ["min_quorum", "max_cluster_skew", "max_drift_step", "max_total_drift", "fail_closed"]
+    },
+    "TimeObservation": {
+      "type": "object",
+      "description": "A signed time payload from a trusted authority.",
+      "properties": {
+        "authority_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique identifier (e.g., hostname or UUID) of the time authority."
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Identifier for the specific public key or HMAC secret used to sign this payload, enabling zero-downtime rotation."
+        },
+        "timestamp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The current time asserted by the authority, represented in Unix epoch seconds."
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]+$|^[A-Za-z0-9+/]+={0,2}$",
+          "description": "Cryptographic signature over 'authority_id|key_id|timestamp|sequence' (Hex or Base64)."
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Strictly monotonically increasing counter to prevent replay attacks."
+        }
+      },
+      "required": ["authority_id", "key_id", "timestamp", "signature", "sequence"]
+    }
+  }
+}

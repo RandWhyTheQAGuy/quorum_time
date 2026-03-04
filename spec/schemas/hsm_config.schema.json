@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:crypto:HSMConfig",
+  "title": "HSMConfiguration",
+  "type": "object",
+  "required": [
+    "pkcs11_library_path",
+    "slot_id",
+    "token_label",
+    "key_label"
+  ],
+  "properties": {
+    "pkcs11_library_path": { "type": "string" },
+    "slot_id": { "type": "integer", "minimum": 0 },
+    "token_label": { "type": "string" },
+    "key_label": { "type": "string" }
+  },
+  "additionalProperties": false
+}

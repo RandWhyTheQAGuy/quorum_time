@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uml001.org/schema/key_rotation_config.json",
+  "title": "KeyRotationConfig",
+  "type": "object",
+  "required": [
+    "rotation_interval_seconds",
+    "overlap_window_seconds",
+    "use_hmac"
+  ],
+  "properties": {
+    "rotation_interval_seconds": {
+      "type": "integer",
+      "minimum": 60
+    },
+    "overlap_window_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "use_hmac": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

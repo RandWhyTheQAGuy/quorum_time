@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "uml001"
+version = "1.0.0"
+description = "Byzantine Fault-Tolerant Trusted Clock – Python SDK"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+
+dependencies = [
+    "cryptography>=41.0",
+]
+
+[project.optional-dependencies]
+redis = ["redis>=5.0"]
+dev   = ["pytest>=8.0", "pytest-timeout", "cryptography>=41.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["uml001*"]

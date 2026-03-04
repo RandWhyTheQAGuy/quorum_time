@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:vault:RotationSignature",
+  "title": "VaultRotationSignature",
+  "type": "object",
+  "required": [
+    "merkle_root",
+    "signature",
+    "public_key_id",
+    "algorithm"
+  ],
+  "properties": {
+    "merkle_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "signature": {
+      "type": "string",
+      "description": "Base64 encoded signature"
+    },
+    "public_key_id": {
+      "type": "string"
+    },
+    "algorithm": {
+      "type": "string",
+      "enum": ["Ed25519"]
+    }
+  },
+  "additionalProperties": false
+}
