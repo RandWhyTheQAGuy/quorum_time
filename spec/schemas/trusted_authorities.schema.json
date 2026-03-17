@@ -1,0 +1,19 @@
+{
+  "$id": "https://uml001.example.com/schema/trusted_authorities.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trusted Time Authorities",
+  "type": "object",
+  "properties": {
+    "trusted_authorities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "description": "NTP server hostname allowed to participate in BFT time consensus."
+      }
+    }
+  },
+  "required": ["trusted_authorities"],
+  "additionalProperties": false
+}

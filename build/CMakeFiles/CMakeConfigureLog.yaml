@@ -1,0 +1,2703 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/uname"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/uname"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/uname"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/uname"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/uname"
+      - "/usr/local/bin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Darwin - 21.6.0 - arm64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_MAKE_PROGRAM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gmake"
+      - "make"
+      - "smake"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/gmake"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/gmake"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/gmake"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/gmake"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/gmake"
+      - "/usr/local/bin/gmake"
+      - "/usr/bin/gmake"
+      - "/bin/gmake"
+      - "/usr/sbin/gmake"
+      - "/sbin/gmake"
+      - "/opt/homebrew/bin/gmake"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/gmake"
+      - "/opt/homebrew/opt/openssl@3/bin/make"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/make"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/make"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/make"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/make"
+      - "/usr/local/bin/make"
+    found: "/usr/bin/make"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER"
+    description: "CXX compiler"
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "c++"
+      - "g++"
+      - "cl"
+      - "bcc"
+      - "icpx"
+      - "icx"
+      - "clang++"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/c++"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/c++"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/c++"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/c++"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/c++"
+      - "/usr/local/bin/c++"
+    found: "/usr/bin/c++"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "/opt/homebrew/share/cmake/Modules/"
+    found: "/opt/homebrew/share/cmake/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is AppleClang, found in:
+        /Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/4.2.3/CompilerIdCXX/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:290 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting CXX compiler apple sysroot: "/usr/bin/c++" "-E" "apple-sdk.cpp"
+        # 1 "apple-sdk.cpp"
+        # 1 "<built-in>" 1
+        # 1 "<built-in>" 3
+        # 414 "<built-in>" 3
+        # 1 "<command line>" 1
+        # 1 "<built-in>" 2
+        # 1 "apple-sdk.cpp" 2
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 1 3 4
+        # 242 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+        # 165 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 166 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+        # 167 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 243 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 2 "apple-sdk.cpp" 2
+        
+        
+      Found apple sysroot: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/ar"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "strip"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/strip"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ld"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/ld"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "nm"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/nm"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "objdump"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/objdump"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "objcopy"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/objcopy"
+      - "/opt/homebrew/opt/openssl@3/bin/objcopy"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/objcopy"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/objcopy"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/objcopy"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/objcopy"
+      - "/usr/local/bin/objcopy"
+      - "/bin/objcopy"
+      - "/usr/sbin/objcopy"
+      - "/sbin/objcopy"
+      - "/opt/homebrew/bin/objcopy"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/objcopy"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "readelf"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/readelf"
+      - "/opt/homebrew/opt/openssl@3/bin/readelf"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/readelf"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/readelf"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/readelf"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/readelf"
+      - "/usr/local/bin/readelf"
+      - "/bin/readelf"
+      - "/usr/sbin/readelf"
+      - "/sbin/readelf"
+      - "/opt/homebrew/bin/readelf"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/readelf"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "dlltool"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/dlltool"
+      - "/opt/homebrew/opt/openssl@3/bin/dlltool"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/dlltool"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/dlltool"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/dlltool"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/dlltool"
+      - "/usr/local/bin/dlltool"
+      - "/bin/dlltool"
+      - "/usr/sbin/dlltool"
+      - "/sbin/dlltool"
+      - "/opt/homebrew/bin/dlltool"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/dlltool"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "addr2line"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/addr2line"
+      - "/opt/homebrew/opt/openssl@3/bin/addr2line"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/addr2line"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/addr2line"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/addr2line"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/addr2line"
+      - "/usr/local/bin/addr2line"
+      - "/bin/addr2line"
+      - "/usr/sbin/addr2line"
+      - "/sbin/addr2line"
+      - "/opt/homebrew/bin/addr2line"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/addr2line"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "tapi"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/tapi"
+      - "/opt/homebrew/opt/openssl@3/bin/tapi"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/tapi"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/tapi"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/tapi"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/tapi"
+      - "/usr/local/bin/tapi"
+      - "/bin/tapi"
+      - "/usr/sbin/tapi"
+      - "/sbin/tapi"
+      - "/opt/homebrew/bin/tapi"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/tapi"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Platform/Darwin.cmake:76 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeSystemSpecificInformation.cmake:32 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_INSTALL_NAME_TOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "install_name_tool"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/install_name_tool"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/install_name_tool"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/install_name_tool"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/install_name_tool"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/install_name_tool"
+      - "/usr/local/bin/install_name_tool"
+    found: "/usr/bin/install_name_tool"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-dqLhJL"
+      binary: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-dqLhJL"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-dqLhJL'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7881e/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7881e.dir/build.make CMakeFiles/cmTC_7881e.dir/build
+        Building CXX object CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -arch arm64   -v -Wl,-v -MD -MT CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Apple clang version 14.0.0 (clang-1400.0.29.202)
+        Target: arm64-apple-darwin21.6.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+        clang: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx12.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -fno-rounding-math -funwind-tables=2 -fobjc-msgsend-selector-stubs -target-sdk-version=13.1 -fvisibility-inlines-hidden-static-local-var -target-cpu apple-m1 -target-feature +v8.5a -target-feature +fp-armv8 -target-feature +neon -target-feature +crc -target-feature +crypto -target-feature +dotprod -target-feature +fp16fml -target-feature +ras -target-feature +lse -target-feature +rdm -target-feature +rcpc -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-feature +sm4 -target-feature +sha3 -target-feature +sha2 -target-feature +aes -target-abi darwinpcs -fallow-half-arguments-and-returns -debugger-tuning=lldb -target-linker-version 820.1 -v -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0 -dependency-file CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -stdlib=libc++ -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -Wno-cast-function-type -Wno-bitwise-instead-of-logical -fdeprecated-macro -fdebug-compilation-dir=/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-dqLhJL -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fno-cxx-modules -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -clang-vendor-feature=+messageToSelfInClassMethodIdReturnType -clang-vendor-feature=+disableInferNewAvailabilityFromInit -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -mllvm -disable-aligned-alloc-awareness=1 -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        clang -cc1 version 14.0.0 (clang-1400.0.29.202) default target arm64-apple-darwin21.6.0
+        ignoring nonexistent directory "/usr/local/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
+         /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+         /Library/Developer/CommandLineTools/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
+        End of search list.
+        Linking CXX executable cmTC_7881e
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7881e.dir/link.txt --verbose=1
+        Apple clang version 14.0.0 (clang-1400.0.29.202)
+        Target: arm64-apple-darwin21.6.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 12.0.0 13.1 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o cmTC_7881e -L/usr/local/lib -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.osx.a
+        @(#)PROGRAM:ld  PROJECT:ld64-820.1
+        BUILD 20:07:05 Nov  7 2022
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+        Library search paths:
+        	/usr/local/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/
+        /usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_7881e
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:122 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1]
+          add: [/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/usr/include]
+        end of search list found
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include] ==> [/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/include] ==> [/Library/Developer/CommandLineTools/usr/include]
+        implicit include dirs: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1;/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include;/Library/Developer/CommandLineTools/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-dqLhJL']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7881e/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7881e.dir/build.make CMakeFiles/cmTC_7881e.dir/build]
+        ignore line: [Building CXX object CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -arch arm64   -v -Wl -v -MD -MT CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Apple clang version 14.0.0 (clang-1400.0.29.202)]
+        ignore line: [Target: arm64-apple-darwin21.6.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [clang: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx12.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -fno-rounding-math -funwind-tables=2 -fobjc-msgsend-selector-stubs -target-sdk-version=13.1 -fvisibility-inlines-hidden-static-local-var -target-cpu apple-m1 -target-feature +v8.5a -target-feature +fp-armv8 -target-feature +neon -target-feature +crc -target-feature +crypto -target-feature +dotprod -target-feature +fp16fml -target-feature +ras -target-feature +lse -target-feature +rdm -target-feature +rcpc -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-feature +sm4 -target-feature +sha3 -target-feature +sha2 -target-feature +aes -target-abi darwinpcs -fallow-half-arguments-and-returns -debugger-tuning=lldb -target-linker-version 820.1 -v -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0 -dependency-file CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -stdlib=libc++ -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -Wno-cast-function-type -Wno-bitwise-instead-of-logical -fdeprecated-macro -fdebug-compilation-dir=/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-dqLhJL -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fno-cxx-modules -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -clang-vendor-feature=+messageToSelfInClassMethodIdReturnType -clang-vendor-feature=+disableInferNewAvailabilityFromInit -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -mllvm -disable-aligned-alloc-awareness=1 -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [clang -cc1 version 14.0.0 (clang-1400.0.29.202) default target arm64-apple-darwin21.6.0]
+        ignore line: [ignoring nonexistent directory "/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)]
+        ignore line: [End of search list.]
+        ignore line: [Linking CXX executable cmTC_7881e]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7881e.dir/link.txt --verbose=1]
+        ignore line: [Apple clang version 14.0.0 (clang-1400.0.29.202)]
+        ignore line: [Target: arm64-apple-darwin21.6.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        link line: [ "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 12.0.0 13.1 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o cmTC_7881e -L/usr/local/lib -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.osx.a]
+          arg [/Library/Developer/CommandLineTools/usr/bin/ld] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-lto_library] ==> ignore, skip following value
+          arg [/Library/Developer/CommandLineTools/usr/lib/libLTO.dylib] ==> skip value of -lto_library
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [12.0.0] ==> ignore
+          arg [13.1] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_7881e] ==> ignore
+          arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+          arg [-search_paths_first] ==> ignore
+          arg [-headerpad_max_install_names] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_7881e.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lc++] ==> lib [c++]
+          arg [-lSystem] ==> lib [System]
+          arg [/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.osx.a] ==> lib [/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.osx.a]
+        linker tool for 'CXX': /Library/Developer/CommandLineTools/usr/bin/ld
+        Library search paths: [;/usr/local/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/]
+        remove lib [System]
+        remove lib [/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.osx.a]
+        collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+        collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+        implicit libs: [c++]
+        implicit objs: []
+        implicit dirs: [/usr/local/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "/Library/Developer/CommandLineTools/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld  PROJECT:ld64-820.1
+      BUILD 20:07:05 Nov  7 2022
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 14.0.0, (clang-1400.0.29.202) (static support for 29, runtime is 29)
+      TAPI support using: Apple TAPI version 14.0.0 (tapi-1400.0.11)
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPythonInterp.cmake:144 (find_program)"
+      - "/opt/homebrew/share/cmake/pybind11/FindPythonLibsNew.cmake:114 (find_package)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Tools.cmake:44 (find_package)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:237 (include)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Config.cmake:257 (include)"
+      - "CMakeLists.txt:18 (find_package)"
+    mode: "program"
+    variable: "PYTHON_EXECUTABLE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "python3.8"
+      - "python3"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/bin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sbin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+      - "/sw/bin/"
+      - "/sw/sbin/"
+      - "/sw/"
+      - "/opt/local/bin/"
+      - "/opt/local/sbin/"
+      - "/opt/local/"
+      - "/Users/rspickler/Applications/"
+      - "/Applications/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/python3.8"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/python3.8"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/python3.8"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/python3.8"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.8"
+      - "/usr/local/bin/python3.8"
+      - "/usr/bin/python3.8"
+      - "/bin/python3.8"
+      - "/usr/sbin/python3.8"
+      - "/sbin/python3.8"
+      - "/opt/homebrew/bin/python3.8"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/python3.8"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/bin/python3.8"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sbin/python3.8"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/python3.8"
+      - "/opt/homebrew/bin/python3.8"
+      - "/opt/homebrew/sbin/python3.8"
+      - "/opt/homebrew/python3.8"
+      - "/usr/local/bin/python3.8"
+      - "/usr/local/sbin/python3.8"
+      - "/usr/local/python3.8"
+      - "/usr/bin/python3.8"
+      - "/usr/sbin/python3.8"
+      - "/usr/python3.8"
+      - "/bin/python3.8"
+      - "/sbin/python3.8"
+      - "/usr/X11R6/bin/python3.8"
+      - "/usr/X11R6/sbin/python3.8"
+      - "/usr/X11R6/python3.8"
+      - "/usr/pkg/bin/python3.8"
+      - "/usr/pkg/sbin/python3.8"
+      - "/usr/pkg/python3.8"
+      - "/opt/bin/python3.8"
+      - "/opt/sbin/python3.8"
+      - "/opt/python3.8"
+      - "/sw/bin/python3.8"
+      - "/sw/sbin/python3.8"
+      - "/sw/python3.8"
+      - "/opt/local/bin/python3.8"
+      - "/opt/local/sbin/python3.8"
+      - "/opt/local/python3.8"
+      - "/Users/rspickler/Applications/python3.8"
+      - "/Applications/python3.8"
+      - "/opt/homebrew/opt/openssl@3/bin/python3"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/python3"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/python3"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/python3"
+    found: "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_APPBUNDLE_PATH:
+        - "/Users/rspickler/Applications"
+        - "/Applications"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/pybind11/FindPythonLibsNew.cmake:287 (find_library)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Tools.cmake:44 (find_package)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:237 (include)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Config.cmake:257 (include)"
+      - "CMakeLists.txt:18 (find_package)"
+    mode: "library"
+    variable: "PYTHON_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "python3.14"
+    candidate_directories:
+      - "/Library/Frameworks/Python.framework/Versions/3.14/lib/"
+    found: "/Library/Frameworks/Python.framework/Versions/3.14/lib/libpython3.14.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:332 (check_cxx_compiler_flag)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:372 (_pybind11_return_if_cxx_and_linker_flags_work)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:438 (_pybind11_generate_lto)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Config.cmake:257 (include)"
+      - "CMakeLists.txt:18 (find_package)"
+    checks:
+      - "Performing Test HAS_FLTO_THIN"
+    directories:
+      source: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-pB2aXC"
+      binary: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-pB2aXC"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "HAS_FLTO_THIN"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-pB2aXC'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_aa051/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_aa051.dir/build.make CMakeFiles/cmTC_aa051.dir/build
+        Building CXX object CMakeFiles/cmTC_aa051.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_FLTO_THIN  -std=gnu++17 -arch arm64   -flto -MD -MT CMakeFiles/cmTC_aa051.dir/src.cxx.o -MF CMakeFiles/cmTC_aa051.dir/src.cxx.o.d -o CMakeFiles/cmTC_aa051.dir/src.cxx.o -c /Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-pB2aXC/src.cxx
+        Linking CXX executable cmTC_aa051
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aa051.dir/link.txt --verbose=1
+        /usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_aa051.dir/src.cxx.o -o cmTC_aa051  -flto
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:332 (check_cxx_compiler_flag)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:382 (_pybind11_return_if_cxx_and_linker_flags_work)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Common.cmake:438 (_pybind11_generate_lto)"
+      - "/opt/homebrew/share/cmake/pybind11/pybind11Config.cmake:257 (include)"
+      - "CMakeLists.txt:18 (find_package)"
+    checks:
+      - "Performing Test HAS_FLTO"
+    directories:
+      source: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-BB58EP"
+      binary: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-BB58EP"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "HAS_FLTO"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-BB58EP'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e21aa/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_e21aa.dir/build.make CMakeFiles/cmTC_e21aa.dir/build
+        Building CXX object CMakeFiles/cmTC_e21aa.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_FLTO  -std=gnu++17 -arch arm64   -flto -MD -MT CMakeFiles/cmTC_e21aa.dir/src.cxx.o -MF CMakeFiles/cmTC_e21aa.dir/src.cxx.o.d -o CMakeFiles/cmTC_e21aa.dir/src.cxx.o -c /Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/CMakeScratch/TryCompile-BB58EP/src.cxx
+        Linking CXX executable cmTC_e21aa
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e21aa.dir/link.txt --verbose=1
+        /usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_e21aa.dir/src.cxx.o -o cmTC_e21aa  -flto
+        
+      exitCode: 0
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "CMakeLists.txt:18 (find_package)"
+    name: "pybind11"
+    configs:
+      -
+        filename: "pybind11Config.cmake"
+        kind: "cmake"
+      -
+        filename: "pybind11-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "required_explicit"
+      quiet: false
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "pybind11"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/pkgRedirects/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/Documents/GitHub/quorum_time/build/CMakeFiles/pkgRedirects/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/opt/openssl@3/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/opt/openssl@3/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Library/Frameworks/Python.framework/Versions/3.14/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Library/Frameworks/Python.framework/Versions/3.14/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/pybind11Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/pybind11-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found:
+      path: "/opt/homebrew/share/cmake/pybind11/pybind11Config.cmake"
+      mode: "config"
+      version: "3.0.2"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:517 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/FindOpenSSL.cmake:295 (find_package)"
+      - "CMakeLists.txt:19 (find_package)"
+    mode: "program"
+    variable: "PKG_CONFIG_EXECUTABLE"
+    description: "pkg-config executable"
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "pkg-config"
+      - "pkgconf"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/bin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sbin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+      - "/sw/bin/"
+      - "/sw/sbin/"
+      - "/sw/"
+      - "/opt/local/bin/"
+      - "/opt/local/sbin/"
+      - "/opt/local/"
+      - "/Users/rspickler/Applications/"
+      - "/Applications/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/pkg-config"
+      - "/opt/homebrew/opt/openssl@3/bin/pkgconf"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/pkgconf"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/pkgconf"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/pkg-config"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/pkgconf"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/pkg-config"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/pkgconf"
+      - "/usr/local/bin/pkg-config"
+      - "/usr/local/bin/pkgconf"
+      - "/usr/bin/pkg-config"
+      - "/usr/bin/pkgconf"
+      - "/bin/pkg-config"
+      - "/bin/pkgconf"
+      - "/usr/sbin/pkg-config"
+      - "/usr/sbin/pkgconf"
+      - "/sbin/pkg-config"
+      - "/sbin/pkgconf"
+    found: "/opt/homebrew/bin/pkg-config"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_APPBUNDLE_PATH:
+        - "/Users/rspickler/Applications"
+        - "/Applications"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:761 (find_library)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:811 (_pkg_find_libs)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1149 (_pkg_recalculate)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1166 (_pkg_check_modules_internal)"
+      - "/opt/homebrew/share/cmake/Modules/FindOpenSSL.cmake:297 (pkg_check_modules)"
+      - "CMakeLists.txt:19 (find_package)"
+    mode: "library"
+    variable: "pkgcfg_lib__OPENSSL_ssl"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ssl"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/"
+    found: "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libssl.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:761 (find_library)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:811 (_pkg_find_libs)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1149 (_pkg_recalculate)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1166 (_pkg_check_modules_internal)"
+      - "/opt/homebrew/share/cmake/Modules/FindOpenSSL.cmake:297 (pkg_check_modules)"
+      - "CMakeLists.txt:19 (find_package)"
+    mode: "library"
+    variable: "pkgcfg_lib__OPENSSL_crypto"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "crypto"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/"
+    found: "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libcrypto.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindOpenSSL.cmake:370 (find_path)"
+      - "CMakeLists.txt:19 (find_package)"
+    mode: "path"
+    variable: "OPENSSL_INCLUDE_DIR"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "openssl/ssl.h"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/include/include/"
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/include/"
+      - "/opt/homebrew/opt/openssl@3/bin/include/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/include/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/include/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/include/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/include/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/include/"
+      - "/usr/local/bin/"
+      - "/usr/bin/include/"
+      - "/usr/bin/"
+      - "/bin/include/"
+      - "/bin/"
+      - "/usr/sbin/include/"
+      - "/usr/sbin/"
+      - "/sbin/include/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/include/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/include/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/include/include/"
+      - "/opt/homebrew/include/"
+      - "/opt/homebrew/include/"
+      - "/opt/homebrew/"
+      - "/usr/local/include/include/"
+      - "/usr/local/include/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/include/"
+      - "/usr/include/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/include/"
+      - "/include/"
+      - "/usr/X11R6/include/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/include/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/include/"
+      - "/opt/include/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/sw/include/include/"
+      - "/sw/include/"
+      - "/sw/include/"
+      - "/sw/"
+      - "/opt/local/include/include/"
+      - "/opt/local/include/"
+      - "/opt/local/include/"
+      - "/opt/local/"
+      - "/usr/include/X11/include/"
+      - "/usr/include/X11/"
+      - "/Users/rspickler/Library/Frameworks/include/"
+      - "/Users/rspickler/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/include/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/"
+      - "/Library/Frameworks/include/"
+      - "/Library/Frameworks/"
+      - "/Network/Library/Frameworks/include/"
+      - "/Network/Library/Frameworks/"
+      - "/System/Library/Frameworks/include/"
+      - "/System/Library/Frameworks/"
+    searched_directories:
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/include/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/opt/openssl@3/bin/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/opt/openssl@3/bin/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/include/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/include/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/include/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/openssl.framework/Headers/ssl.h"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/openssl.framework/Headers/ssl.h"
+      - "/usr/local/bin/include/openssl.framework/Headers/ssl.h"
+      - "/usr/local/bin/openssl.framework/Headers/ssl.h"
+      - "/usr/bin/include/openssl.framework/Headers/ssl.h"
+      - "/usr/bin/openssl.framework/Headers/ssl.h"
+      - "/bin/include/openssl.framework/Headers/ssl.h"
+      - "/bin/openssl.framework/Headers/ssl.h"
+      - "/usr/sbin/include/openssl.framework/Headers/ssl.h"
+      - "/usr/sbin/openssl.framework/Headers/ssl.h"
+      - "/sbin/include/openssl.framework/Headers/ssl.h"
+      - "/sbin/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/bin/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/bin/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/include/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/include/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/include/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/openssl.framework/Headers/ssl.h"
+      - "/usr/local/include/include/openssl.framework/Headers/ssl.h"
+      - "/usr/local/include/openssl.framework/Headers/ssl.h"
+      - "/usr/local/include/openssl.framework/Headers/ssl.h"
+      - "/usr/local/openssl.framework/Headers/ssl.h"
+      - "/usr/include/include/openssl.framework/Headers/ssl.h"
+      - "/usr/include/openssl.framework/Headers/ssl.h"
+      - "/usr/include/openssl.framework/Headers/ssl.h"
+      - "/usr/openssl.framework/Headers/ssl.h"
+      - "/include/include/openssl.framework/Headers/ssl.h"
+      - "/include/openssl.framework/Headers/ssl.h"
+      - "/usr/X11R6/include/include/openssl.framework/Headers/ssl.h"
+      - "/usr/X11R6/include/openssl.framework/Headers/ssl.h"
+      - "/usr/X11R6/include/openssl.framework/Headers/ssl.h"
+      - "/usr/X11R6/openssl.framework/Headers/ssl.h"
+      - "/usr/pkg/include/include/openssl.framework/Headers/ssl.h"
+      - "/usr/pkg/include/openssl.framework/Headers/ssl.h"
+      - "/usr/pkg/include/openssl.framework/Headers/ssl.h"
+      - "/usr/pkg/openssl.framework/Headers/ssl.h"
+      - "/opt/include/include/openssl.framework/Headers/ssl.h"
+      - "/opt/include/openssl.framework/Headers/ssl.h"
+      - "/opt/include/openssl.framework/Headers/ssl.h"
+      - "/opt/openssl.framework/Headers/ssl.h"
+      - "/sw/include/include/openssl.framework/Headers/ssl.h"
+      - "/sw/include/openssl.framework/Headers/ssl.h"
+      - "/sw/include/openssl.framework/Headers/ssl.h"
+      - "/sw/openssl.framework/Headers/ssl.h"
+      - "/opt/local/include/include/openssl.framework/Headers/ssl.h"
+      - "/opt/local/include/openssl.framework/Headers/ssl.h"
+      - "/opt/local/include/openssl.framework/Headers/ssl.h"
+      - "/opt/local/openssl.framework/Headers/ssl.h"
+      - "/usr/include/X11/include/openssl.framework/Headers/ssl.h"
+      - "/usr/include/X11/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Users/rspickler/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/Network/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/Network/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/System/Library/Frameworks/include/openssl.framework/Headers/ssl.h"
+      - "/System/Library/Frameworks/openssl.framework/Headers/ssl.h"
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/include/include/openssl/ssl.h"
+    found: "/opt/homebrew/Cellar/openssl@3/3.6.1/include/"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindOpenSSL.cmake:628 (find_library)"
+      - "CMakeLists.txt:19 (find_package)"
+    mode: "library"
+    variable: "OPENSSL_SSL_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ssl"
+      - "ssleay32"
+      - "ssleay32MD"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/"
+      - "/usr/local/lib/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/opt/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+    found: "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libssl.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindOpenSSL.cmake:642 (find_library)"
+      - "CMakeLists.txt:19 (find_package)"
+    mode: "library"
+    variable: "OPENSSL_CRYPTO_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "crypto"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/"
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/"
+      - "/usr/local/lib/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/opt/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+    found: "/opt/homebrew/Cellar/openssl@3/3.6.1/lib/libcrypto.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:761 (find_library)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:811 (_pkg_find_libs)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1149 (_pkg_recalculate)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1166 (_pkg_check_modules_internal)"
+      - "CMakeLists.txt:21 (pkg_check_modules)"
+    mode: "library"
+    variable: "pkgcfg_lib_SODIUM_sodium"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "sodium"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/libsodium/1.0.21/lib/"
+    found: "/opt/homebrew/Cellar/libsodium/1.0.21/lib/libsodium.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "CMakeLists.txt:90 (find_library)"
+    mode: "library"
+    variable: "SODIUM_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "sodium"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/opt/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+      - "/opt/homebrew/lib/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+    found: "/opt/homebrew/lib/libsodium.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "CMakeLists.txt:94 (find_path)"
+    mode: "path"
+    variable: "SODIUM_INCLUDE_DIR"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "sodium.h"
+    candidate_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/opt/homebrew/bin/"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/include/"
+      - "/opt/homebrew/"
+      - "/usr/local/include/"
+      - "/usr/local/"
+      - "/usr/include/"
+      - "/usr/"
+      - "/include/"
+      - "/usr/X11R6/include/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/include/"
+      - "/usr/pkg/"
+      - "/opt/include/"
+      - "/opt/"
+      - "/sw/include/"
+      - "/sw/"
+      - "/opt/local/include/"
+      - "/opt/local/"
+      - "/usr/include/X11/"
+      - "/Users/rspickler/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/Network/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+      - "/opt/homebrew/include/"
+    searched_directories:
+      - "/opt/homebrew/opt/openssl@3/bin/sodium.h"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/sodium.h"
+      - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/sodium.h"
+      - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin/sodium.h"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/sodium.h"
+      - "/usr/local/bin/sodium.h"
+      - "/usr/bin/sodium.h"
+      - "/bin/sodium.h"
+      - "/usr/sbin/sodium.h"
+      - "/sbin/sodium.h"
+      - "/opt/homebrew/bin/sodium.h"
+      - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/sodium.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sodium.h"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sodium.h"
+    found: "/opt/homebrew/include/"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:761 (find_library)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:811 (_pkg_find_libs)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1149 (_pkg_recalculate)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1166 (_pkg_check_modules_internal)"
+      - "CMakeLists.txt:26 (pkg_check_modules)"
+    mode: "library"
+    variable: "pkgcfg_lib_SODIUM_PKG_sodium"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "sodium"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/libsodium/1.0.21/lib/"
+    found: "/opt/homebrew/Cellar/libsodium/1.0.21/lib/libsodium.dylib"
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/opt/homebrew/bin"
+        - "/Users/rspickler/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/bin"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/rspickler/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/openssl@3/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/Users/rspickler/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+...

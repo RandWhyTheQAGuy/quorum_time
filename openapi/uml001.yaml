@@ -1,0 +1,145 @@
+openapi: 3.0.3
+info:
+  title: UML-001 Trusted Time REST API
+  version: "1.0.0"
+  description: >
+    REST interface for the UML-001 Byzantine Fault Tolerant Trusted Clock.
+    All operations are deterministic, auditable, and cryptographically verifiable.
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+
+  /time/now:
+    get:
+      summary: Get the current trusted time.
+      description: >
+        Returns the monotonic, drift-corrected Unix time as computed by
+        BFTQuorumTrustedClock::now_unix().
+      responses:
+        "200":
+          description: Trusted time response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unix_time:
+                    type: integer
+                    description: Trusted Unix time in seconds.
+
+  /time/sync:
+    post:
+      summary: Submit signed NTP observations for BFT sync.
+      description: >
+        Accepts a list of TimeObservation objects and performs a BFT sync round.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                warp_score:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                observations:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TimeObservation"
+      responses:
+        "200":
+          description: Sync result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BftSyncResult"
+        "400":
+          description: Invalid input.
+        "409":
+          description: Quorum failure or drift ceiling exceeded.
+
+  /time/shared-state:
+    post:
+      summary: Adopt signed shared state from cluster leader.
+      description: >
+        Followers verify the leader's signature and adopt the shared state
+        using BFTQuorumTrustedClock::apply_shared_state().
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SharedStateMessage"
+      responses:
+        "200":
+          description: Shared state adopted.
+        "400":
+          description: Signature invalid or time regression detected.
+        "409":
+          description: Drift ceiling exceeded.
+
+components:
+
+  schemas:
+
+    TimeObservation:
+      type: object
+      required:
+        - server_hostname
+        - key_id
+        - unix_seconds
+        - signature_hex
+        - sequence
+      properties:
+        server_hostname:
+          type: string
+        key_id:
+          type: string
+        unix_seconds:
+          type: integer
+        signature_hex:
+          type: string
+          pattern: "^[0-9a-fA-F]+$"
+        sequence:
+          type: integer
+
+    BftSyncResult:
+      type: object
+      properties:
+        agreed_time:
+          type: integer
+        applied_drift:
+          type: integer
+        accepted_sources:
+          type: integer
+        outliers_ejected:
+          type: integer
+        rejected_sources:
+          type: integer
+
+    SharedStateMessage:
+      type: object
+      required:
+        - leader_id
+        - key_id
+        - shared_agreed_time
+        - shared_applied_drift
+        - leader_system_time_at_sync
+        - signature_hex
+      properties:
+        leader_id:
+          type: string
+        key_id:
+          type: string
+        shared_agreed_time:
+          type: integer
+        shared_applied_drift:
+          type: integer
+        leader_system_time_at_sync:
+          type: integer
+        signature_hex:
+          type: string
+          pattern: "^[0-9a-fA-F]+$"

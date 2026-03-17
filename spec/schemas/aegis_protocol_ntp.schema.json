@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UML-001 NTP Observation Fetcher Configuration",
+  "type": "object",
+  "properties": {
+    "hmac_key_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{64}$",
+      "description": "256-bit HMAC key in hex"
+    },
+    "stratum_max": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16
+    },
+    "quorum_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "outlier_threshold_s": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Max allowed deviation from median in seconds"
+    },
+    "servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": { "type": "string" },
+          "max_rtt_ms": { "type": "integer", "minimum": 1 },
+          "timeout_ms": { "type": "integer", "minimum": 1 }
+        },
+        "required": ["hostname", "max_rtt_ms"]
+      },
+      "minItems": 1
+    }
+  },
+  "required": ["hmac_key_hex", "stratum_max", "quorum_size", "servers"]
+}

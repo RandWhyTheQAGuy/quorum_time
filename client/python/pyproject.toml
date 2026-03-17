@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uml001_client"
+version = "0.1.0"
+description = "Python client SDK for the UML-001 Trusted Time REST API"
+authors = [
+    { name = "Randy", email = "user@example.com" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/RandWhyTheQAGuy/quorum_time"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["uml001_client"]

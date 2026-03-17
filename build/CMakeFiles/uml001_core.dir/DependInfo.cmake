@@ -1,0 +1,32 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/bft_quorum_clock.cpp" "CMakeFiles/uml001_core.dir/src/core/bft_quorum_clock.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/bft_quorum_clock.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/cold_vault.cpp" "CMakeFiles/uml001_core.dir/src/core/cold_vault.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/cold_vault.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/crypto_utils.cpp" "CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/file_vault_backend.cpp" "CMakeFiles/uml001_core.dir/src/core/file_vault_backend.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/file_vault_backend.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/main_ntp.cpp" "CMakeFiles/uml001_core.dir/src/core/main_ntp.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/main_ntp.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/ntp_observation_fetcher.cpp" "CMakeFiles/uml001_core.dir/src/core/ntp_observation_fetcher.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/ntp_observation_fetcher.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/os_strong_clock.cpp" "CMakeFiles/uml001_core.dir/src/core/os_strong_clock.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/os_strong_clock.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/simple_file_vault_backend.cpp" "CMakeFiles/uml001_core.dir/src/core/simple_file_vault_backend.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/simple_file_vault_backend.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/simple_hash_provider.cpp" "CMakeFiles/uml001_core.dir/src/core/simple_hash_provider.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/simple_hash_provider.cpp.o.d"
+  "/Users/rspickler/Documents/GitHub/quorum_time/src/core/vault_logger.cpp" "CMakeFiles/uml001_core.dir/src/core/vault_logger.cpp.o" "gcc" "CMakeFiles/uml001_core.dir/src/core/vault_logger.cpp.o.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

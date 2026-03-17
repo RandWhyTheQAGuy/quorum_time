@@ -1,0 +1,35 @@
+{
+  "$id": "https://uml001.example.com/schema/ntp_servers.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NTP Servers Configuration",
+  "type": "object",
+  "properties": {
+    "servers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["hostname", "max_rtt_ms"],
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "DNS hostname or IP literal of the NTP server (port 123)."
+          },
+          "max_rtt_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Maximum acceptable round-trip time in milliseconds."
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Socket receive timeout in milliseconds. If omitted or 0, defaults to 2000 ms."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["servers"],
+  "additionalProperties": false
+}

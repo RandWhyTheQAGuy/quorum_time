@@ -1,33 +1,45 @@
 {
+  "$id": "https://uml001.example.com/schema/bft_clock_config.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://uml001.org/schema/bft_clock_config.json",
-  "title": "BFTQuorumTrustedClockConfig",
+  "title": "BFT Clock Configuration",
   "type": "object",
-  "required": [
-    "min_quorum",
-    "max_cluster_skew",
-    "max_drift_step",
-    "max_total_drift",
-    "fail_closed"
-  ],
   "properties": {
-    "min_quorum": {
+    "max_drift_step": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "default": 2,
+      "description": "Maximum per-sync drift adjustment in seconds."
+    },
+    "max_total_drift": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 60,
+      "description": "Maximum absolute drift correction in seconds (|current_drift_|)."
     },
     "max_cluster_skew": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 0,
+      "default": 5,
+      "description": "Maximum allowed spread of clustered timestamps in seconds."
     },
-    "max_drift_step": {
-      "type": "integer"
-    },
-    "max_total_drift": {
-      "type": "integer"
+    "min_quorum": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 4,
+      "description": "Minimum number of valid observations required for BFT sync."
     },
     "fail_closed": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false,
+      "description": "If true, abort process when drift ceiling is exceeded."
     }
   },
+  "required": [
+    "max_drift_step",
+    "max_total_drift",
+    "max_cluster_skew",
+    "min_quorum",
+    "fail_closed"
+  ],
   "additionalProperties": false
 }

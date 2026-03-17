@@ -1,0 +1,44 @@
+{
+  "$id": "https://uml001.example.com/schema/bft_shared_state.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BFT Shared State Message",
+  "type": "object",
+  "properties": {
+    "leader_id": {
+      "type": "string",
+      "description": "Logical identifier of the cluster leader node."
+    },
+    "key_id": {
+      "type": "string",
+      "description": "Key generation identifier used to sign the shared state."
+    },
+    "shared_agreed_time": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Leader's BFT-agreed Unix time (seconds since epoch)."
+    },
+    "shared_applied_drift": {
+      "type": "integer",
+      "description": "Leader's drift step applied in the last sync round (seconds)."
+    },
+    "leader_system_time_at_sync": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Leader's raw OS Unix time at the moment of sync."
+    },
+    "signature_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]+$",
+      "description": "Hex-encoded signature over the canonical payload."
+    }
+  },
+  "required": [
+    "leader_id",
+    "key_id",
+    "shared_agreed_time",
+    "shared_applied_drift",
+    "leader_system_time_at_sync",
+    "signature_hex"
+  ],
+  "additionalProperties": false
+}
