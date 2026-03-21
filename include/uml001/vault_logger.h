@@ -1,44 +1,29 @@
 #pragma once
 
-/**
- * @file vault_logger.h
- * @brief Global vault logging hook for routing audit events.
- *
- * This module provides:
- *   - set_vault_logger(): install a global callback
- *   - vault_log(): emit an event through the callback
- *
- * Python bindings and main_ntp.cpp both rely on this.
- */
-
 #include <functional>
 #include <string>
 
 namespace uml001 {
 
 /**
- * @brief Function signature for vault log sinks.
- *
- * key    = event name (e.g., "clock.sync")
- * value  = event detail (e.g., "promoted BFT time")
+ * @brief Callable type for vault audit log sinks.
+ *        Receives structured (key, value) event pairs.
  */
-using VaultLogSink = std::function<void(const std::string& key,
-                                        const std::string& value)>;
+using VaultLogSink = std::function<void(const std::string&, const std::string&)>;
 
 /**
- * @brief Install a global vault logger callback.
- *
- * Thread-safe. Replaces any previously installed logger.
+ * @brief Installs a global vault logger callback.
+ *        Must be called once at startup before any vault_log() calls.
+ *        Thread-safe after initialization.
  */
 void set_vault_logger(VaultLogSink fn);
 
 /**
- * @brief Emit a vault log event through the installed callback.
- *
- * If no logger is installed, this is a no-op.
- * Thread-safe.
+ * @brief Emits a structured audit log entry to the registered sink.
+ *        No-ops safely if no logger has been registered.
+ * @param key    Event category, e.g. "key.rotation", "clock.sync"
+ * @param value  Human-readable detail string
  */
-void vault_log(const std::string& key,
-               const std::string& value);
+void vault_log(const std::string& key, const std::string& value);
 
 } // namespace uml001

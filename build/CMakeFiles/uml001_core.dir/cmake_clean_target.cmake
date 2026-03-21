@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "Release/libuml001_core.a"
+  "libuml001_core.a"
 )

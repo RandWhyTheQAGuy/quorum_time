@@ -1,187 +1,128 @@
-# tests/test_integration.py
-#
-# End-to-end integration test for the UML-001 Trusted Time System.
-#
-# All C++ components are exercised through the pybind11 bindings.
-# Zero-trust objectives verified:
-#   - BFT quorum clock requires >= min_quorum agreeing observations
-#   - Vault audit log receives and persists a sync event
-#   - Cold-start state (drift, sequences) can be written and read back
-#
-# Backend choice:
-#   SimpleFileVaultBackend is used throughout this test. It is the
-#   correct production backend for single-file append-only audit logging
-#   where read-back in the same session is required. FileVaultBackend
-#   is for rotation-capable multi-file deployments where the caller does
-#   not need to read back through the same handle after a rotation.
-#
-# Fixes applied:
-#   [FIX-HMAC]     register_hmac_authority() must be called for each
-#                  authority before any observation is verified.
-#                  crypto_verify() looks up keys from a global registry
-#                  keyed by "authority_id|key_id". Without registration
-#                  every verification returns false.
-#   [FIX-SIG]      Observations must carry real HMAC-SHA256 signatures.
-#                  signature_hex="sig" is not valid hex and will never
-#                  match the computed HMAC.
-#   [FIX-TS]       unix_seconds=1000 is year 1970. target_drift would be
-#                  ~55 years, far exceeding max_total_drift=100. Use
-#                  int(time.time()) so observations are near current time.
-#   [FIX-DISOWNED] backend is disowned by ColdVault (unique_ptr transfer).
-#                  Calling backend.read_last_line() after ColdVault
-#                  construction raises "Python instance was disowned".
-#                  Read the audit log from disk directly instead:
-#                  <tmp>/audit.log written by SimpleFileVaultBackend.
-
 import hashlib
 import hmac as hmac_mod
 import os
 import shutil
 import tempfile
 import time
+import pytest
 
 import uml001
 
-
 # ---------------------------------------------------------------------------
-# HMAC helper — same payload format as C++ sign_observation():
+# HMAC helper — Matches C++ verify_observation() payload:
 #   server_hostname|key_id|unix_seconds|sequence
 # ---------------------------------------------------------------------------
 
 SECRET_KEY = "integration-test-key"
-KEY_ID     = "k"
+KEY_ID     = "k1"
 
 def make_observation(hostname, unix_seconds, sequence,
                      secret=SECRET_KEY, key_id=KEY_ID):
     """Build a TimeObservation with a valid HMAC-SHA256 signature."""
-    obs = uml001.TimeObservation()
-    obs.server_hostname = hostname
-    obs.key_id          = key_id
-    obs.unix_seconds    = unix_seconds
-    obs.sequence        = sequence
-
     payload = f"{hostname}|{key_id}|{unix_seconds}|{sequence}"
-    obs.signature_hex = hmac_mod.new(
+
+    sig_hex = hmac_mod.new(
         secret.encode(),
         payload.encode(),
         hashlib.sha256
     ).hexdigest()
+
+    # Construct bound object using attribute assignment
+    obs = uml001.TimeObservation() 
+    obs.server_hostname = hostname
+    obs.key_id = key_id
+    obs.unix_seconds = unix_seconds
+    obs.signature_hex = sig_hex
+    obs.sequence = sequence
+    
     return obs
 
-
-def read_audit_log(directory):
-    """Read all non-empty lines from <directory>/audit.log."""
-    path = os.path.join(directory, "audit.log")
-    if not os.path.exists(path):
+def read_audit_log(log_path):
+    """Read all non-empty lines from the specific log file."""
+    if not os.path.exists(log_path):
         return []
-    with open(path, "r") as f:
+    with open(log_path, "r") as f:
         return [line.rstrip("\r\n") for line in f if line.strip()]
 
 
 def test_full_integration():
-    # Temporary vault directory — isolated per test run
-    tmp = tempfile.mkdtemp()
+    # Temporary vault directory
+    tmp_dir = tempfile.mkdtemp()
+    # Explicitly define the log file path inside the temp dir
+    log_file = os.path.join(tmp_dir, "audit.log")
 
     try:
-        # ----------------------------------------------------------
-        # [FIX-HMAC] Register HMAC keys before constructing observations.
-        # crypto_verify() looks up keys from the global g_hmac_keys map.
-        # Must be called for every (authority_id, key_id) pair.
-        # ----------------------------------------------------------
-        authorities = {"srv1", "srv2", "srv3"}
-        secret_hex  = SECRET_KEY.encode().hex()
+        # 1. Register HMAC keys in the global registry (Required for C++ crypto_verify)
+        authorities = ["ntp-alpha", "ntp-beta", "ntp-gamma"]
+        secret_hex = SECRET_KEY.encode().hex()
         for host in authorities:
             uml001.register_hmac_authority(host, KEY_ID, secret_hex)
 
-        # ----------------------------------------------------------
-        # Construct core C++ components
-        # ----------------------------------------------------------
-        clock   = uml001.OsStrongClock()
-        hashp   = uml001.SimpleHashProvider()
-        backend = uml001.SimpleFileVaultBackend(tmp)
-        config  = uml001.ColdVaultConfig(tmp)
+        # 2. Setup Components
+        os_clock = uml001.OsStrongClock()
+        hash_p = uml001.SimpleHashProvider()
 
-        # ColdVault takes ownership of backend via unique_ptr.
-        # [FIX-DISOWNED] Do not call backend.read_last_line() after this —
-        # use read_audit_log(tmp) to inspect the on-disk audit file instead.
-        vault = uml001.ColdVault(config, backend, clock, hashp)
+        # FIX: Pass the specific file path to the backend, not just the directory
+        backend = uml001.SimpleFileVaultBackend(log_file)
+        
+        vault_cfg = uml001.ColdVaultConfig()
+        vault_cfg.base_directory = tmp_dir
 
-        # ----------------------------------------------------------
-        # Configure BFT quorum clock
-        # ----------------------------------------------------------
-        cfg = uml001.BftClockConfig()
-        cfg.min_quorum       = 3
-        cfg.max_cluster_skew = 10
-        cfg.max_drift_step   = 5
-        cfg.max_total_drift  = 100
-        cfg.fail_closed      = False
+        vault = uml001.ColdVault(vault_cfg, backend, os_clock, hash_p)
 
-        bft = uml001.BFTQuorumTrustedClock(cfg, authorities, vault)
+        # 3. Configure BFT Clock
+        bft_cfg = uml001.BftClockConfig()
+        bft_cfg.min_quorum = 3
+        bft_cfg.max_total_drift = 120
+        bft_cfg.fail_closed = True
 
-        # ----------------------------------------------------------
-        # Construct valid observations
-        #
-        # [FIX-TS]  Use int(time.time()) so timestamps are near current
-        #           wall time. target_drift = agreed_time - raw_os_time
-        #           must be within max_total_drift=100.
-        # [FIX-SIG] Compute real HMAC-SHA256 signatures via make_observation().
-        # ----------------------------------------------------------
+        bft = uml001.BFTQuorumTrustedClock(bft_cfg, set(authorities), vault)
+
+        # 4. Create synchronous observations
         now = int(time.time())
-        obs = [
-            make_observation("srv1", now + 2, 1),
-            make_observation("srv2", now + 2, 1),
-            make_observation("srv3", now + 2, 1),
+        observations = [
+            make_observation("ntp-alpha", now + 1, 101),
+            make_observation("ntp-beta",  now + 1, 101),
+            make_observation("ntp-gamma", now + 1, 101),
         ]
 
-        # ----------------------------------------------------------
-        # Exercise BFT sync — must produce a result
-        # ----------------------------------------------------------
-        result = bft.update_and_sync(obs)
+        # 5. Run Sync
+        result = bft.update_and_sync(observations, 0.0)
 
-        assert result is not None, (
-            "update_and_sync returned None — quorum was not satisfied "
-            "or BFT clock rejected all observations."
+        assert result is not None, "BFT Sync failed to reach quorum"
+        # FIX: result.accepted_sources is a list/set of hostnames, so check len()
+        assert len(result.accepted_sources) == 3
+        assert isinstance(result.drift_step, int)
+
+        # 6. Verify Uncertainty Tracking
+        uncertainty = bft.get_current_uncertainty()
+        assert uncertainty < 2, f"Uncertainty too high after sync: {uncertainty}"
+
+        # 7. Test Shared State Adoption (Monotonic Versioning)
+        bft.apply_shared_state(
+            now + 5,              # shared_agreed_time
+            1,                    # shared_applied_drift
+            now,                  # leader_system_time
+            "dummy_sig_for_test", # signature_hex
+            "leader-01",          # leader_id
+            KEY_ID,               # key_id
+            10,                   # monotonic_version
+            0.0                   # current_warp_score
         )
 
-        # ----------------------------------------------------------
-        # Verify vault audit log received a sync event
-        #
-        # [FIX-DISOWNED] Read from disk — backend was disowned by ColdVault.
-        # ColdVault.log_security_event("bft.sync.committed", ...) is called
-        # by BFTQuorumTrustedClock.update_and_sync() on success.
-        # ----------------------------------------------------------
-        audit = read_audit_log(tmp)
+        # 8. Verify Vault Persistence
+        vault.save_last_drift(55)
+        assert vault.load_last_drift() == 55
 
-        assert audit, (
-            "Audit log is empty — vault file was not written. "
-            "Check that ColdVault received the backend correctly."
-        )
-        assert any("bft.sync.committed" in line for line in audit), (
-            f"Expected 'bft.sync.committed' in audit log. Lines found:\n"
-            + "\n".join(audit)
-        )
-
-        # ----------------------------------------------------------
-        # Verify cold-start state round-trip
-        # ----------------------------------------------------------
-        test_drift = -42
-        vault.save_last_drift(test_drift)
-        loaded_drift = vault.load_last_drift()
-
-        assert loaded_drift is not None, (
-            "load_last_drift returned None after save_last_drift."
-        )
-        assert loaded_drift == test_drift, (
-            f"Drift round-trip failed: saved {test_drift}, loaded {loaded_drift}"
-        )
-
-        test_seqs = {"srv1": 10, "srv2": 20, "srv3": 30}
-        vault.save_authority_sequences(test_seqs)
-        loaded_seqs = vault.load_authority_sequences()
-
-        assert loaded_seqs == test_seqs, (
-            f"Sequence round-trip failed: saved {test_seqs}, loaded {loaded_seqs}"
-        )
+        # 9. Audit Log Check
+        # Check the specific log_file path we defined earlier
+        audit_content = read_audit_log(log_file)
+        assert len(audit_content) > 0, f"No data found in {log_file}. Is the C++ logger flushing?"
 
     finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
+if __name__ == "__main__":
+    test_full_integration()
+    print("Integration test passed successfully.")

@@ -1,71 +1,68 @@
-# ============================================================
-# Stage 1: Build the BFT Trusted Clock HTTP sidecar
-# ============================================================
+# ==========================================
+# Stage 1: Build
+# ==========================================
 FROM ubuntu:22.04 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
-
-# Install build toolchain and basic deps
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        cmake \
-        git \
-        ca-certificates \
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    libssl-dev \
+    libsodium-dev \
+    libgrpc++-dev \
+    protobuf-compiler-grpc \
+    libprotobuf-dev \
+    libc-ares-dev \
+    libre2-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /src
+WORKDIR /app
+COPY . .
 
-# Copy your project sources
-# Adjust these paths to match your repo layout
-COPY . /src
+# Build the C++ core and server
+RUN mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
+    make -j$(nproc) aegis_clock_server
 
-# Example: build a single binary from main_sidecar.cpp and your libs
-# Assumes:
-#  - bft_quorum_clock.cpp/.h
-#  - ntp_observation_fetcher.cpp/.h
-#  - vault.cpp/.h
-#  - crypto_utils.cpp/.h
-#  - httplib.h (header-only, already in include path)
-#  - nlohmann/json.hpp (header-only, already in include path)
-RUN g++ -std=c++20 -O2 -Wall -Wextra \
-    -I./include \
-    main_sidecar.cpp \
-    bft_quorum_clock.cpp \
-    ntp_observation_fetcher.cpp \
-    vault.cpp \
-    crypto_utils.cpp \
-    -o /usr/local/bin/bft-clock-sidecar \
-    -pthread
-
-# ============================================================
-# Stage 2: Runtime image
-# ============================================================
+# ==========================================
+# Stage 2: Runtime
+# ==========================================
 FROM ubuntu:22.04
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Minimal runtime deps (CA certs for NTP/TLS if needed)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
+# Install only the necessary shared libraries for the binary to run
+RUN apt-get update && apt-get install -y \
+    libssl3 \
+    libsodium23 \
+    libgrpc++1.4 \
+    libprotobuf23 \
+    libc-ares2 \
+    libre2-9 \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Non-root user
-RUN useradd -r -u 10001 -g root bftclock
+# Create a non-root system user
+RUN useradd -r -u 10001 -m -s /bin/bash aegis
 
-# Create data directory for vault
-RUN mkdir -p /var/lib/bft-clock && chown -R bftclock:root /var/lib/bft-clock
+# Setup the Vault directory with correct permissions
+RUN mkdir -p /var/lib/aegis/vault && \
+    chown -R aegis:aegis /var/lib/aegis && \
+    chmod -R 750 /var/lib/aegis
 
-# Copy binary from build stage
-COPY --from=build /usr/local/bin/bft-clock-sidecar /usr/local/bin/bft-clock-sidecar
+# Copy the binary from the build stage
+COPY --from=build /app/build/aegis_clock_server /usr/local/bin/aegis_clock_server
 
-USER bftclock
+# Ensure binary is executable
+RUN chmod +x /usr/local/bin/aegis_clock_server
 
-# Sidecar listens only on loopback; port is for Kubernetes service discovery
-EXPOSE 9090
+USER aegis
+WORKDIR /home/aegis
 
-# Health endpoints:
-#  - GET /health
-#  - GET /api/v1/time
-ENTRYPOINT ["/usr/local/bin/bft-clock-sidecar"]
+# gRPC Port
+EXPOSE 50051
+
+# Allow graceful shutdown (important for flushing Vault logs)
+STOPSIGNAL SIGINT
+
+ENTRYPOINT ["/usr/local/bin/aegis_clock_server"]

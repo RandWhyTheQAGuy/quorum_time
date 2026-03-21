@@ -1,0 +1,12 @@
+syntax = "proto3";
+package uml001.clock;
+
+message SignedClockState {
+    uint64 agreed_time = 1;        // BFT-verified Unix timestamp
+    int64  applied_drift = 2;      // Microsecond drift from local OS clock
+    uint64 last_updated_unix = 3;  // When this record was created
+    uint64 key_version = 4;        // HMAC/Sig key version used
+    uint64 monotonic_version = 5;  // Anti-replay counter
+    string leader_id = 6;          // Passport ID of the current proposer
+    string signature_hex = 7;      // HMAC-SHA256 or Ed25519 signature
+}

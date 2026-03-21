@@ -1,0 +1,27 @@
+syntax = "proto3";
+package uml001;
+
+service ClockService {
+  rpc GetTime(GetTimeRequest) returns (TimeResponse);
+  rpc GetStatus(GetStatusRequest) returns (StatusResponse);
+}
+
+message GetTimeRequest {}
+
+message TimeResponse {
+  uint64 unix_timestamp     = 1;
+  int64  drift_applied      = 2;
+  uint64 last_updated_unix  = 3;
+  uint64 monotonic_version  = 4;
+  string signature          = 5;
+  string leader_id          = 6;
+  string key_id             = 7;
+}
+
+message GetStatusRequest {}
+
+message StatusResponse {
+  bool   operational        = 1;
+  uint32 quorum_threshold   = 2;
+  uint64 current_version    = 3;
+}

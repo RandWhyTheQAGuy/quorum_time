@@ -1,23 +1,21 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "uml001"
-version = "1.0.0"
-description = "Byzantine Fault-Tolerant Trusted Clock – Python SDK"
+version = "0.1.0"
+description = "BFT Quorum Clock SDK with ColdVault Persistence"
 readme = "README.md"
-license = { text = "MIT" }
-requires-python = ">=3.10"
-
+requires-python = ">=3.14"
 dependencies = [
-    "cryptography>=41.0",
+    "pytest>=9.0.0",
 ]
-
-[project.optional-dependencies]
-redis = ["redis>=5.0"]
-dev   = ["pytest>=8.0", "pytest-timeout", "cryptography>=41.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["uml001*"]
+
+[tool.setuptools.package-data]
+# This ensures the compiled C++ extension is included in the installation
+uml001 = ["*.so", "*.pyd", "*.dylib"]

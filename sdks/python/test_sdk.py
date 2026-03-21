@@ -15,9 +15,12 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Ensure sdks/python is on the import path
+SDK_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(SDK_ROOT))
 
-from ./uml001.crypto_utils import (
+# Absolute imports from the uml001 package
+from uml001.crypto_utils import (
     sha256_raw, sha256_hex, hmac_sha256_hex,
     secure_random_bytes, generate_random_bytes_hex,
     constant_time_equals,
@@ -27,15 +30,19 @@ from ./uml001.crypto_utils import (
     AESGCMResult, aes256_gcm_encrypt, aes256_gcm_decrypt,
     secure_zero,
 )
-from ./uml001.vault import VaultConfig, FileVaultBackend, ColdVault
-from ./uml001.ntp_fetcher import (
+
+from uml001.vault import VaultConfig, FileVaultBackend, ColdVault
+
+from uml001.ntp_fetcher import (
     NtpServerEntry, NtpObservation, TimeObservation, NtpObservationFetcher,
 )
-from ./uml001.bft_clock import (
+
+from uml001.bft_clock import (
     BFTClockConfig, BftSyncResult, BFTQuorumTrustedClock,
     register_hmac_authority, clear_authority_registry, crypto_verify,
 )
-from ./uml001.sync_daemon import (
+
+from uml001.sync_daemon import (
     SharedClockState, InMemorySharedStore, BFTSyncDaemon,
 )
 

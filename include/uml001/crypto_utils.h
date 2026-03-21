@@ -1,65 +1,51 @@
 #pragma once
-
-/**
- * @file crypto_utils.h
- * @brief Cryptographic utilities for UML-001.
- */
-
-#include <string>
 #include <vector>
+#include <string>
 #include <cstdint>
-#include <optional>
-
-#include "uml001/hash_provider.h"
 
 namespace uml001 {
 
-/**
- * @brief Result of AES-256-GCM encryption or decryption.
- *
- * NOTE: Field names MUST match crypto_utils.cpp.
- *       The implementation uses `result.nonce`, not `iv`.
- */
 struct AESGCMResult {
     std::vector<uint8_t> ciphertext;
-    std::vector<uint8_t> nonce;   // ← REQUIRED NAME (crypto_utils.cpp uses this)
+    std::vector<uint8_t> iv;
     std::vector<uint8_t> tag;
-    bool ok = false;
+    std::vector<uint8_t> nonce;
 };
 
 /**
- * @brief Encrypt using AES-256-GCM.
- *
- * @param key        32-byte AES key
- * @param plaintext  bytes to encrypt
- * @return AESGCMResult containing ciphertext, nonce, tag, and ok flag
+ * @brief Returns a hex-encoded SHA-256 hash of the input string.
  */
-AESGCMResult aes256_gcm_encrypt(const std::vector<uint8_t>& key,
-                                const std::vector<uint8_t>& plaintext);
+std::string sha256_hex(const std::string& input);
 
 /**
- * @brief Decrypt using AES-256-GCM.
- *
- * @param key         32-byte AES key
- * @param ciphertext  encrypted bytes
- * @param nonce       12-byte GCM nonce
- * @param tag         authentication tag
- * @return AESGCMResult with plaintext in ciphertext field if ok=true
+ * @brief Computes HMAC-SHA256 of `message` under `key` and returns
+ *        the result as a lowercase hex string.
+ *        Used for signing/verifying SignedSharedClockState payloads
+ *        and NTP observation authentication.
  */
-AESGCMResult aes256_gcm_decrypt(const std::vector<uint8_t>& key,
-                                const std::vector<uint8_t>& ciphertext,
-                                const std::vector<uint8_t>& nonce,
-                                const std::vector<uint8_t>& tag);
+std::string hmac_sha256_hex(const std::string& key, const std::string& message);
 
 /**
- * @brief Register an HMAC authority and its key.
+ * @brief Generates `byte_count` cryptographically secure random bytes
+ *        and returns them as a lowercase hex string (length = 2 * byte_count).
+ *        Used for key generation in KeyRotationManager.
+ */
+std::string generate_random_bytes_hex(size_t byte_count);
+
+/**
+ * @brief Registers an HMAC key with the named authority (NTP server hostname).
+ *        Subsequent observations from that authority will be verified with
+ *        the given key_id / key_hex pair.
+ * @param authority_id  NTP server hostname, e.g. "time.cloudflare.com"
+ * @param key_id        Opaque version string, e.g. "v1"
+ * @param key_hex       Hex-encoded 32-byte key produced by generate_random_bytes_hex
  */
 void register_hmac_authority(const std::string& authority_id,
-                             const std::string& key_id,
-                             const std::string& hmac_key_hex);
+                              const std::string& key_id,
+                              const std::string& key_hex);
 
 /**
- * @brief Verify a signature using the appropriate crypto backend.
+ * @brief Verifies a signature using the registered key for the given authority.
  */
 bool crypto_verify(const std::string& payload,
                    const std::string& signature_hex,
@@ -67,15 +53,8 @@ bool crypto_verify(const std::string& payload,
                    const std::string& key_id);
 
 /**
- * @brief Generate random bytes and return them as hex.
+ * @brief Generates cryptographically secure random bytes (raw bytes variant).
  */
-std::string generate_random_bytes_hex(std::size_t n);
-
-/**
- * @brief Convenience helper: compute SHA-256 and return lowercase hex.
- *
- * Uses the global/default hash provider.
- */
-std::string sha256_hex(const std::string& input);
+std::vector<uint8_t> secure_random_bytes(size_t length);
 
 } // namespace uml001

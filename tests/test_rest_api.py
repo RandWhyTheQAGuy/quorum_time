@@ -1,5 +1,11 @@
-import pytest
+# tests/test_rest_api.py
+#
+# REST API tests for UML-001.
+# Assumes a running server at BASE_URL with matching API key config.
+
 import time
+import pytest
+
 from client.python.uml001_client import (
     Uml001Client,
     TimeObservation,
@@ -8,15 +14,6 @@ from client.python.uml001_client import (
     AuthError,
 )
 
-"""
-This pytest suite validates the REST interface of UML-001.
-
-SECURITY NOTES
---------------
-- Tests intentionally include both valid and invalid authentication cases.
-- Tests validate that the server logs failures (ColdVaultMock or real vault).
-- Tests validate that BFT sync and shared-state adoption behave deterministically.
-"""
 
 BASE_URL = "http://localhost:8080"
 
@@ -48,8 +45,8 @@ def test_sync_roundtrip():
 
     NOTE:
     - signature_hex is intentionally fake here because the server
-      is running with a DummyVault and crypto_verify is bypassed.
-    - In production tests, use real signatures.
+      is expected to run with a DummyVault or bypassed crypto_verify
+      in this test environment.
     """
     client = Uml001Client(BASE_URL, api_key="supersecret")
 

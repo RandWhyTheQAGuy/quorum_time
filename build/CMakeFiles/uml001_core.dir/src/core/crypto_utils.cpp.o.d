@@ -1,10 +1,14 @@
 CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Users/rspickler/Documents/GitHub/quorum_time/src/core/crypto_utils.cpp \
   /Users/rspickler/Documents/GitHub/quorum_time/include/uml001/crypto_utils.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pthread.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bit_reference \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bits \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__undef_macros \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__debug \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iosfwd \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__mbstate_t.h \
@@ -64,17 +68,28 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/runetype.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional_base \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/binary_function.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/invoke.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/weak_result_type.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__undef_macros \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstddef \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/version \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstring \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/string.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/strings.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/search.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/comp.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/iterator_traits.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/incrementable_traits.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/concepts \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/invoke.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/weak_result_type.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/binary_function.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/forward.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/move.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional_base \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/operations.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/reference_wrapper.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/addressof.h \
@@ -142,23 +157,7 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/to_underlying.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/compare \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/initializer_list \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/wrap_iter.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/iterator_traits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/incrementable_traits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/concepts \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/readable_traits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/pointer_traits.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/algorithm \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bits \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstring \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/string.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/strings.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/search.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/comp.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/binary_negate.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/bind_front.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/perfect_forward.h \
@@ -170,6 +169,7 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/function.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/allocator_traits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/construct_at.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/pointer_traits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/compressed_pair.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/shared_ptr.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/allocation_guard.h \
@@ -246,6 +246,7 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/reverse_access.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/reverse_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/size.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/wrap_iter.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/temporary_buffer.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/uninitialized_algorithms.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cassert \
@@ -350,6 +351,8 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/transform.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/unique_copy.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/unique.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdio \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string_view \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__ranges/enable_view.h \
@@ -360,18 +363,13 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/wctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/wctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_wctrans_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/vector \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bit_reference \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/optional \
-  /Users/rspickler/Documents/GitHub/quorum_time/include/uml001/hash_provider.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/evp.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/macros.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/opensslconf.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/configuration.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/opensslv.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/types.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/e_os2.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/evp.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/macros.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/opensslconf.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/configuration.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/opensslv.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/types.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/e_os2.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_char.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_short.h \
@@ -397,35 +395,33 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_copy.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsblkcnt_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsfilcnt_t.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/safestack.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/stack.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/core.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/core_dispatch.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/indicator.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/params.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/bn.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/crypto.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/cryptoerr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/symhacks.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/cryptoerr_legacy.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/bnerr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/bio.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/bioerr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/evperr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/objects.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/obj_mac.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/asn1.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/asn1err.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/objectserr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/rand.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/randerr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/sha.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/err.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/lhash.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/buffer.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/buffererr.h \
-  /opt/homebrew/Cellar/openssl@3/3.6.1/include/openssl/hmac.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
+  /opt/homebrew/opt/openssl@3/include/openssl/safestack.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/stack.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/core.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/core_dispatch.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/indicator.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/params.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/bn.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/crypto.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/cryptoerr.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/symhacks.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/cryptoerr_legacy.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/bnerr.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/bio.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/bioerr.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/evperr.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/objects.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/obj_mac.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/asn1.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/asn1err.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/objectserr.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/hmac.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/core_names.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/err.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/lhash.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/rand.h \
+  /opt/homebrew/opt/openssl@3/include/openssl/randerr.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iomanip \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/istream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/ostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/bitset \
@@ -454,7 +450,7 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/nl_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_nl_item.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bsd_locale_defaults.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iomanip \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/is_transparent.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__hash_table \
@@ -462,4 +458,4 @@ CMakeFiles/uml001_core.dir/src/core/crypto_utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/math.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__node_handle \
-  /Users/rspickler/Documents/GitHub/quorum_time/include/uml001/simple_hash_provider.h
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/optional
