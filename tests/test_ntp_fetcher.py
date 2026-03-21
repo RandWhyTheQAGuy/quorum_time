@@ -6,24 +6,25 @@
 
 import uml001
 
-
 def test_ntp_fetcher_hmac_setting():
-    # [FIX-NTPENTRY] NtpServerEntry has no positional constructor.
     entry = uml001.NtpServerEntry()
-    entry.hostname   = "time.google.com"
-    entry.max_rtt_ms = 1000
+    entry.hostname = "time.google.com"
     entry.timeout_ms = 2000
-
+    entry.max_delay_ms = 1000
+    
+    # Matching the C++ Constructor:
+    # (hmac_key, key_id, servers, quorum_size, timeout_ms, max_delay_ms)
     fetcher = uml001.NtpObservationFetcher(
-        "initial_key",
-        "v1",
-        [entry],
-        2,    # stratum_max
-        3,    # quorum_size
-        2     # outlier_threshold_s
+        "initial_key",      # hmac_key
+        "v1",               # key_id
+        [entry],            # servers
+        1,                  # quorum_size (changed from 3 to 1 since we only have 1 entry)
+        2000,               # timeout_ms
+        1000                # max_delay_ms
     )
-
-    fetcher.set_hmac_key("NEWKEY", "v2")
+    
+    # Matching C++: void set_hmac_key(const std::string& new_hmac_key);
+    fetcher.set_hmac_key("NEWKEY")
 
     # No crash = bindings are correct.
     assert True

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-clock-service
+  labels:
+    app: aegis-clock
+spec:
+  replicas: 3
+  # Strategy ensures the PVC is detached from old pods before attaching to new ones
+  strategy:
+    type: Recreate 
+  selector:
+    matchLabels:
+      app: aegis-clock
+  template:
+    metadata:
+      labels:
+        app: aegis-clock
+    spec:
+      securityContext:
+        # 1000 is a common non-root user; adjust based on your Dockerfile
+        fsGroup: 1000 
+      containers:
+        - name: aegis-server
+          image: yourorg/aegis-clock-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 50051
+              name: grpc-clock
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          env:
+            - name: UML001_HMAC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bft-clock-secrets
+                  key: hmac_key
+            # Useful for the server to know its identity in the quorum
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: vault-storage
+              mountPath: /var/lib/aegis/vault
+          livenessProbe:
+            grpc:
+              port: 50051
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            grpc:
+              port: 50051
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: vault-storage
+          persistentVolumeClaim:
+            # Ensure this PVC exists and supports ReadWriteOnce (RWO)
+            claimName: bft-clock-pvc

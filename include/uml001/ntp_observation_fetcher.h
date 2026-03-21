@@ -1,10 +1,5 @@
 #pragma once
 
-/**
- * @file ntp_observation_fetcher.h
- * @brief Byzantine-resilient NTP observation fetcher for the UML-001 trusted clock subsystem.
- */
-
 #include <cstdint>
 #include <mutex>
 #include <optional>
@@ -14,112 +9,79 @@
 
 namespace uml001 {
 
-// ============================================================
-// Configuration Structures
-// ============================================================
-
 struct NtpServerEntry {
-    std::string hostname;
-    uint64_t    max_rtt_ms;
-    uint32_t    timeout_ms;
+    std::string   hostname;
+    std::uint32_t timeout_ms;
+    std::uint32_t max_delay_ms; 
 };
 
-// ============================================================
-// Internal Observation Types
-// ============================================================
-
 struct NtpObservation {
-    std::string server_hostname;
-    uint64_t    unix_seconds;
-    uint64_t    rtt_ms;
-    uint8_t     stratum;
-    bool        is_outlier;
+    std::string   server_hostname;
+    std::uint64_t unix_seconds;
+    std::uint64_t rtt_ms;
+    std::uint8_t  stratum;
+    bool          is_outlier;
 };
 
 struct TimeObservation {
-    std::string server_hostname;
-    std::string key_id;
-    uint64_t    unix_seconds;
-    std::string signature_hex;
-    uint64_t    sequence;
+    std::string   server_hostname;
+    std::string   key_id;
+    std::uint64_t unix_seconds;
+    std::string   signature_hex;
+    std::uint64_t sequence;
 };
-
-// ============================================================
-// Quorum Attestation Token
-// ============================================================
 
 struct TimestampAttestationToken {
-    uint64_t                 unix_time;
-    uint64_t                 median_rtt;
-    uint64_t                 drift_ppm;
-    std::vector<std::string> quorum_servers;
-    std::string              quorum_hash;
-    std::string              signature;
+    std::uint64_t unix_time;
+    std::uint64_t median_rtt_ms;
+    std::uint64_t drift_ppm;
+    std::vector<std::string> servers;
+    std::string   quorum_hash_hex;
+    std::string   signature_hex;
 };
-
-// ============================================================
-// NtpObservationFetcher
-// ============================================================
 
 class NtpObservationFetcher {
 public:
-    NtpObservationFetcher(
-        std::string                 hmac_key,
-        std::string                 key_id,
-        std::vector<NtpServerEntry> servers,
-        uint8_t                     stratum_max,
-        size_t                      quorum_size,
-        uint64_t                    outlier_threshold_s = 2
-    );
+    NtpObservationFetcher(const std::string& hmac_key,
+                          const std::string& key_id,
+                          const std::vector<NtpServerEntry>& servers,
+                          std::size_t quorum_size,
+                          std::uint32_t timeout_ms,
+                          std::uint32_t max_delay_ms);
+    
+    virtual ~NtpObservationFetcher() = default;
 
-    ~NtpObservationFetcher();
-
-    // Query all configured NTP servers and return signed observations.
+    void set_hmac_key(const std::string& new_hmac_key); 
     std::vector<TimeObservation> fetch();
-
-    // Dynamic key rotation (zero downtime).
-    // new_hmac_key is raw 32-byte key material; new_key_id is the generation id ("v2", etc.).
-    void set_hmac_key(std::string new_hmac_key,
-                      std::string new_key_id);
-
-    // Persist per-server sequence counters for cross-restart anti-replay.
-    // Simple text format: "hostname=seq\n" per line.
+    std::size_t get_active_authority_count() const;
+    
+    // State management
     std::string save_sequence_state() const;
+    void load_sequence_state(const std::string& state_data); // Added for bindings
 
 private:
-    std::optional<NtpObservation>
-    query_server(const NtpServerEntry& server) const;
-
+    std::optional<NtpObservation> query_server(const NtpServerEntry& server) const;
     TimeObservation sign_observation(const NtpObservation& raw);
+    bool is_byzantine_outlier(std::uint64_t value, const std::vector<std::uint64_t>& values) const;
+    std::uint64_t median(std::vector<std::uint64_t> values) const;
+    std::uint64_t estimate_drift(std::uint64_t new_time);
+    std::optional<TimestampAttestationToken> build_quorum_token(const std::vector<NtpObservation>& obs);
 
-    bool is_byzantine_outlier(
-        uint64_t                     value,
-        const std::vector<uint64_t>& values
-    ) const;
-
-    uint64_t median(std::vector<uint64_t> values) const;
-
-    uint64_t estimate_drift(uint64_t new_time);
-
-    std::optional<TimestampAttestationToken>
-    build_quorum_token(const std::vector<NtpObservation>& obs);
-
-    // Immutable configuration
-    std::string                 hmac_key_;   // binary, 32 bytes
-    std::string                 key_id_;
+private:
+    std::string hmac_key_;
+    std::string key_id_;
     std::vector<NtpServerEntry> servers_;
-    uint8_t                     stratum_max_;
-    size_t                      quorum_size_;
-    uint64_t                    outlier_threshold_s_;
+    std::size_t   quorum_size_;
+    std::uint32_t timeout_ms_;
+    std::uint32_t max_delay_ms_;
+    std::uint64_t outlier_threshold_s_;
 
-    // Mutable state — protected by seq_mutex_
     mutable std::mutex seq_mutex_;
-    std::unordered_map<std::string, uint64_t> sequences_;
+    std::unordered_map<std::string, std::uint64_t> sequences_;
 
-    // Mutable state — protected by drift_mutex_
-    std::mutex drift_mutex_;
-    uint64_t   last_reference_time_{0};
-    uint64_t   last_local_time_{0};
+    mutable std::mutex drift_mutex_;
+    std::uint64_t last_reference_time_{0};
+    std::uint64_t last_local_time_{0};
 };
 
 } // namespace uml001

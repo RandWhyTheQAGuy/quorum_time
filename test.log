@@ -1,0 +1,99 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- /Users/rspickler/Documents/GitHub/quorum_time/build/.venv/bin/python3.14
+cachedir: .pytest_cache
+rootdir: /Users/rspickler/Documents/GitHub/quorum_time/tests
+configfile: pytest.ini
+collecting ... collected 0 items / 8 errors
+
+==================================== ERRORS ====================================
+______________________ ERROR collecting test_bft_clock.py ______________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_bft_clock.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_bft_clock.py:14: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+__________________ ERROR collecting test_bft_clock_fixture.py __________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_bft_clock_fixture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_bft_clock_fixture.py:33: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+__________________ ERROR collecting test_bft_quorum_clock.py ___________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_bft_quorum_clock.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_bft_quorum_clock.py:22: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+_____________________ ERROR collecting test_integration.py _____________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_integration.py:10: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+____________________ ERROR collecting test_key_rotation.py _____________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_key_rotation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_key_rotation.py:10: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+_____________________ ERROR collecting test_ntp_fetcher.py _____________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_ntp_fetcher.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_ntp_fetcher.py:7: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+______________________ ERROR collecting test_rest_api.py _______________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_rest_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_rest_api.py:9: in <module>
+    from client.python.uml001_client import (
+E   ModuleNotFoundError: No module named 'client'
+________________________ ERROR collecting test_vault.py ________________________
+ImportError while importing test module '/Users/rspickler/Documents/GitHub/quorum_time/tests/test_vault.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_vault.py:12: in <module>
+    import uml001
+E   ModuleNotFoundError: No module named 'uml001'
+=========================== short test summary info ============================
+ERROR tests/test_bft_clock.py
+ERROR tests/test_bft_clock_fixture.py
+ERROR tests/test_bft_quorum_clock.py
+ERROR tests/test_integration.py
+ERROR tests/test_key_rotation.py
+ERROR tests/test_ntp_fetcher.py
+ERROR tests/test_rest_api.py
+ERROR tests/test_vault.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 8 errors during collection !!!!!!!!!!!!!!!!!!!!
+============================== 8 errors in 0.36s ===============================

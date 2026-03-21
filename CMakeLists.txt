@@ -1,113 +1,105 @@
 cmake_minimum_required(VERSION 3.16)
 project(uml001 LANGUAGES CXX)
 
-# ------------------------------------------------------------
-# Global settings
-# ------------------------------------------------------------
+# Silence pybind11 warnings
+if(POLICY CMP0148)
+  cmake_policy(SET CMP0148 NEW)
+endif()
+
+# Homebrew discovery (Apple Silicon)
+if(APPLE)
+    set(HOMEBREW_PREFIX "/opt/homebrew")
+    list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_PREFIX}")
+    set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${HOMEBREW_PREFIX}/lib/pkgconfig")
+    set(OPENSSL_ROOT_DIR "${HOMEBREW_PREFIX}/opt/openssl@3")
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Release)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Release)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Release)
-
-# ------------------------------------------------------------
-# Dependencies: pybind11, OpenSSL
-# ------------------------------------------------------------
+# Dependencies
 find_package(pybind11 REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
+find_package(protobuf CONFIG REQUIRED)
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Module Development.Embed)
+pkg_check_modules(sodium REQUIRED IMPORTED_TARGET libsodium)
 
-# ------------------------------------------------------------
-# libsodium discovery (robust cross‑platform)
-# ------------------------------------------------------------
+# --- Protobuf/gRPC Generation ---
+set(PROTO_SRC_DIR "${PROJECT_SOURCE_DIR}/proto")
+set(PROTO_OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+file(MAKE_DIRECTORY ${PROTO_OUT_DIR})
 
-pkg_check_modules(SODIUM_PKG QUIET libsodium)
+set(PROTO_FILE    "${PROTO_SRC_DIR}/clock_service.proto")
+set(PROTO_PB_CPP  "${PROTO_OUT_DIR}/clock_service.pb.cc")
+set(PROTO_PB_H    "${PROTO_OUT_DIR}/clock_service.pb.h")
+set(GRPC_PB_CPP   "${PROTO_OUT_DIR}/clock_service.grpc.pb.cc")
+set(GRPC_PB_H     "${PROTO_OUT_DIR}/clock_service.grpc.pb.h")
 
-if (SODIUM_PKG_FOUND)
-    message(STATUS "Found libsodium via pkg-config")
-    set(SODIUM_INCLUDE_DIR ${SODIUM_PKG_INCLUDE_DIRS})
-    set(SODIUM_LIBRARY ${SODIUM_PKG_LIBRARIES})
-
-    # 🔑 This is the missing piece: tell the linker where -lsodium lives
-    link_directories(${SODIUM_PKG_LIBRARY_DIRS})
+if(TARGET protobuf::protoc)
+    set(PROTOC_EXECUTABLE $<TARGET_FILE:protobuf::protoc>)
 else()
-    message(WARNING "pkg-config could not find libsodium; falling back to manual search")
-
-    find_library(SODIUM_LIBRARY sodium
-        PATHS /opt/homebrew/lib /usr/local/lib
-    )
-
-    find_path(SODIUM_INCLUDE_DIR sodium.h
-        PATHS /opt/homebrew/include /usr/local/include
-    )
-
-    if (NOT SODIUM_LIBRARY)
-        message(FATAL_ERROR "libsodium not found. Install with: brew install libsodium")
-    endif()
+    set(PROTOC_EXECUTABLE ${Protobuf_PROTOC_EXECUTABLE})
 endif()
 
-message(STATUS "libsodium include dir: ${SODIUM_INCLUDE_DIR}")
-message(STATUS "libsodium library: ${SODIUM_LIBRARY}")
+add_custom_command(
+    OUTPUT "${PROTO_PB_CPP}" "${PROTO_PB_H}" "${GRPC_PB_CPP}" "${GRPC_PB_H}"
+    COMMAND ${PROTOC_EXECUTABLE}
+    ARGS --cpp_out=${PROTO_OUT_DIR}
+         --grpc_out=${PROTO_OUT_DIR}
+         --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
+         -I ${PROTO_SRC_DIR}
+         ${PROTO_FILE}
+    DEPENDS ${PROTO_FILE}
+    COMMENT "Generating gRPC and Protobuf source files"
+    VERBATIM
+)
 
-include_directories(${SODIUM_INCLUDE_DIR})
-
-# ------------------------------------------------------------
-# Include directories
-# ------------------------------------------------------------
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
-# ------------------------------------------------------------
-# Core C++ static library (uml001_core)
-# ------------------------------------------------------------
+# --- Core Library ---
 add_library(uml001_core STATIC
     src/core/bft_quorum_clock.cpp
     src/core/crypto_utils.cpp
-    src/core/file_vault_backend.cpp
-    src/core/cold_vault.cpp
-    src/core/main_ntp.cpp
-    src/core/ntp_observation_fetcher.cpp
-    src/core/vault_logger.cpp
     src/core/os_strong_clock.cpp
-    src/core/simple_hash_provider.cpp
     src/core/simple_file_vault_backend.cpp
+    src/core/cold_vault.cpp
+    src/core/vault_logger.cpp
+    src/core/key_rotation_manager.cpp
+    src/core/ntp_observation_fetcher.cpp
     src/core/simple_hash_provider.cpp
+    ${PROTO_PB_CPP}
+    ${GRPC_PB_CPP}
 )
 
-target_link_libraries(uml001_core
-    PUBLIC
-        OpenSSL::SSL
-        OpenSSL::Crypto
-        ${SODIUM_LIBRARY}
+target_include_directories(uml001_core PUBLIC
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROTO_OUT_DIR}
 )
 
-# ------------------------------------------------------------
-# Python extension module (pybind11)
-# ------------------------------------------------------------
-add_library(uml001 MODULE
-    src/python/uml001_bindings.cpp
+target_link_libraries(uml001_core PUBLIC
+    OpenSSL::SSL
+    OpenSSL::Crypto
+    PkgConfig::sodium
+    gRPC::grpc++
+    protobuf::libprotobuf
+    Python::Python
 )
 
-target_link_libraries(uml001
-    PRIVATE
-        pybind11::module
-        uml001_core
-        ${SODIUM_LIBRARY}
-)
-
-set_target_properties(uml001 PROPERTIES PREFIX "")
-
-if (WIN32)
-    set_target_properties(uml001 PROPERTIES SUFFIX ".pyd")
+# --- Python Module ---
+if(COMMAND pybind11_add_module)
+    pybind11_add_module(_uml001 src/python/uml001_bindings.cpp)
+else()
+    add_library(_uml001 MODULE src/python/uml001_bindings.cpp)
+    set_target_properties(_uml001 PROPERTIES PREFIX "")
+    target_link_libraries(_uml001 PRIVATE pybind11::module)
 endif()
 
-# ------------------------------------------------------------
-# Installation
-# ------------------------------------------------------------
-install(TARGETS uml001_core uml001
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
+target_include_directories(_uml001 PUBLIC
+    ${PROJECT_SOURCE_DIR}/include
 )
 
-install(DIRECTORY include/ DESTINATION include)
+target_link_libraries(_uml001 PRIVATE uml001_core)
+
+# --- gRPC Aegis Server ---
+add_executable(aegis_clock_server main_ntp.cpp)
+target_link_libraries(aegis_clock_server PRIVATE uml001_core)

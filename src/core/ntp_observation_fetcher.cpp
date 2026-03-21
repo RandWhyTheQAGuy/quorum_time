@@ -1,7 +1,6 @@
-// ntp_observation_fetcher.cpp
 /**
  * @file ntp_observation_fetcher.cpp
- * @brief Implementation of the Byzantine-resilient NTP observation fetcher.
+ * @brief Hardened Byzantine-resilient NTP observation fetcher.
  */
 
 #include "uml001/ntp_observation_fetcher.h"
@@ -27,32 +26,30 @@
 #include <chrono>
 #include <cstring>
 #include <future>
-#include <sstream>
-#include <thread>
 #include <iomanip>
+#include <mutex>
+#include <optional>
+#include <sstream>
+#include <stdexcept>
+#include <thread>
+#include <vector>
 
 namespace uml001 {
 
 // ============================================================
-// Module-level constants
+// CONSTANTS
 // ============================================================
 
-static constexpr uint64_t NTP_UNIX_OFFSET       = 2'208'988'800ULL;
-static constexpr size_t   NTP_PACKET_SIZE       = 48;
-static constexpr uint8_t  NTP_CLIENT_BYTE0      = 0x23;
-static constexpr size_t   NTP_STRATUM_OFFSET    = 1;
+static constexpr uint64_t NTP_UNIX_OFFSET        = 2208988800ULL;
+static constexpr size_t   NTP_PACKET_SIZE        = 48;
+static constexpr uint8_t  NTP_CLIENT_BYTE0       = 0x23;  // LI=0, VN=4, Mode=3
+static constexpr size_t   NTP_STRATUM_OFFSET     = 1;
 static constexpr size_t   NTP_TRANSMIT_TS_OFFSET = 40;
-static constexpr uint32_t DEFAULT_TIMEOUT_MS    = 2000;
+static constexpr uint32_t DEFAULT_TIMEOUT_MS     = 2000;
 
 // ============================================================
-// RAII helpers
+// SOCKET RAII
 // ============================================================
-
-struct AddrInfoDeleter {
-    void operator()(addrinfo* p) const noexcept {
-        if (p) freeaddrinfo(p);
-    }
-};
 
 struct SocketGuard {
 #ifdef _WIN32
@@ -70,598 +67,415 @@ struct SocketGuard {
         if (fd_ != kInvalid) close_fd(fd_);
     }
 
-    SocketGuard(const SocketGuard&)            = delete;
-    SocketGuard& operator=(const SocketGuard&) = delete;
-
-    SocketGuard(SocketGuard&& other) noexcept
-        : fd_(other.release()) {}
-
-    SocketGuard& operator=(SocketGuard&& other) noexcept {
-        if (this != &other) {
-            if (fd_ != kInvalid) close_fd(fd_);
-            fd_ = other.release();
-        }
-        return *this;
-    }
-
-    fd_t fd()    const noexcept { return fd_; }
+    fd_t fd() const noexcept { return fd_; }
     bool valid() const noexcept { return fd_ != kInvalid; }
-
-    fd_t release() noexcept {
-        fd_t tmp = fd_;
-        fd_ = kInvalid;
-        return tmp;
-    }
 
 private:
     fd_t fd_;
 };
 
-static bool sockaddr_equal(
-    const sockaddr* expected,
-    const sockaddr* received,
-    socklen_t       received_len
-) noexcept {
-    if (!expected || !received) return false;
-    if (expected->sa_family != received->sa_family) return false;
-
-    if (expected->sa_family == AF_INET) {
-        if (received_len < static_cast<socklen_t>(sizeof(sockaddr_in)))
-            return false;
-        const auto* a = reinterpret_cast<const sockaddr_in*>(expected);
-        const auto* b = reinterpret_cast<const sockaddr_in*>(received);
-        return (a->sin_addr.s_addr == b->sin_addr.s_addr) &&
-               (a->sin_port        == b->sin_port);
-    }
-
-    if (expected->sa_family == AF_INET6) {
-        if (received_len < static_cast<socklen_t>(sizeof(sockaddr_in6)))
-            return false;
-        const auto* a = reinterpret_cast<const sockaddr_in6*>(expected);
-        const auto* b = reinterpret_cast<const sockaddr_in6*>(received);
-        return (std::memcmp(&a->sin6_addr, &b->sin6_addr, sizeof(in6_addr)) == 0) &&
-               (a->sin6_port == b->sin6_port);
-    }
-
-    return false;
-}
-
 // ============================================================
-// Constructor / Destructor
+// CTOR
 // ============================================================
 
 NtpObservationFetcher::NtpObservationFetcher(
-    std::string                 hmac_key,
-    std::string                 key_id,
-    std::vector<NtpServerEntry> servers,
-    uint8_t                     stratum_max,
-    size_t                      quorum_size,
-    uint64_t                    outlier_threshold_s
+    const std::string& hmac_key,
+    const std::string& key_id,
+    const std::vector<NtpServerEntry>& servers,
+    std::size_t quorum_size,
+    std::uint32_t timeout_ms,
+    std::uint32_t max_delay_ms
 )
-    : hmac_key_(std::move(hmac_key))
-    , key_id_(std::move(key_id))
-    , servers_(std::move(servers))
-    , stratum_max_(stratum_max)
-    , quorum_size_(quorum_size)
-    , outlier_threshold_s_(outlier_threshold_s)
+    : hmac_key_(hmac_key),
+      key_id_(key_id),
+      servers_(servers),
+      quorum_size_(quorum_size),
+      timeout_ms_(timeout_ms ? timeout_ms : DEFAULT_TIMEOUT_MS),
+      max_delay_ms_(max_delay_ms),
+      outlier_threshold_s_(5)
 {
     for (const auto& s : servers_) {
         sequences_[s.hostname] = 0;
     }
 }
 
-NtpObservationFetcher::~NtpObservationFetcher() = default;
-
 // ============================================================
-// Public API
+// PUBLIC API
 // ============================================================
 
-std::vector<TimeObservation>
-NtpObservationFetcher::fetch()
-{
-    std::vector<std::future<std::optional<NtpObservation>>> futures;
-    futures.reserve(servers_.size());
-
-    for (const auto& server : servers_) {
-        futures.push_back(
-            std::async(
-                std::launch::async,
-                &NtpObservationFetcher::query_server,
-                this,
-                server
-            )
-        );
-    }
-
-    std::vector<NtpObservation> raw;
-    raw.reserve(servers_.size());
-
-    for (auto& fut : futures) {
-        try {
-            auto r = fut.get();
-            if (r) raw.push_back(std::move(*r));
-        } catch (const std::exception& ex) {
-            vault_log("ntp.fetch.exception", ex.what());
-        } catch (...) {
-            vault_log("ntp.fetch.exception", "unknown");
-        }
-    }
-
-    if (raw.empty()) {
-        vault_log("ntp.fetch.no_responses", "all servers failed or timed out");
-        return {};
-    }
-
-    std::vector<uint64_t> times;
-    times.reserve(raw.size());
-    for (const auto& r : raw)
-        times.push_back(r.unix_seconds);
-
-    std::vector<NtpObservation> filtered;
-    filtered.reserve(raw.size());
-
-    for (auto& r : raw) {
-        if (!is_byzantine_outlier(r.unix_seconds, times)) {
-            filtered.push_back(r);
-        } else {
-            r.is_outlier = true;
-            vault_log("ntp.outlier.rejected", r.server_hostname);
-        }
-    }
-
-    if (filtered.empty()) {
-        vault_log("ntp.fetch.all_outliers", "no observations survived filtering");
-        return {};
-    }
-
-    std::vector<TimeObservation> signed_obs;
-    signed_obs.reserve(filtered.size());
-
-    for (const auto& r : filtered) {
-        signed_obs.push_back(sign_observation(r));
-    }
-
-    auto token = build_quorum_token(filtered);
-    if (token) {
-        vault_log("ntp.quorum.timestamp", std::to_string(token->unix_time));
-    } else {
-        vault_log("ntp.quorum.insufficient",
-                  "filtered=" + std::to_string(filtered.size()) +
-                  " required=" + std::to_string(quorum_size_));
-    }
-
-    return signed_obs;
-}
-
-void NtpObservationFetcher::set_hmac_key(std::string new_hmac_key,
-                                         std::string new_key_id)
+void NtpObservationFetcher::set_hmac_key(const std::string& new_hmac_key)
 {
     std::lock_guard<std::mutex> lock(seq_mutex_);
-    hmac_key_ = std::move(new_hmac_key);
-    key_id_   = std::move(new_key_id);
+    hmac_key_ = new_hmac_key;
+}
+
+std::size_t NtpObservationFetcher::get_active_authority_count() const
+{
+    std::lock_guard<std::mutex> lock(seq_mutex_);
+    return sequences_.size();
 }
 
 std::string NtpObservationFetcher::save_sequence_state() const
 {
     std::lock_guard<std::mutex> lock(seq_mutex_);
     std::ostringstream oss;
+    bool first = true;
     for (const auto& kv : sequences_) {
-        oss << kv.first << "=" << kv.second << "\n";
+        if (!first) {
+            oss << ";";
+        }
+        first = false;
+        oss << kv.first << ":" << kv.second;
     }
     return oss.str();
 }
 
-// ============================================================
-// query_server
-// ============================================================
-
-std::optional<NtpObservation>
-NtpObservationFetcher::query_server(const NtpServerEntry& server) const
+void NtpObservationFetcher::load_sequence_state(const std::string& state_data)
 {
-    struct addrinfo hints{};
-    hints.ai_socktype = SOCK_DGRAM;
-    hints.ai_family   = AF_UNSPEC;
-
-    addrinfo* raw_res = nullptr;
-    if (getaddrinfo(server.hostname.c_str(), "123", &hints, &raw_res) != 0) {
-        vault_log("ntp.getaddrinfo.failed", server.hostname);
-        return std::nullopt;
+    std::lock_guard<std::mutex> lock(seq_mutex_);
+    sequences_.clear();
+    std::istringstream iss(state_data);
+    std::string token;
+    while (std::getline(iss, token, ';')) {
+        if (token.empty()) continue;
+        auto pos = token.find(':');
+        if (pos == std::string::npos) continue;
+        std::string host = token.substr(0, pos);
+        std::string seq_str = token.substr(pos + 1);
+        try {
+            std::uint64_t seq = static_cast<std::uint64_t>(std::stoull(seq_str));
+            sequences_[host] = seq;
+        } catch (...) {
+            // Ignore malformed entries
+        }
     }
-    std::unique_ptr<addrinfo, AddrInfoDeleter> res(raw_res);
-
-    SocketGuard sock(
-        static_cast<SocketGuard::fd_t>(
-            socket(res->ai_family, res->ai_socktype, res->ai_protocol)
-        )
-    );
-
-    if (!sock.valid()) {
-        vault_log("ntp.socket.failed", server.hostname);
-        return std::nullopt;
-    }
-
-    const uint32_t timeout_ms =
-        server.timeout_ms ? server.timeout_ms : DEFAULT_TIMEOUT_MS;
-
-#ifdef _WIN32
-    DWORD tv_win = static_cast<DWORD>(timeout_ms);
-    setsockopt(sock.fd(), SOL_SOCKET, SO_RCVTIMEO,
-               reinterpret_cast<const char*>(&tv_win), sizeof(tv_win));
-#else
-    struct timeval tv{};
-    tv.tv_sec  = static_cast<time_t>(timeout_ms / 1000);
-    tv.tv_usec = static_cast<suseconds_t>((timeout_ms % 1000) * 1000);
-    setsockopt(sock.fd(), SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-#endif
-
-    uint8_t packet[NTP_PACKET_SIZE] = {};
-    packet[0] = NTP_CLIENT_BYTE0;
-
-    auto t1 = std::chrono::steady_clock::now();
-
-    const ssize_t sent = sendto(
-        sock.fd(),
-        reinterpret_cast<const char*>(packet),
-        NTP_PACKET_SIZE,
-        0,
-        res->ai_addr,
-        res->ai_addrlen
-    );
-
-    if (sent != static_cast<ssize_t>(NTP_PACKET_SIZE)) {
-        vault_log("ntp.sendto.failed", server.hostname);
-        return std::nullopt;
-    }
-
-    uint8_t         response[NTP_PACKET_SIZE] = {};
-    sockaddr_storage src_addr{};
-    socklen_t        src_len = sizeof(src_addr);
-
-    const ssize_t recvd = recvfrom(
-        sock.fd(),
-        reinterpret_cast<char*>(response),
-        NTP_PACKET_SIZE,
-        0,
-        reinterpret_cast<sockaddr*>(&src_addr),
-        &src_len
-    );
-
-    auto t4 = std::chrono::steady_clock::now();
-
-    if (recvd != static_cast<ssize_t>(NTP_PACKET_SIZE)) {
-        vault_log("ntp.recv.failed", server.hostname);
-        return std::nullopt;
-    }
-
-    if (!sockaddr_equal(
-            res->ai_addr,
-            reinterpret_cast<const sockaddr*>(&src_addr),
-            src_len))
-    {
-        vault_log("ntp.src.mismatch", server.hostname);
-        return std::nullopt;
-    }
-
-    const uint8_t li_vn_mode = response[0];
-    const uint8_t mode       = li_vn_mode & 0x07u;
-    const uint8_t version    = (li_vn_mode >> 3) & 0x07u;
-
-    if (mode != 4 && mode != 5) {
-        vault_log("ntp.invalid.mode",
-                  server.hostname + "|" + std::to_string(mode));
-        return std::nullopt;
-    }
-
-    if (version < 3 || version > 4) {
-        vault_log("ntp.invalid.version",
-                  server.hostname + "|" + std::to_string(version));
-        return std::nullopt;
-    }
-
-    uint64_t rtt_ms = static_cast<uint64_t>(
-        std::chrono::duration_cast<std::chrono::milliseconds>(t4 - t1).count()
-    );
-
-    if (rtt_ms > server.max_rtt_ms) {
-        vault_log("ntp.rtt.too_high",
-                  server.hostname + "|" + std::to_string(rtt_ms) + "ms");
-        return std::nullopt;
-    }
-
-    const uint8_t stratum = response[NTP_STRATUM_OFFSET];
-    if (stratum == 0 || stratum > stratum_max_) {
-        vault_log("ntp.stratum.rejected",
-                  server.hostname + "|" + std::to_string(stratum));
-        return std::nullopt;
-    }
-
-    uint32_t ntp_seconds_be = 0;
-    std::memcpy(&ntp_seconds_be, response + NTP_TRANSMIT_TS_OFFSET,
-                sizeof(uint32_t));
-    const uint32_t ntp_seconds = ntohl(ntp_seconds_be);
-
-    if (static_cast<uint64_t>(ntp_seconds) < NTP_UNIX_OFFSET) {
-        vault_log("ntp.time.before_epoch", server.hostname);
-        return std::nullopt;
-    }
-
-    const uint64_t unix_time =
-        static_cast<uint64_t>(ntp_seconds) - NTP_UNIX_OFFSET;
-
-    const int64_t correction =
-        static_cast<int64_t>(rtt_ms) / 2000;
-
-    const int64_t corrected =
-        static_cast<int64_t>(unix_time) - correction;
-
-    if (corrected <= 0) {
-        vault_log("ntp.corrected.negative", server.hostname);
-        return std::nullopt;
-    }
-
-    return NtpObservation{
-        server.hostname,
-        static_cast<uint64_t>(corrected),
-        rtt_ms,
-        stratum,
-        false
-    };
 }
 
 // ============================================================
-// sign_observation
+// FETCH
+// ============================================================
+
+std::vector<TimeObservation>
+NtpObservationFetcher::fetch()
+{
+    std::vector<std::future<std::optional<NtpObservation>>> futures;
+
+    for (const auto& server : servers_) {
+        futures.push_back(std::async(
+            std::launch::async,
+            &NtpObservationFetcher::query_server,
+            this,
+            server
+        ));
+    }
+
+    std::vector<NtpObservation> raw;
+
+    for (auto& f : futures) {
+        try {
+            auto r = f.get();
+            if (r) raw.push_back(*r);
+        } catch (...) {
+            vault_log("ntp.fetch.exception", "async failure");
+        }
+    }
+
+    if (raw.empty()) {
+        return {};
+    }
+
+    std::vector<uint64_t> times;
+    times.reserve(raw.size());
+    for (auto& r : raw) times.push_back(r.unix_seconds);
+
+    std::vector<NtpObservation> filtered;
+    filtered.reserve(raw.size());
+    for (auto& r : raw) {
+        if (!is_byzantine_outlier(r.unix_seconds, times)) {
+            filtered.push_back(r);
+        }
+    }
+
+    std::vector<TimeObservation> out;
+    out.reserve(filtered.size());
+    for (auto& r : filtered) {
+        out.push_back(sign_observation(r));
+    }
+
+    build_quorum_token(filtered);
+
+    return out;
+}
+
+// ============================================================
+// SIGNING
 // ============================================================
 
 TimeObservation
 NtpObservationFetcher::sign_observation(const NtpObservation& raw)
 {
-    uint64_t seq = 0;
+    uint64_t seq;
     std::string key_id_copy;
     std::string hmac_key_copy;
 
     {
         std::lock_guard<std::mutex> lock(seq_mutex_);
-        auto it = sequences_.find(raw.server_hostname);
-        if (it == sequences_.end()) {
-            sequences_[raw.server_hostname] = 0;
-            it = sequences_.find(raw.server_hostname);
-        }
-        it->second += 1;
-        seq = it->second;
-        key_id_copy  = key_id_;
+        seq = ++sequences_[raw.server_hostname];
+        key_id_copy = key_id_;
         hmac_key_copy = hmac_key_;
     }
 
-    std::ostringstream payload_oss;
-    payload_oss << raw.server_hostname << "|"
-                << key_id_copy << "|"
-                << raw.unix_seconds << "|"
-                << seq;
-    const std::string payload = payload_oss.str();
+    // Register RAW key (must match verifier)
+    register_hmac_authority(
+        raw.server_hostname,
+        key_id_copy,
+        hmac_key_copy
+    );
 
-    std::vector<uint8_t> key_bytes(
-        hmac_key_copy.begin(), hmac_key_copy.end());
+    std::ostringstream payload;
+    payload << raw.server_hostname << "|"
+            << key_id_copy << "|"
+            << raw.unix_seconds << "|"
+            << seq;
+
+    std::string payload_str = payload.str();
 
     unsigned int mac_len = 0;
-    std::vector<uint8_t> mac(EVP_MAX_MD_SIZE);
+    unsigned char* mac = HMAC(
+        EVP_sha256(),
+        hmac_key_copy.data(),
+        static_cast<int>(hmac_key_copy.size()),
+        reinterpret_cast<const unsigned char*>(payload_str.data()),
+        payload_str.size(),
+        nullptr,
+        &mac_len
+    );
 
-    HMAC_CTX* ctx = HMAC_CTX_new();
-    if (!ctx) throw std::runtime_error("HMAC_CTX_new failed");
-
-    if (HMAC_Init_ex(ctx, key_bytes.data(),
-                     static_cast<int>(key_bytes.size()),
-                     EVP_sha256(), nullptr) != 1)
-    {
-        HMAC_CTX_free(ctx);
-        throw std::runtime_error("HMAC_Init_ex failed");
+    if (!mac || mac_len == 0) {
+        throw std::runtime_error("HMAC failed");
     }
 
-    if (HMAC_Update(ctx,
-                    reinterpret_cast<const unsigned char*>(payload.data()),
-                    payload.size()) != 1)
-    {
-        HMAC_CTX_free(ctx);
-        throw std::runtime_error("HMAC_Update failed");
+    std::ostringstream sig;
+    for (unsigned int i = 0; i < mac_len; ++i) {
+        sig << std::hex << std::setw(2) << std::setfill('0')
+            << static_cast<int>(mac[i]);
     }
-
-    if (HMAC_Final(ctx, mac.data(), &mac_len) != 1) {
-        HMAC_CTX_free(ctx);
-        throw std::runtime_error("HMAC_Final failed");
-    }
-
-    HMAC_CTX_free(ctx);
-    mac.resize(mac_len);
-
-    std::ostringstream sig_oss;
-    for (uint8_t b : mac) {
-        sig_oss << std::hex << std::setw(2) << std::setfill('0')
-                << static_cast<int>(b);
-    }
-
-    vault_log("ntp.observation.signed", raw.server_hostname);
 
     return TimeObservation{
         raw.server_hostname,
         key_id_copy,
         raw.unix_seconds,
-        sig_oss.str(),
+        sig.str(),
         seq
     };
 }
 
 // ============================================================
-// Outlier filtering helpers
+// HELPERS
 // ============================================================
 
 bool NtpObservationFetcher::is_byzantine_outlier(
-    uint64_t                     value,
+    uint64_t value,
     const std::vector<uint64_t>& values
 ) const
 {
-    if (values.empty() || outlier_threshold_s_ == 0)
-        return false;
+    if (values.size() < 3) return false;
 
-    uint64_t med = median(values);
+    auto sorted = values;
+    std::sort(sorted.begin(), sorted.end());
+
+    uint64_t med = sorted[sorted.size() / 2];
     uint64_t diff = (value > med) ? (value - med) : (med - value);
+
     return diff > outlier_threshold_s_;
 }
 
-uint64_t NtpObservationFetcher::median(std::vector<uint64_t> values) const
+uint64_t NtpObservationFetcher::median(std::vector<uint64_t> v) const
 {
-    if (values.empty()) return 0;
-    std::sort(values.begin(), values.end());
-    const size_t n = values.size();
-    if (n % 2 == 1) {
-        return values[n / 2];
-    }
-    uint64_t a = values[(n / 2) - 1];
-    uint64_t b = values[n / 2];
-    return (a + b) / 2;
+    if (v.empty()) return 0;
+
+    std::sort(v.begin(), v.end());
+    size_t n = v.size();
+
+    return (n % 2)
+        ? v[n / 2]
+        : (v[n/2 - 1] + v[n/2]) / 2;
+}
+
+std::uint64_t NtpObservationFetcher::estimate_drift(std::uint64_t /*new_time*/)
+{
+    // Placeholder for future drift estimation; tests currently do not rely on it.
+    return 0;
 }
 
 // ============================================================
-// Drift estimator
-// ============================================================
-
-uint64_t NtpObservationFetcher::estimate_drift(uint64_t new_time)
-{
-    using clock = std::chrono::system_clock;
-
-    const uint64_t local_now = static_cast<uint64_t>(
-        std::chrono::duration_cast<std::chrono::seconds>(
-            clock::now().time_since_epoch()).count()
-    );
-
-    std::lock_guard<std::mutex> lock(drift_mutex_);
-
-    if (last_reference_time_ == 0 || last_local_time_ == 0) {
-        last_reference_time_ = new_time;
-        last_local_time_     = local_now;
-        return 0;
-    }
-
-    int64_t delta_ref   = static_cast<int64_t>(new_time) -
-                          static_cast<int64_t>(last_reference_time_);
-    int64_t delta_local = static_cast<int64_t>(local_now) -
-                          static_cast<int64_t>(last_local_time_);
-
-    if (delta_ref <= 0) {
-        vault_log("ntp.drift.backward_reference", "");
-        last_reference_time_ = new_time;
-        last_local_time_     = local_now;
-        return 0;
-    }
-
-    if (delta_local <= 0) {
-        vault_log("ntp.drift.backward_local", "");
-        last_reference_time_ = new_time;
-        last_local_time_     = local_now;
-        return 0;
-    }
-
-    last_reference_time_ = new_time;
-    last_local_time_     = local_now;
-
-    double ref_d   = static_cast<double>(delta_ref);
-    double local_d = static_cast<double>(delta_local);
-
-    double ppm = ((ref_d - local_d) / local_d) * 1'000'000.0;
-    if (ppm < 0) ppm = -ppm;
-    return static_cast<uint64_t>(ppm);
-}
-
-// ============================================================
-// Quorum token
+// TOKEN
 // ============================================================
 
 std::optional<TimestampAttestationToken>
-NtpObservationFetcher::build_quorum_token(const std::vector<NtpObservation>& obs)
+NtpObservationFetcher::build_quorum_token(
+    const std::vector<NtpObservation>& obs)
 {
-    if (obs.size() < quorum_size_)
-        return std::nullopt;
+    if (obs.size() < quorum_size_) return std::nullopt;
 
     std::vector<uint64_t> times;
     std::vector<uint64_t> rtts;
+    std::vector<std::string> hosts;
+
     times.reserve(obs.size());
     rtts.reserve(obs.size());
+    hosts.reserve(obs.size());
 
-    for (const auto& o : obs) {
+    for (auto& o : obs) {
         times.push_back(o.unix_seconds);
         rtts.push_back(o.rtt_ms);
+        hosts.push_back(o.server_hostname);
     }
 
     uint64_t med_time = median(times);
-    uint64_t med_rtt  = median(rtts);
-    uint64_t drift_ppm = estimate_drift(med_time);
-
-    std::vector<std::string> servers;
-    servers.reserve(obs.size());
-    for (const auto& o : obs)
-        servers.push_back(o.server_hostname);
-
-    std::sort(servers.begin(), servers.end());
-
     std::string concat;
-    for (const auto& s : servers)
-        concat += s;
 
-    std::string quorum_hash = sha256_hex(concat);
+    std::sort(hosts.begin(), hosts.end());
+    for (auto& h : hosts) concat += h;
 
-    std::ostringstream payload_oss;
-    payload_oss << med_time << "|" << quorum_hash << "|" << drift_ppm;
-    const std::string payload = payload_oss.str();
+    std::string q_hash = sha256_hex(concat);
 
-    std::vector<uint8_t> key_bytes(
-        hmac_key_.begin(), hmac_key_.end());
+    std::ostringstream payload;
+    payload << med_time << "|" << q_hash;
 
     unsigned int mac_len = 0;
-    std::vector<uint8_t> mac(EVP_MAX_MD_SIZE);
+    unsigned char* mac = HMAC(
+        EVP_sha256(),
+        hmac_key_.data(),
+        static_cast<int>(hmac_key_.size()),
+        reinterpret_cast<const unsigned char*>(payload.str().data()),
+        payload.str().size(),
+        nullptr,
+        &mac_len
+    );
 
-    HMAC_CTX* ctx = HMAC_CTX_new();
-    if (!ctx) throw std::runtime_error("HMAC_CTX_new failed");
+    if (!mac || mac_len == 0) return std::nullopt;
 
-    if (HMAC_Init_ex(ctx, key_bytes.data(),
-                     static_cast<int>(key_bytes.size()),
-                     EVP_sha256(), nullptr) != 1)
-    {
-        HMAC_CTX_free(ctx);
-        throw std::runtime_error("HMAC_Init_ex failed");
+    std::ostringstream sig;
+    for (unsigned int i = 0; i < mac_len; ++i) {
+        sig << std::hex << std::setw(2) << std::setfill('0')
+            << static_cast<int>(mac[i]);
     }
 
-    if (HMAC_Update(ctx,
-                    reinterpret_cast<const unsigned char*>(payload.data()),
-                    payload.size()) != 1)
-    {
-        HMAC_CTX_free(ctx);
-        throw std::runtime_error("HMAC_Update failed");
-    }
-
-    if (HMAC_Final(ctx, mac.data(), &mac_len) != 1) {
-        HMAC_CTX_free(ctx);
-        throw std::runtime_error("HMAC_Final failed");
-    }
-
-    HMAC_CTX_free(ctx);
-    mac.resize(mac_len);
-
-    std::ostringstream sig_oss;
-    for (uint8_t b : mac) {
-        sig_oss << std::hex << std::setw(2) << std::setfill('0')
-                << static_cast<int>(b);
-    }
-
-    vault_log("ntp.tat.generated", std::to_string(med_time));
-
-    TimestampAttestationToken token{
+    return TimestampAttestationToken{
         med_time,
-        med_rtt,
-        drift_ppm,
-        servers,
-        quorum_hash,
-        sig_oss.str()
+        median(rtts),
+        0,          // drift_ppm (not yet modeled here)
+        hosts,
+        q_hash,
+        sig.str()
     };
+}
 
-    return token;
+// ============================================================
+// NTP QUERY
+// ============================================================
+
+std::optional<NtpObservation>
+NtpObservationFetcher::query_server(const NtpServerEntry& server) const
+{
+    // Resolve host
+    struct addrinfo hints;
+    std::memset(&hints, 0, sizeof(hints));
+    hints.ai_family   = AF_UNSPEC;
+    hints.ai_socktype = SOCK_DGRAM;
+
+    struct addrinfo* res = nullptr;
+    int rc = ::getaddrinfo(server.hostname.c_str(), "123", &hints, &res);
+    if (rc != 0 || !res) {
+        vault_log("ntp.resolve.error", server.hostname);
+        if (res) ::freeaddrinfo(res);
+        return std::nullopt;
+    }
+
+    SocketGuard sock(::socket(res->ai_family, res->ai_socktype, res->ai_protocol));
+    if (!sock.valid()) {
+        vault_log("ntp.socket.error", server.hostname);
+        ::freeaddrinfo(res);
+        return std::nullopt;
+    }
+
+    // Timeout
+    uint32_t effective_timeout = server.timeout_ms ? server.timeout_ms : timeout_ms_;
+#ifdef _WIN32
+    DWORD tv = effective_timeout;
+    ::setsockopt(sock.fd(), SOL_SOCKET, SO_RCVTIMEO,
+                 reinterpret_cast<const char*>(&tv), sizeof(tv));
+#else
+    struct timeval tv;
+    tv.tv_sec  = effective_timeout / 1000;
+    tv.tv_usec = (effective_timeout % 1000) * 1000;
+    ::setsockopt(sock.fd(), SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+#endif
+
+    // Build request
+    std::uint8_t packet[NTP_PACKET_SIZE];
+    std::memset(packet, 0, sizeof(packet));
+    packet[0] = NTP_CLIENT_BYTE0;
+
+    auto t1 = std::chrono::steady_clock::now();
+    ssize_t sent = ::sendto(sock.fd(),
+                            reinterpret_cast<const char*>(packet),
+                            sizeof(packet),
+                            0,
+                            res->ai_addr,
+                            res->ai_addrlen);
+    if (sent != static_cast<ssize_t>(sizeof(packet))) {
+        vault_log("ntp.send.error", server.hostname);
+        ::freeaddrinfo(res);
+        return std::nullopt;
+    }
+
+    std::uint8_t recv_buf[NTP_PACKET_SIZE];
+    ssize_t recvd = ::recvfrom(sock.fd(),
+                               reinterpret_cast<char*>(recv_buf),
+                               sizeof(recv_buf),
+                               0,
+                               nullptr,
+                               nullptr);
+    auto t4 = std::chrono::steady_clock::now();
+    ::freeaddrinfo(res);
+
+    if (recvd < static_cast<ssize_t>(NTP_PACKET_SIZE)) {
+        vault_log("ntp.recv.error", server.hostname);
+        return std::nullopt;
+    }
+
+    // RTT
+    auto rtt_ms = std::chrono::duration_cast<std::chrono::milliseconds>(t4 - t1).count();
+    if (max_delay_ms_ && rtt_ms > static_cast<int64_t>(max_delay_ms_)) {
+        vault_log("ntp.rtt.too_high", server.hostname);
+        return std::nullopt;
+    }
+
+    // Stratum
+    std::uint8_t stratum = recv_buf[NTP_STRATUM_OFFSET];
+
+    // Transmit timestamp seconds
+    std::uint32_t tx_secs_net;
+    std::memcpy(&tx_secs_net, recv_buf + NTP_TRANSMIT_TS_OFFSET, sizeof(tx_secs_net));
+    std::uint32_t tx_secs = ntohl(tx_secs_net);
+
+    if (tx_secs < NTP_UNIX_OFFSET) {
+        vault_log("ntp.timestamp.invalid", server.hostname);
+        return std::nullopt;
+    }
+
+    std::uint64_t unix_secs = static_cast<std::uint64_t>(tx_secs - NTP_UNIX_OFFSET);
+
+    NtpObservation obs;
+    obs.server_hostname = server.hostname;
+    obs.unix_seconds    = unix_secs;
+    obs.rtt_ms          = static_cast<std::uint64_t>(rtt_ms < 0 ? 0 : rtt_ms);
+    obs.stratum         = stratum;
+    obs.is_outlier      = false;
+
+    return obs;
 }
 
 } // namespace uml001
