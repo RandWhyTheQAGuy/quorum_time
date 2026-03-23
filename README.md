@@ -1,92 +1,89 @@
-## Quorum Time - Secure Time Platform
+# Quorum Time – Distributed Byzantine-Resilient Clock & Trusted Identity System
 
-Quorum Time provides an open source secure, verifiable, and Byzantine‑fault‑tolerant time synchronization system for distributed environments. It combines authenticated NTP observations, tamper‑evident storage, and quorum‑based time agreement to deliver a trusted, monotonic timeline suitable for security‑critical and multi‑region deployments.
+**License:** Apache 2.0  
+**Repository:** [quorum_time](https://github.com/RandWhyTheQAGuy/quorum_time)  
 
-## Key Features
+---
 
-- Authenticated NTP observations using HMAC‑SHA256 or Ed25519 signatures
+## Overview
 
-- Byzantine‑fault‑tolerant quorum clock with outlier trimming and skew enforcement
+Quorum Time is a high-assurance distributed clock and identity system designed for:
 
-- Tamper‑evident vault for sync events, drift values, and authority sequences
+- Reliable timekeeping across distributed systems
+- Cryptographically verifiable timestamps
+- Structured identity and capability management via Semantic Passports
+- Strong auditability and policy enforcement
 
-- Replay protection via per‑authority sequence numbers and persistent state
+This repository implements a complete **Byzantine-tolerant time authority**, sidecar clients, NTP observation fetching, key rotation, vault storage, and REST API integration.
 
-- AES‑256‑GCM encryption for secure storage and transport of sensitive data
+---
 
-- Monotonic, drift‑controlled time with configurable ceilings and fail‑closed modes
+## Key Components
 
-- Sync daemon for periodic updates and cluster‑wide state adoption
+### 1. BFT Quorum Clock
+- Implements a **Byzantine Fault Tolerant (BFT) clock**.
+- Generates time states agreed upon by a quorum of nodes.
+- Clients verify signed epochs to ensure trustworthy timestamps.
+- Includes **median NTP observation aggregation** and skew correction.
 
-- Comprehensive test suite mirroring C++ security invariants
+### 2. Semantic Passport
+- Structured identity tokens with capabilities and attributes.
+- Cryptographically signed and revocable.
+- Integrated with **transparency logs** for audit and forensic purposes.
 
-## Architecture Overview
+### 3. Vault & Key Management
+- `ColdVault`, `FileVaultBackend`, and `SimpleFileVaultBackend` for secure key storage.
+- Automatic key rotation and lifecycle management.
+- SHA-256 / AES-256 / HMAC support via OpenSSL bindings.
 
-### Cryptographic Layer
+### 4. REST & Python SDK
+- REST APIs for time retrieval, policy validation, and clock state queries.
+- Python SDK (`client/python/uml001_client`) wraps core library functionality.
+- Example scripts for **warm boot**, **skew correction**, and sidecar integration.
 
-Implements hashing, HMAC, Ed25519 signatures, AES‑GCM encryption, secure randomness, and constant‑time comparison. These primitives form the trust boundary for all higher‑level components.
+### 5. NTP Observation Fetcher
+- Collects offsets from multiple NTP servers.
+- Computes **median offset** and hashes observations for tamper-evidence.
 
-### Vault Layer
+---
 
-Provides append‑only, tamper‑evident logs of synchronization events. Detects modification through chain verification and persists authority sequence numbers to prevent replay attacks.
+## Standards Conformance
 
-### NTP Fetcher
+- **Byzantine Fault Tolerance (BFT)** – resilient to faulty or malicious nodes.
+- **NTPv4 (RFC 5905)** – optional reference timing sources.
+- **Protobuf / gRPC** – for service communication.
+- **OpenSSL (FIPS 140-3 compatible crypto)** – for hashing, signing, and encryption.
+- **JSON Schema / OpenAPI v3** – for configuration, payload validation, and REST API specification.
+- **Apache 2.0 License** – permissive license allowing commercial and defense integration.
 
-Authenticates and sequences NTP observations from trusted authorities. Supports state save/load for continuity across restarts.
+---
 
-### BFT Trusted Clock
+## Project Structure
 
-Aggregates observations from multiple authorities, rejects outliers, enforces skew limits, and computes a consensus time. Persists drift and sequence state to the vault.
+- `src/core` – C++ implementations:
+  - `bft_quorum_clock.cpp/h`
+  - `ntp_observation_fetcher.cpp/h`
+  - `vault_logger.cpp`
+  - `key_rotation_manager.cpp`
+  - `simple_file_vault_backend.cpp`
+- `include/uml001` – core headers for integration
+- `client/python` – Python SDK
+- `rest/` – REST server and handler implementations
+- `spec/schemas/` – JSON schema definitions for configs and payloads
+- `tests/` – Unit and integration tests
+- `tools/` – Debug and helper scripts
 
-### Sync Daemon
+---
 
-Coordinates periodic sync cycles, adopts peer state when beneficial, and monitors for stale or degraded conditions.
+## Building the Project
 
-## Getting Started
+### 1. Requirements
+- C++17 or newer
+- CMake 3.20+
+- OpenSSL 3.0+
+- Protobuf / gRPC
+- Python 3.14 (for SDK and tests)
 
-- Install dependencies
-
-```
-bash
-  
-pip install -r requirements.txt
-```
-
-- Run the test suite
-
-```
-bash
-  
-pytest -q
-```
-
-- Basic usage example
-
-```
-python
-  
-from uml001 import BFTQuorumTrustedClock, BFTClockConfig  
-from uml001.vault import ColdVault, VaultConfig
-vault = ColdVault(VaultConfig(base_directory="./vault"))
-  
-clock = BFTQuorumTrustedClock(BFTClockConfig(), authorities, vault)
-
-now = clock.now_unix()
-print("Trusted time:", now)`
-```
-
-## Contributing
-
-Contributions in the following areas are most welcome:
-
-- New authority backends
-
-- Alternative vault implementations
-
-- Language bindings
-
-- Performance improvements
-
-- Observability and tooling
-
-- Formal verification and audits
+### 2. Build Core Library
+```bash
+./build.sh
