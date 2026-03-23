@@ -26,22 +26,17 @@ This repository implements a complete **Byzantine-tolerant time authority**, sid
 - Clients verify signed epochs to ensure trustworthy timestamps.
 - Includes **median NTP observation aggregation** and skew correction.
 
-### 2. Semantic Passport
-- Structured identity tokens with capabilities and attributes.
-- Cryptographically signed and revocable.
-- Integrated with **transparency logs** for audit and forensic purposes.
-
-### 3. Vault & Key Management
+### 2. Vault & Key Management
 - `ColdVault`, `FileVaultBackend`, and `SimpleFileVaultBackend` for secure key storage.
 - Automatic key rotation and lifecycle management.
 - SHA-256 / AES-256 / HMAC support via OpenSSL bindings.
 
-### 4. REST & Python SDK
+### 3. REST & Python SDK
 - REST APIs for time retrieval, policy validation, and clock state queries.
 - Python SDK (`client/python/uml001_client`) wraps core library functionality.
 - Example scripts for **warm boot**, **skew correction**, and sidecar integration.
 
-### 5. NTP Observation Fetcher
+### 4. NTP Observation Fetcher
 - Collects offsets from multiple NTP servers.
 - Computes **median offset** and hashes observations for tamper-evidence.
 
