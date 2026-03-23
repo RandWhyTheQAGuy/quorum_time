@@ -215,7 +215,7 @@ Standard hashes (SHA‑256), encryption (AES‑256)
 
 Permissive open‑source license
 - https://www.apache.org/licenses/LICENSE-2.0
-/////]
+
 ## Security Standards Conformance:
 
 ### SHA-256 (Secure Hash Standard)
