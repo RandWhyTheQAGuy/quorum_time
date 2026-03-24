@@ -1,0 +1,76 @@
+# -------------------------
+# OS / Editor Noise
+# -------------------------
+.DS_Store
+.vscode/
+
+# -------------------------
+# CMake Build Artifacts
+# -------------------------
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+*.a
+*.o
+
+# Ninja (if used)
+*.ninja
+.ninja_deps
+.ninja_log
+
+# -------------------------
+# Generated gRPC / Protobuf
+# -------------------------
+generated/*.pb.cc
+generated/*.pb.h
+build/generated/
+**/*.pb.cc
+**/*.pb.h
+
+# -------------------------
+# Python Artifacts
+# -------------------------
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+build_python/
+sdks/python/build/
+sdks/python/dist/
+
+# -------------------------
+# Compiled Extensions
+# -------------------------
+*.so
+*_uml001*.so
+
+# -------------------------
+# Logs & Runtime State
+# -------------------------
+*.log
+test.log
+data/*.log
+test_data/
+vault_storage/
+vault_storage_skew/
+vault.log
+
+# -------------------------
+# Test Artifacts
+# -------------------------
+tests/__pycache__/
+tests/**/*.pyc
+
+# -------------------------
+# Project Metadata
+# -------------------------
+project_structure.txt
+
+# -------------------------
+# Misc
+# -------------------------
+spec/schemas/*.cpp   # accidental file in schemas
