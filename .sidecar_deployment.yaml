@@ -1,0 +1,18 @@
+spec:
+  containers:
+    # 1. Your primary application
+    - name: fintech-transaction-service
+      image: my-company/transaction-service:v2.4
+      ports:
+        - containerPort: 8080
+      
+    # 2. The BFT Clock Sidecar
+    - name: bft-clock-sidecar
+      image: my-company/bft-clock-sidecar:v1.0
+      # Internal only, no exposed ports to the outside cluster
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 9090
+        initialDelaySeconds: 5
+        periodSeconds: 10
