@@ -4,31 +4,12 @@
 .DS_Store
 .vscode/
 
-# -------------------------
-# CMake Build Artifacts
-# -------------------------
-build/
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-*.cmake
-*.a
-*.o
-
-# Ninja (if used)
-*.ninja
-.ninja_deps
-.ninja_log
-
-# -------------------------
-# Generated gRPC / Protobuf
-# -------------------------
-generated/*.pb.cc
-generated/*.pb.h
-build/generated/
-**/*.pb.cc
-**/*.pb.h
+# Ignore ALL hidden dot-files except the ones we explicitly keep
+.*
+!.gitignore
+!.vscode/
+!.github/
+!.env.example
 
 # -------------------------
 # Python Artifacts
@@ -39,38 +20,62 @@ __pycache__/
 *.egg-info/
 dist/
 build_python/
-sdks/python/build/
-sdks/python/dist/
+sdks/python/**/build/
+sdks/python/**/dist/
 
 # -------------------------
-# Compiled Extensions
+# CMake Build Artifacts
+# -------------------------
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+*.o
+*.a
+*.d
+
+# Ninja (if used)
+*.ninja
+.ninja_deps
+.ninja_log
+
+# -------------------------
+# Protobuf / gRPC Generated
+# -------------------------
+*.pb.cc
+*.pb.h
+*.grpc.pb.cc
+*.grpc.pb.h
+src/bindings/*.pb.*
+build/**/*.pb.*
+
+# -------------------------
+# Compiled Extensions / Binaries
 # -------------------------
 *.so
-*_uml001*.so
-
-# -------------------------
-# Logs & Runtime State
-# -------------------------
-*.log
-test.log
-data/*.log
-test_data/
-vault_storage/
-vault_storage_skew/
-vault.log
-
-# -------------------------
-# Test Artifacts
-# -------------------------
-tests/__pycache__/
-tests/**/*.pyc
+test_passport_flow
+aegis_daemon
+aegis_core
+clock_proto
+lib*.a
 
 # -------------------------
 # Project Metadata
 # -------------------------
+aegis-protocol.code-workspace
 project_structure.txt
 
 # -------------------------
-# Misc
+# Logs / Runtime
 # -------------------------
-spec/schemas/*.cpp   # accidental file in schemas
+*.log
+
+# -------------------------
+# Legacy / Accidental Files
+# -------------------------
+bindings/.CMakeLists.txt
+.main.py
+.test_aegis.py
+.aegisSDK.py
