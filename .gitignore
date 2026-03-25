@@ -7,7 +7,6 @@
 # Ignore ALL hidden dot-files except the ones we explicitly keep
 .*
 !.gitignore
-!.vscode/
 !.github/
 !.env.example
 
