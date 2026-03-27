@@ -1,27 +1,54 @@
 syntax = "proto3";
+
 package uml001;
 
 service ClockService {
+  // Legacy support for Passport/Consumer ingestion
   rpc GetTime(GetTimeRequest) returns (TimeResponse);
   rpc GetStatus(GetStatusRequest) returns (StatusResponse);
+
+  // Defense-grade Cross-Domain Handshake
+  rpc AlignTime(AlignTimeRequest) returns (AlignTimeResponse);
 }
 
 message GetTimeRequest {}
 
 message TimeResponse {
-  uint64 unix_timestamp     = 1;
-  int64  drift_applied      = 2;
-  uint64 last_updated_unix  = 3;
-  uint64 monotonic_version  = 4;
-  string signature          = 5;
-  string leader_id          = 6;
-  string key_id             = 7;
+  uint64 unix_timestamp       = 1;
+  int64  drift_applied        = 2;
+  uint64 last_updated_unix    = 3;
+  uint64 monotonic_version    = 4;
+  string signature            = 5;
+  string leader_id            = 6;
+  string key_id               = 7;
+
+  // Optional: Anchors the passport to a specific alignment
+  string alignment_context_id = 8;
+}
+
+message AlignTimeRequest {
+  string peer_id      = 1;  // required
+  string key_id       = 2;  // optional identity binding for key resolution
+  bytes  local_anchor = 3;  // Merkle root hash or equivalent local anchor
+  uint64 timestamp    = 4;  // caller's local time when anchor was generated
+}
+
+message AlignTimeResponse {
+  string session_id       = 1;
+
+  // Server-authoritative anchor (BFT clock / local hash derived)
+  bytes  remote_anchor    = 2;
+
+  // Signature over canonical payload (reserved; currently empty)
+  bytes  signature_proof  = 3;
+
+  uint64 server_timestamp = 4;
 }
 
 message GetStatusRequest {}
 
 message StatusResponse {
-  bool   operational        = 1;
-  uint32 quorum_threshold   = 2;
-  uint64 current_version    = 3;
+  bool   operational      = 1;
+  uint32 quorum_threshold = 2;
+  uint64 current_version  = 3;
 }

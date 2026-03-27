@@ -67,6 +67,7 @@ add_library(uml001_core STATIC
     src/core/key_rotation_manager.cpp
     src/core/ntp_observation_fetcher.cpp
     src/core/simple_hash_provider.cpp
+    src/core/clock_service_impl.cpp
     ${PROTO_PB_CPP}
     ${GRPC_PB_CPP}
 )
