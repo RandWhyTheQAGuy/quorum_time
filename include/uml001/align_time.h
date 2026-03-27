@@ -45,18 +45,60 @@
  */
 #pragma once
 
+#include <string>
+#include <vector>
 #include <cstdint>
+#include "uml001/crypto_interfaces.h"
+
+namespace uml001 {
 
 /**
- * SharedClockState
+ * @brief Deterministic cryptographic alignment anchor.
  *
- * Redis-published consensus time state.
- * Versioned and cryptographically bound to key version.
+ * SECURITY MODEL:
+ * - Timestamp MUST originate from BFTQuorumTrustedClock
+ * - Anchors MUST be Merkle-root derived hashes
+ * - Signature binds: peer_id + session_id + timestamp + anchors
  */
+struct AlignmentPoint {
+    std::string peer_id;
+    std::string session_id;
+    std::string key_id;
 
-struct SharedClockState {
-    uint64_t agreed_time;
-    int64_t  applied_drift;
-    uint64_t last_updated_unix;
-    uint64_t key_version;
+    uint64_t timestamp = 0; // ALWAYS from BFTQuorumTrustedClock
+
+    std::vector<uint8_t> local_anchor;   // local Merkle root
+    std::vector<uint8_t> remote_anchor;  // peer Merkle root
+
+    std::vector<uint8_t> signature;      // signature over packed payload
 };
+
+class AlignTimeManager {
+public:
+    AlignTimeManager(ISignProvider& signer, IHashProvider& hasher)
+        : signer_(signer), hasher_(hasher) {}
+
+    /**
+     * Canonical serialization for signing.
+     * MUST remain stable across versions (security-critical).
+     */
+    std::vector<uint8_t> pack_for_signing(const AlignmentPoint& point) const;
+
+    /**
+     * Signs alignment point using local private key.
+     */
+    void sign_local(AlignmentPoint& point);
+
+    /**
+     * Verifies remote alignment proof.
+     * NOTE: public key resolution must be externalized via key_id.
+     */
+    bool verify_remote(const AlignmentPoint& point,
+                       const std::vector<uint8_t>& peer_public_key);
+
+private:
+    ISignProvider& signer_;
+    IHashProvider& hasher_;
+};
+
+} // namespace uml001

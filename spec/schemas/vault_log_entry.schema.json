@@ -1,28 +1,37 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:uml001:vault:LogEntry",
-  "title": "ColdVaultLogEntry",
+  "title": "UnifiedVaultLogEntry",
   "type": "object",
-  "required": [
-    "timestamp",
-    "agreed_time",
-    "drift_step",
-    "total_drift",
-    "previous_hash",
-    "entry_hash"
-  ],
+  "required": ["timestamp", "event_type", "previous_hash", "entry_hash"],
   "properties": {
     "timestamp": { "type": "integer", "minimum": 0 },
-    "agreed_time": { "type": "integer", "minimum": 0 },
-    "drift_step": { "type": "integer" },
-    "total_drift": { "type": "integer" },
-    "previous_hash": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "entry_hash": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
+    "event_type": { "enum": ["BFT_SYNC", "ALIGN_TIME_CREATED", "ALIGN_TIME_VERIFIED", "SECURITY_ALERT"] },
+    "previous_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "entry_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "payload": {
+      "oneOf": [
+        {
+          "title": "BftSyncPayload",
+          "required": ["agreed_time", "drift_step", "total_drift"],
+          "properties": {
+            "agreed_time": { "type": "integer" },
+            "drift_step": { "type": "integer" },
+            "total_drift": { "type": "integer" }
+          }
+        },
+        {
+          "title": "AlignTimePayload",
+          "required": ["peer_id", "session_id", "local_root", "remote_root"],
+          "properties": {
+            "peer_id": { "type": "string" },
+            "session_id": { "type": "string" },
+            "local_root": { "type": "string" },
+            "remote_root": { "type": "string" },
+            "zk_proof_blob": { "type": "string" }
+          }
+        }
+      ]
     }
   },
   "additionalProperties": false

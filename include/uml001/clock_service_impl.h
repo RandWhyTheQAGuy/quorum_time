@@ -1,46 +1,97 @@
+/*
+ * Quorum Time — Open Trusted Time & Distributed Verification Framework
+ * Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Quorum Time is an open, verifiable, Byzantine‑resilient trusted‑time
+ * system designed for modern distributed environments. It provides a
+ * cryptographically anchored notion of time that can be aligned,
+ * audited, and shared across domains without requiring centralized
+ * trust.
+ *
+ * This project also includes the Aegis Semantic Passport components,
+ * which complement Quorum Time by offering structured, verifiable
+ * identity and capability attestations for agents and services.
+ *
+ * Core capabilities:
+ *   - BFT Quorum Time: multi‑authority, tamper‑evident time agreement
+ *                      with drift bounds, authority attestation, and
+ *                      cross‑domain alignment (AlignTime).
+ *
+ *   - Transparency Logging: append‑only, hash‑chained audit records
+ *                           for time events, alignment proofs, and
+ *                           key‑rotation operations.
+ *
+ *   - Semantic Passports: optional identity and capability metadata
+ *                         for systems that require verifiable agent
+ *                         provenance and authorization context.
+ *
+ *   - Open Integration: designed for interoperability with distributed
+ *                       systems, security‑critical infrastructure,
+ *                       autonomous agents, and research environments.
+ *
+ * Quorum Time is developed as an open‑source project with a focus on
+ * clarity, auditability, and long‑term maintainability. Contributions,
+ * issue reports, and discussions are welcome.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This implementation is intended for open research, practical
+ * deployment, and community‑driven evolution of verifiable time and
+ * distributed trust standards.
+ */
 #pragma once
 
 #include <grpcpp/grpcpp.h>
-#include "proto/clock.grpc.pb.h"
-#include "main_ntp.cpp" // Assuming definitions are accessible
 
+#include "clock_service.grpc.pb.h"
+#include "uml001/bft_quorum_clock.h"
+#include "uml001/vault.h"
+#include "uml001/vault_logger.h"
+#include "uml001/hash_provider.h"
+#include "uml001/governor.h"
+
+namespace uml001 {
+
+/**
+ * Canonical gRPC ClockService implementation for uml001.
+ *
+ * Responsibilities:
+ *  - GetTime: expose BFTQuorumTrustedClock time and drift
+ *  - GetStatus: expose basic health / quorum threshold
+ *  - AlignTime: accept peer anchor, derive local anchor, log alignment
+ */
 class ClockServiceImpl final : public uml001::ClockService::Service {
 public:
-    ClockServiceImpl(ProductionStore& store, const uml001::ClockGovernor& gov) 
-        : store_(store), governor_(gov) {}
+    ClockServiceImpl(BFTQuorumTrustedClock& clock,
+                     ColdVault&             vault,
+                     ClockGovernor&         governor,
+                     IHashProvider&         hash_provider);
 
-    grpc::Status GetTime(grpc::ServerContext* context, 
-                        const uml001::GetTimeRequest* request, 
-                        uml001::TimeResponse* response) override {
-        
-        auto state_opt = store_.get();
-        if (!state_opt) {
-            return grpc::Status(grpc::StatusCode::UNAVAILABLE, "Clock not yet synchronized.");
-        }
+    grpc::Status GetTime(grpc::ServerContext*,
+                         const uml001::GetTimeRequest*,
+                         uml001::TimeResponse*) override;
 
-        response->set_unix_timestamp(state_opt->unix_timestamp());
-        response->set_drift_applied(state_opt->drift_applied());
-        response->set_monotonic_version(state_opt->monotonic_version());
-        response->set_signature(state_opt->signature());
-        response->set_leader_id(state_opt->leader_id());
+    grpc::Status GetStatus(grpc::ServerContext*,
+                           const uml001::GetStatusRequest*,
+                           uml001::StatusResponse*) override;
 
-        return grpc::Status::OK;
-    }
-
-    grpc::Status GetStatus(grpc::ServerContext* context, 
-                          const uml001::GetStatusRequest* request, 
-                          uml001::StatusResponse* response) override {
-        
-        auto state = store_.get();
-        response->set_operational(state.has_value());
-        // Note: Governor current_count is private in your snippet; 
-        // you may need to add a getter to ClockGovernor for this.
-        response->set_quorum_size(15); 
-        
-        return grpc::Status::OK;
-    }
+    grpc::Status AlignTime(grpc::ServerContext*,
+                           const uml001::AlignTimeRequest*,
+                           uml001::AlignTimeResponse*) override;
 
 private:
-    ProductionStore& store_;
-    const uml001::ClockGovernor& governor_;
+    std::string make_session_id() const;
+    std::string bytes_to_hex(const std::string& bytes) const;
+
+private:
+    BFTQuorumTrustedClock& clock_;
+    ColdVault&             vault_;
+    ClockGovernor&         governor_;
+    IHashProvider&         hash_;
 };
+
+} // namespace uml001

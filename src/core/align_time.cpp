@@ -43,20 +43,46 @@
  * deployment, and community‑driven evolution of verifiable time and
  * distributed trust standards.
  */
-#pragma once
+#include "uml001/align_time.h"
+#include <algorithm>
+#include <cstring>
 
-#include <cstdint>
+namespace uml001 {
 
-/**
- * SharedClockState
- *
- * Redis-published consensus time state.
- * Versioned and cryptographically bound to key version.
- */
+std::vector<uint8_t> AlignTimeManager::pack_for_signing(const AlignmentPoint& point) const {
+    std::vector<uint8_t> buffer;
+    
+    // PeerID and SessionID strings
+    buffer.insert(buffer.end(), point.peer_id.begin(), point.peer_id.end());
+    buffer.insert(buffer.end(), point.session_id.begin(), point.session_id.end());
 
-struct SharedClockState {
-    uint64_t agreed_time;
-    int64_t  applied_drift;
-    uint64_t last_updated_unix;
-    uint64_t key_version;
-};
+    // Fixed-width timestamp (uint64_t)
+    uint64_t ts = point.timestamp;
+    const uint8_t* ts_ptr = reinterpret_cast<const uint8_t*>(&ts);
+    buffer.insert(buffer.end(), ts_ptr, ts_ptr + sizeof(ts));
+
+    // Anchors
+    buffer.insert(buffer.end(), point.local_anchor.begin(), point.local_anchor.end());
+    buffer.insert(buffer.end(), point.remote_anchor.begin(), point.remote_anchor.end());
+
+    return buffer;
+}
+
+void AlignTimeManager::sign_local(AlignmentPoint& point) {
+    auto payload = pack_for_signing(point);
+    point.signature = signer_.sign(payload);
+}
+
+bool AlignTimeManager::verify_remote(const AlignmentPoint& point, 
+                                     const std::vector<uint8_t>& peer_public_key) {
+    if (point.signature.empty()) return false;
+    
+    auto payload = pack_for_signing(point);
+    
+    // We utilize the verify method from crypto_interfaces.h
+    // This maintains the ZK/ZN principle: we don't need the peer's raw logs,
+    // only the signed anchor that proves their state existed at time T.
+    return signer_.verify(payload, point.signature);
+}
+
+} // namespace uml001

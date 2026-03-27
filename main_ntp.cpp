@@ -1,3 +1,48 @@
+/*
+ * Quorum Time — Open Trusted Time & Distributed Verification Framework
+ * Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Quorum Time is an open, verifiable, Byzantine‑resilient trusted‑time
+ * system designed for modern distributed environments. It provides a
+ * cryptographically anchored notion of time that can be aligned,
+ * audited, and shared across domains without requiring centralized
+ * trust.
+ *
+ * This project also includes the Aegis Semantic Passport components,
+ * which complement Quorum Time by offering structured, verifiable
+ * identity and capability attestations for agents and services.
+ *
+ * Core capabilities:
+ *   - BFT Quorum Time: multi‑authority, tamper‑evident time agreement
+ *                      with drift bounds, authority attestation, and
+ *                      cross‑domain alignment (AlignTime).
+ *
+ *   - Transparency Logging: append‑only, hash‑chained audit records
+ *                           for time events, alignment proofs, and
+ *                           key‑rotation operations.
+ *
+ *   - Semantic Passports: optional identity and capability metadata
+ *                         for systems that require verifiable agent
+ *                         provenance and authorization context.
+ *
+ *   - Open Integration: designed for interoperability with distributed
+ *                       systems, security‑critical infrastructure,
+ *                       autonomous agents, and research environments.
+ *
+ * Quorum Time is developed as an open‑source project with a focus on
+ * clarity, auditability, and long‑term maintainability. Contributions,
+ * issue reports, and discussions are welcome.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This implementation is intended for open research, practical
+ * deployment, and community‑driven evolution of verifiable time and
+ * distributed trust standards.
+ */
 /**
  * @file main_ntp.cpp
  * @brief Production-grade Aegis BFT trusted clock daemon with CLI flags and test-safe defaults.
@@ -12,6 +57,7 @@
 #include "uml001/simple_file_vault_backend.h"
 #include "uml001/simple_hash_provider.h"
 #include "uml001/governor.h"
+#include "uml001/clock_service_impl.h"
 
 #include <grpcpp/grpcpp.h>
 #include "clock_service.grpc.pb.h"
@@ -32,9 +78,9 @@ namespace fs = std::filesystem;
 // ============================================================
 
 struct Config {
-    std::string data_dir = "./data";
+    std::string data_dir  = "./data";
     std::string grpc_addr = "0.0.0.0:50051";
-    bool insecure_dev = false;
+    bool insecure_dev     = false;
 };
 
 Config parse_args(int argc, char** argv) {
@@ -67,7 +113,7 @@ void signal_handler(int) {
 // ============================================================
 
 int main(int argc, char** argv) {
-    std::signal(SIGINT, signal_handler);
+    std::signal(SIGINT,  signal_handler);
     std::signal(SIGTERM, signal_handler);
 
     auto cfg = parse_args(argc, argv);
@@ -84,14 +130,14 @@ int main(int argc, char** argv) {
     }
 
     // Core components
-    uml001::OsStrongClock strong_clock;
+    uml001::OsStrongClock    strong_clock;
     uml001::SimpleHashProvider hash_provider;
 
     // Vault setup
     uml001::ColdVault::Config vault_cfg;
     vault_cfg.base_directory = data_dir_path;
 
-    auto backend = std::make_shared<uml001::SimpleFileVaultBackend>(data_dir_path / "vault.log");
+    auto backend   = std::make_shared<uml001::SimpleFileVaultBackend>(data_dir_path / "vault.log");
     auto vault_ptr = std::make_shared<uml001::ColdVault>(vault_cfg, backend, strong_clock, hash_provider);
 
     uml001::set_vault_logger([vault_ptr](const std::string& k, const std::string& v) {
@@ -105,7 +151,7 @@ int main(int argc, char** argv) {
     };
 
     uml001::BftClockConfig cfg_bft;
-    cfg_bft.min_quorum = 3;
+    cfg_bft.min_quorum  = 3;
     cfg_bft.fail_closed = !cfg.insecure_dev;
 
     uml001::BFTQuorumTrustedClock clock(cfg_bft, authorities, vault_ptr);
@@ -117,27 +163,14 @@ int main(int argc, char** argv) {
     };
 
     uml001::NtpObservationFetcher fetcher("", "", servers, 3, 15, 5);
-    uml001::ClockGovernor governor(5);
+    uml001::ClockGovernor         governor(5);
 
     // ========================================================
     // gRPC SERVER
     // ========================================================
 
-    class ServiceImpl final : public uml001::ClockService::Service {
-    public:
-        explicit ServiceImpl(uml001::OsStrongClock& clock) : clock_(clock) {}
-        grpc::Status GetTime(grpc::ServerContext*,
-                             const uml001::GetTimeRequest*,
-                             uml001::TimeResponse* resp) override
-        {
-            resp->set_unix_timestamp(clock_.now_unix());
-            return grpc::Status::OK;
-        }
-    private:
-        uml001::OsStrongClock& clock_;
-    };
+    uml001::ClockServiceImpl service(clock, *vault_ptr, governor, hash_provider);
 
-    ServiceImpl service(strong_clock);
     grpc::ServerBuilder builder;
     builder.AddListeningPort(cfg.grpc_addr, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);

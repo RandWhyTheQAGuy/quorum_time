@@ -78,3 +78,4 @@ bindings/.CMakeLists.txt
 .main.py
 .test_aegis.py
 .aegisSDK.py
+aegis_bridge_integration_plan.md
