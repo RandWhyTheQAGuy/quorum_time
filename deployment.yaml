@@ -8,7 +8,7 @@ spec:
   replicas: 3
   # Strategy ensures the PVC is detached from old pods before attaching to new ones
   strategy:
-    type: Recreate 
+    type: Recreate
   selector:
     matchLabels:
       app: aegis-clock
@@ -18,9 +18,11 @@ spec:
         app: aegis-clock
     spec:
       securityContext:
-        # 1000 is a common non-root user; adjust based on your Dockerfile
-        fsGroup: 1000 
+        fsGroup: 1000
       containers:
+        # ----------------------------------------------------------------
+        # Primary container - BFT quorum clock daemon (unchanged)
+        # ----------------------------------------------------------------
         - name: aegis-server
           image: yourorg/aegis-clock-server:latest
           imagePullPolicy: Always
@@ -40,7 +42,6 @@ spec:
                 secretKeyRef:
                   name: bft-clock-secrets
                   key: hmac_key
-            # Useful for the server to know its identity in the quorum
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
@@ -58,8 +59,73 @@ spec:
               port: 50051
             initialDelaySeconds: 5
             periodSeconds: 10
+
+        # ----------------------------------------------------------------
+        # Sidecar container - consumer bridge
+        # Shares the pod network so upstream is always localhost:50051.
+        # Shares vault-storage so bridge audit events go to the same PVC.
+        # ----------------------------------------------------------------
+        - name: aegis-bridge
+          image: yourorg/aegis-bridge:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: bridge-rest
+            - containerPort: 8081
+              name: bridge-ws
+            - containerPort: 9090
+              name: bridge-grpc
+            - containerPort: 1123
+              protocol: UDP
+              name: bridge-ntp
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+          env:
+            - name: UML001_HMAC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bft-clock-secrets
+                  key: hmac_key
+            - name: BRIDGE_BEARER_TOKENS
+              valueFrom:
+                secretKeyRef:
+                  name: bft-clock-secrets
+                  key: bridge_bearer_tokens
+                  # Create with:
+                  # kubectl create secret generic bft-clock-secrets \
+                  #   --from-literal=hmac_key=<key> \
+                  #   --from-literal=bridge_bearer_tokens=<token1,token2>
+            - name: AEGIS_DATA_DIR
+              value: /var/lib/aegis/vault
+            - name: BRIDGE_LOG_LEVEL
+              value: INFO
+            # upstream is always localhost inside the pod
+            - name: AEGIS_UPSTREAM_HOST
+              value: "127.0.0.1"
+            - name: AEGIS_UPSTREAM_PORT
+              value: "50051"
+          volumeMounts:
+            - name: vault-storage
+              mountPath: /var/lib/aegis/vault
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
       volumes:
         - name: vault-storage
           persistentVolumeClaim:
-            # Ensure this PVC exists and supports ReadWriteOnce (RWO)
             claimName: bft-clock-pvc
