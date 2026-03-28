@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package aegisbridge;
+
+option py_generic_services = false;
+
+// -------------------------------------------------------------------------
+// BridgeTimeService
+//
+// Consumer-facing gRPC API for the Aegis bridge.  This is intentionally
+// separate from the internal clock_service.proto so downstream clients
+// are not coupled to the BFT daemon internals.
+// -------------------------------------------------------------------------
+
+service BridgeTimeService {
+  // GetTime returns a compact timestamp response.
+  rpc GetTime (GetTimeRequest) returns (TimeResponse);
+
+  // GetTimeAttested returns the full quorum attestation envelope.
+  // Use this when the consumer needs to carry the quorum proof through
+  // their own audit trail or verify the result independently.
+  rpc GetTimeAttested (GetTimeRequest) returns (AttestedTimeResponse);
+}
+
+// -------------------------------------------------------------------------
+// Requests
+// -------------------------------------------------------------------------
+
+message GetTimeRequest {
+  // Reserved for future per-request options (e.g. requested precision).
+}
+
+// -------------------------------------------------------------------------
+// Responses
+// -------------------------------------------------------------------------
+
+message TimeResponse {
+  int64  unix_seconds   = 1;  // Whole seconds since Unix epoch
+  int64  unix_nanos     = 2;  // Nanosecond remainder
+  string iso8601        = 3;  // RFC 3339 with microsecond resolution, UTC
+  double uncertainty_ms = 4;  // Current uncertainty window (milliseconds)
+}
+
+message AttestedTimeResponse {
+  int64  unix_seconds   = 1;
+  int64  unix_nanos     = 2;
+  string iso8601        = 3;
+  double uncertainty_ms = 4;
+  double drift_ppm      = 5;  // Current drift estimate (parts per million)
+
+  repeated string accepted_sources = 6;  // NTP authorities that passed quorum
+  repeated string rejected_sources = 7;  // NTP authorities that were rejected
+
+  string quorum_hash = 8;  // SHA-256 hex digest of the quorum result
+}

@@ -1,0 +1,106 @@
+"""
+tests/test_config.py
+
+Unit tests for bridge/config.py.
+No C++ dependency.
+"""
+
+from __future__ import annotations
+
+import os
+
+import pytest
+
+from bridge.config import BridgeConfig, parse_config
+
+
+class TestDefaults:
+    def test_default_ports(self):
+        cfg = parse_config([])
+        assert cfg.rest_port == 8080
+        assert cfg.ws_port == 8081
+        assert cfg.grpc_port == 9090
+
+    def test_default_ntp_servers(self):
+        cfg = parse_config([])
+        assert "time.cloudflare.com" in cfg.ntp_servers
+        assert "time.google.com" in cfg.ntp_servers
+        assert "time.nist.gov" in cfg.ntp_servers
+
+    def test_default_bft_quorum(self):
+        cfg = parse_config([])
+        assert cfg.bft_min_quorum == 3
+
+    def test_fail_closed_by_default(self):
+        cfg = parse_config([])
+        assert cfg.bft_fail_closed is True
+
+    def test_insecure_dev_false_by_default(self):
+        cfg = parse_config([])
+        assert cfg.insecure_dev is False
+
+
+class TestCLIFlags:
+    def test_data_dir(self):
+        cfg = parse_config(["--data-dir", "/tmp/test"])
+        assert cfg.data_dir == "/tmp/test"
+
+    def test_ports(self):
+        cfg = parse_config(["--rest-port", "9000", "--ws-port", "9001", "--grpc-port", "9002"])
+        assert cfg.rest_port == 9000
+        assert cfg.ws_port == 9001
+        assert cfg.grpc_port == 9002
+
+    def test_insecure_dev_flag(self):
+        cfg = parse_config(["--insecure-dev"])
+        assert cfg.insecure_dev is True
+        assert cfg.bft_fail_closed is False
+
+    def test_bearer_tokens(self):
+        cfg = parse_config(["--bearer-tokens", "tok-a,tok-b"])
+        assert "tok-a" in cfg.bearer_tokens
+        assert "tok-b" in cfg.bearer_tokens
+
+    def test_ntp_servers_custom(self):
+        cfg = parse_config(["--ntp-servers", "a.example.com,b.example.com"])
+        assert cfg.ntp_servers == ["a.example.com", "b.example.com"]
+
+    def test_bft_min_quorum(self):
+        cfg = parse_config(["--bft-min-quorum", "5"])
+        assert cfg.bft_min_quorum == 5
+
+    def test_poll_interval(self):
+        cfg = parse_config(["--poll-interval", "0.5"])
+        assert cfg.poll_interval_seconds == pytest.approx(0.5)
+
+
+class TestEnvVars:
+    def test_env_data_dir(self, monkeypatch):
+        monkeypatch.setenv("AEGIS_DATA_DIR", "/env/data")
+        cfg = parse_config([])
+        assert cfg.data_dir == "/env/data"
+
+    def test_env_rest_port(self, monkeypatch):
+        monkeypatch.setenv("BRIDGE_REST_PORT", "9999")
+        cfg = parse_config([])
+        assert cfg.rest_port == 9999
+
+    def test_cli_overrides_env(self, monkeypatch):
+        monkeypatch.setenv("BRIDGE_REST_PORT", "9999")
+        cfg = parse_config(["--rest-port", "7777"])
+        assert cfg.rest_port == 7777
+
+    def test_env_insecure_dev_true(self, monkeypatch):
+        monkeypatch.setenv("BRIDGE_INSECURE_DEV", "true")
+        cfg = parse_config([])
+        assert cfg.insecure_dev is True
+
+    def test_env_insecure_dev_1(self, monkeypatch):
+        monkeypatch.setenv("BRIDGE_INSECURE_DEV", "1")
+        cfg = parse_config([])
+        assert cfg.insecure_dev is True
+
+    def test_env_bearer_tokens(self, monkeypatch):
+        monkeypatch.setenv("BRIDGE_BEARER_TOKENS", "env-token")
+        cfg = parse_config([])
+        assert "env-token" in cfg.bearer_tokens
