@@ -1,0 +1,45 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:vault:Policy",
+  "title": "ColdVault Policy",
+  "description": "Canonical policy/config surface for append-only ColdVault logging.",
+  "type": "object",
+  "required": [
+    "hash_algorithm",
+    "append_only",
+    "store_payload",
+    "include_signature"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "hash_algorithm": {
+      "type": "string",
+      "enum": [
+        "sha256_chain"
+      ],
+      "description": "Hash chaining algorithm for vault lines. Runtime implementation uses SHA-256 chain."
+    },
+    "append_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Vault must be append-only."
+    },
+    "store_payload": {
+      "type": "boolean",
+      "description": "Whether payload bytes are stored directly. Current pipeline stores payload digest for events."
+    },
+    "include_signature": {
+      "type": "boolean",
+      "description": "Whether signatures are included in stored payload material."
+    },
+    "time_source": {
+      "type": "string",
+      "enum": [
+        "bft_hint",
+        "clock_fallback"
+      ],
+      "description": "Timestamp source policy: use BFT runtime hint when available, fallback to clock pre-quorum."
+    }
+  }
+}

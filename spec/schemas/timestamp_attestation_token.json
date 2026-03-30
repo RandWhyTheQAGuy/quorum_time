@@ -1,46 +1,50 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:bft:TimestampAttestationToken",
   "title": "TimestampAttestationToken",
   "type": "object",
   "required": [
     "unix_time",
-    "median_rtt",
+    "median_rtt_ms",
     "drift_ppm",
-    "quorum_servers",
-    "quorum_hash",
-    "signature"
+    "servers",
+    "quorum_hash_hex",
+    "signature_hex"
   ],
   "properties": {
-
     "unix_time": {
       "type": "integer",
-      "description": "Quorum validated UNIX timestamp"
+      "minimum": 0,
+      "description": "Quorum validated UNIX timestamp."
     },
-
-    "median_rtt": {
+    "median_rtt_ms": {
       "type": "integer",
-      "description": "Median RTT across quorum"
+      "minimum": 0,
+      "description": "Median RTT across quorum in milliseconds."
     },
-
     "drift_ppm": {
       "type": "integer",
-      "description": "Estimated clock drift in ppm"
+      "minimum": 0,
+      "description": "Estimated clock drift in ppm."
     },
-
-    "quorum_servers": {
+    "servers": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-
-    "quorum_hash": {
+    "quorum_hash_hex": {
       "type": "string",
-      "description": "SHA256 hash of server quorum"
+      "pattern": "^[0-9a-fA-F]{64}$",
+      "description": "SHA-256 hash of server quorum."
     },
-
-    "signature": {
+    "signature_hex": {
       "type": "string",
-      "description": "HMAC signature over the token payload"
+      "pattern": "^[0-9a-fA-F]+$",
+      "description": "HMAC/Ed25519 signature over token payload."
     }
-
-  }
+  },
+  "additionalProperties": false
 }

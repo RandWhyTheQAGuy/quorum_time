@@ -1,0 +1,126 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quorum Time / Aegis schema catalog",
+  "description": "Inventory of machine-readable schemas. Proto source of truth: proto/*.proto",
+  "schemas": [
+    {
+      "id": "urn:uml001:aegis:EventContext",
+      "path": "event_context.schema.json"
+    },
+    {
+      "id": "urn:uml001:aegis:SignedStateEnvelope",
+      "path": "signed_state_envelope.schema.json"
+    },
+    {
+      "id": "urn:uml001:aegis:PipelineEventId",
+      "path": "pipeline_event_id.schema.json"
+    },
+    {
+      "id": "urn:uml001:aegis:RuntimeMode",
+      "path": "runtime_mode.schema.json"
+    },
+    {
+      "id": "urn:uml001:aegis:GossipPolicy",
+      "path": "gossip_policy.schema.json"
+    },
+    {
+      "id": "urn:uml001:aegis:ConvergencePolicy",
+      "path": "convergence.schema.json"
+    },
+    {
+      "id": "urn:uml001:aegis:ProtocolNtp",
+      "path": "aegis_protocol_ntp.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:Config",
+      "path": "bft_clock_config.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:Composite",
+      "path": "bft_quorum_clock.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:SharedState",
+      "path": "bft_shared_state.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:NtpServers",
+      "path": "ntp_servers.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:TrustedAuthorities",
+      "path": "trusted_authorities.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:SharedClockState",
+      "path": "shared_clock_state.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:TimeProof",
+      "path": "time_proof.schema.json"
+    },
+    {
+      "id": "urn:uml001:bft:TimestampAttestationToken",
+      "path": "timestamp_attestation_token.json"
+    },
+    {
+      "id": "urn:uml001:crypto:Config",
+      "path": "crypto_config.schema.json"
+    },
+    {
+      "id": "urn:uml001:crypto:KeyMetadata",
+      "path": "crypto_key_metadata.schema.json"
+    },
+    {
+      "id": "urn:uml001:crypto:RotationSignature",
+      "path": "rotation_signature.schema.json"
+    },
+    {
+      "id": "urn:uml001:crypto:EncryptedLogEnvelope",
+      "path": "encrypted_log_envelope.schema.json"
+    },
+    {
+      "id": "urn:uml001:crypto:HsmConfig",
+      "path": "hsm_config.schema.json"
+    },
+    {
+      "id": "urn:uml001:key_rotation:Config",
+      "path": "key_rotation_config.schema.json"
+    },
+    {
+      "id": "urn:uml001:key_rotation:Event",
+      "path": "key_rotation_event.schema.json"
+    },
+    {
+      "id": "urn:uml001:merkle:Manifest",
+      "path": "merkle_manifest.schema.json"
+    },
+    {
+      "id": "urn:uml001:vault:Policy",
+      "path": "vault.schema.json"
+    },
+    {
+      "id": "urn:uml001:vault:Config",
+      "path": "vault_config.schema.json"
+    },
+    {
+      "id": "urn:uml001:vault:LogEntry",
+      "path": "vault_log_entry.schema.json"
+    },
+    {
+      "id": "urn:uml001:vault:FileBackend",
+      "path": "file_vault_backend.schema.json"
+    }
+  ],
+  "canonical_examples": [
+    "spec/examples/canonical/event_context.minimal.json",
+    "spec/examples/canonical/event_context.aborted.hitl_hold.json",
+    "spec/examples/canonical/bft_shared_state.rest_time_shared_state.json",
+    "spec/examples/canonical/signed_state.control_set_mode.json",
+    "spec/examples/canonical/signed_state.rest_time_now.json",
+    "spec/examples/canonical/signed_state.worker_ntp_sync.json",
+    "spec/examples/canonical/signed_state.internal_shared_state_apply.json",
+    "spec/examples/canonical/signed_state.rest_auth_failed.json"
+  ]
+}

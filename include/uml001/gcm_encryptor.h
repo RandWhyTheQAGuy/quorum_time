@@ -22,10 +22,6 @@
  *                           for time events, alignment proofs, and
  *                           key‑rotation operations.
  *
- *   - Semantic Passports: optional identity and capability metadata
- *                         for systems that require verifiable agent
- *                         provenance and authorization context.
- *
  *   - Open Integration: designed for interoperability with distributed
  *                       systems, security‑critical infrastructure,
  *                       autonomous agents, and research environments.

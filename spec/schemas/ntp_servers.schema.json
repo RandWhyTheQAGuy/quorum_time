@@ -1,4 +1,5 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$id": "https://uml001.example.com/schema/ntp_servers.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "NTP Servers Configuration",
@@ -9,7 +10,10 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["hostname", "max_rtt_ms"],
+        "required": [
+          "hostname",
+          "max_rtt_ms"
+        ],
         "properties": {
           "hostname": {
             "type": "string",
@@ -30,6 +34,8 @@
       }
     }
   },
-  "required": ["servers"],
+  "required": [
+    "servers"
+  ],
   "additionalProperties": false
 }

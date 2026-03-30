@@ -45,21 +45,18 @@
  */
 #include "uml001/clock_service_impl.h"
 #include "uml001/crypto_utils.h"
-#include "uml001/vault_logger.h"
+#include "uml001/pipeline_event_codec.h"
+#include "uml001/pipeline_event_ids.h"
 
 #include <sstream>
 #include <iomanip>
 
 namespace uml001 {
 
-ClockServiceImpl::ClockServiceImpl(BFTQuorumTrustedClock& clock,
-                                   ColdVault&             vault,
-                                   ClockGovernor&         governor,
-                                   IHashProvider&         hash_provider)
-    : clock_(clock)
-    , vault_(vault)
-    , governor_(governor)
-    , hash_(hash_provider)
+ClockServiceImpl::ClockServiceImpl(EventOrchestrator& orchestrator,
+                                   BFTQuorumTrustedClock& clock)
+    : orchestrator_(orchestrator)
+    , clock_(clock)
 {}
 
 // ------------------------ GetTime ------------------------
@@ -68,17 +65,20 @@ grpc::Status ClockServiceImpl::GetTime(grpc::ServerContext*,
                                        const uml001::GetTimeRequest*,
                                        uml001::TimeResponse* resp)
 {
-    const uint64_t now = clock_.now_unix();
-    const int64_t  drift = clock_.get_current_drift();
+    SignedState event;
+    event.set_event_id(pipeline::GRPC_GET_TIME);
+    event.set_logical_time_ns(clock_.now_unix() * 1000000000ULL);
+    const auto ctx = orchestrator_.ingest_with_context(event);
 
-    resp->set_unix_timestamp(now);
-    resp->set_drift_applied(drift);
-    resp->set_last_updated_unix(now);
-    resp->set_monotonic_version(0);      // reserved for future monotonic versioning
-    resp->set_signature("");            // reserved for future signing
+    resp->set_unix_timestamp(ctx.grpc_unix_time);
+    resp->set_drift_applied(ctx.grpc_drift);
+    resp->set_last_updated_unix(ctx.grpc_unix_time);
+    // De-scoped fields (see proto/clock_service.proto contract notes).
+    resp->set_monotonic_version(0);
+    resp->set_signature("");
     resp->set_leader_id("local");       // single-node leader id for now
-    resp->set_key_id("");               // reserved for future key binding
-    resp->set_alignment_context_id(""); // reserved for future alignment context
+    resp->set_key_id("");
+    resp->set_alignment_context_id("");
 
     return grpc::Status::OK;
 }
@@ -89,13 +89,15 @@ grpc::Status ClockServiceImpl::GetStatus(grpc::ServerContext*,
                                          const uml001::GetStatusRequest*,
                                          uml001::StatusResponse* resp)
 {
-    // For now, operational if we can read a time value at all.
-    const uint64_t now = clock_.now_unix();
-    (void)now;
+    SignedState event;
+    event.set_event_id(pipeline::GRPC_GET_STATUS);
+    event.set_logical_time_ns(clock_.now_unix() * 1000000000ULL);
+    const auto ctx = orchestrator_.ingest_with_context(event);
 
-    resp->set_operational(true);
-    resp->set_quorum_threshold(static_cast<uint32_t>(governor_.required()));
-    resp->set_current_version(0); // reserved for future shared-state versioning
+    resp->set_operational(ctx.grpc_operational);
+    resp->set_quorum_threshold(ctx.grpc_quorum_threshold);
+    // De-scoped field (see proto/clock_service.proto contract notes).
+    resp->set_current_version(0);
 
     return grpc::Status::OK;
 }
@@ -111,35 +113,22 @@ grpc::Status ClockServiceImpl::AlignTime(grpc::ServerContext*,
                             "peer_id and local_anchor are required");
     }
 
-    const uint64_t server_ts = clock_.now_unix();
     const std::string session_id = make_session_id();
 
-    // Derive a simple server-side anchor from the peer's anchor.
-    // This is intentionally deterministic and hash-based so both
-    // sides can reason about the relationship between anchors.
-    const std::string local_anchor_bytes = req->local_anchor();
-    const std::string local_anchor_hex   = bytes_to_hex(local_anchor_bytes);
-    const std::string remote_anchor_hex  = hash_.sha256(local_anchor_hex);
+    std::string payload;
+    pipeline::encode_align_payload(req->peer_id(), session_id, req->local_anchor(), &payload);
+    SignedState event;
+    event.set_event_id(pipeline::GRPC_ALIGN_TIME);
+    event.set_logical_time_ns(clock_.now_unix() * 1000000000ULL);
+    event.set_payload(payload);
+    const auto ctx = orchestrator_.ingest_with_context(event);
 
     // Fill response
-    resp->set_session_id(session_id);
-    resp->set_remote_anchor(std::string(
-        reinterpret_cast<const char*>(remote_anchor_hex.data()),
-        remote_anchor_hex.size()));
-    resp->set_signature_proof(std::string()); // reserved for future signing
-    resp->set_server_timestamp(server_ts);
-
-    // Vault / audit logging: record the alignment event in a structured way.
-    // We use the global vault_log sink with the align_time domain keys.
-    std::ostringstream payload;
-    payload << "{"
-            << "\"peer_id\":\"" << req->peer_id() << "\","
-            << "\"session_id\":\"" << session_id << "\","
-            << "\"local_root\":\"" << local_anchor_hex << "\","
-            << "\"remote_root\":\"" << remote_anchor_hex << "\""
-            << "}";
-
-    vault_log(events::ALIGN_CREATED, payload.str());
+    resp->set_session_id(ctx.grpc_align_session_id.empty() ? session_id : ctx.grpc_align_session_id);
+    resp->set_remote_anchor(ctx.grpc_align_remote_anchor);
+    // De-scoped field (see proto/clock_service.proto contract notes).
+    resp->set_signature_proof(std::string());
+    resp->set_server_timestamp(ctx.grpc_align_server_ts);
 
     return grpc::Status::OK;
 }

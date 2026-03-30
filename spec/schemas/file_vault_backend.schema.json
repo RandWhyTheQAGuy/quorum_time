@@ -1,26 +1,22 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "FileVaultBackend",
   "description": "Schema describing the behavior and structure of the UML-001 file vault backend. The vault is an append-only, timestamp-rotated log with optional durability guarantees.",
-
   "type": "object",
-
   "properties": {
     "base_dir": {
       "type": "string",
       "description": "Filesystem directory where active and archived vault files are stored."
     },
-
     "active_file": {
       "type": "string",
       "description": "Path to the currently active vault file. Format: vault_<unix_timestamp>.log"
     },
-
     "fsync_on_write": {
       "type": "boolean",
       "description": "If true, each append is made durable using fsync (POSIX) or _commit (Windows)."
     },
-
     "rotation": {
       "type": "object",
       "description": "Rotation behavior for vault files.",
@@ -34,16 +30,20 @@
           "description": "Format of rotated filenames. Matches active file name."
         }
       },
-      "required": ["archive_dir", "filename_format"]
+      "required": [
+        "archive_dir",
+        "filename_format"
+      ]
     },
-
     "append_behavior": {
       "type": "object",
       "description": "Append-only semantics for vault writes.",
       "properties": {
         "mode": {
           "type": "string",
-          "enum": ["append-only"],
+          "enum": [
+            "append-only"
+          ],
           "description": "Vault files are always opened in append-only mode."
         },
         "binary_safe": {
@@ -51,9 +51,11 @@
           "description": "Writes are performed in binary-safe mode."
         }
       },
-      "required": ["mode", "binary_safe"]
+      "required": [
+        "mode",
+        "binary_safe"
+      ]
     },
-
     "read_behavior": {
       "type": "object",
       "description": "Semantics for reading the last line of the active vault file.",
@@ -63,10 +65,11 @@
           "description": "If the active file does not exist or is empty, read_last_line returns null."
         }
       },
-      "required": ["returns_null_if_missing"]
+      "required": [
+        "returns_null_if_missing"
+      ]
     }
   },
-
   "required": [
     "base_dir",
     "active_file",

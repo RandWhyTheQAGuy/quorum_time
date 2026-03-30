@@ -1,0 +1,25 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:aegis:PipelineEventId",
+  "title": "PipelineEventId",
+  "description": "Canonical event_id values for EventOrchestrator / SignedState.event_id. Source of truth: include/uml001/pipeline_event_ids.h",
+  "type": "string",
+  "enum": [
+    "uml001.grpc.GetTime",
+    "uml001.grpc.GetStatus",
+    "uml001.grpc.AlignTime",
+    "uml001.rest.time.now",
+    "uml001.rest.time.sync",
+    "uml001.rest.time.shared_state",
+    "uml001.rest.auth_failed",
+    "uml001.worker.ntp_sync",
+    "uml001.internal.shared_state.apply",
+    "uml001.control.set_mode",
+    "uml001.control.hitl.approve",
+    "uml001.control.hitl.reject",
+    "uml001.control.recovery.begin",
+    "uml001.control.recovery.epoch_verified",
+    "uml001.control.recovery.rejoin"
+  ]
+}

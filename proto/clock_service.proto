@@ -1,3 +1,43 @@
+// Quorum Time — Open Trusted Time & Distributed Verification Framework
+// Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+// SPDX-License-Identifier: Apache-2.0
+//
+// Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+// system designed for modern distributed environments. It provides a
+// cryptographically anchored notion of time that can be aligned,
+// audited, and shared across domains without requiring centralized
+// trust.
+//
+// This project also includes the Aegis Semantic Passport components,
+// which complement Quorum Time by offering structured, verifiable
+// identity and capability attestations for agents and services.
+//
+// Core capabilities:
+//   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+//                      with drift bounds, authority attestation, and
+//                      cross-domain alignment (AlignTime).
+//
+//   - Transparency Logging: append-only, hash-chained audit records
+//                           for time events, alignment proofs, and
+//                           key-rotation operations.
+//
+//   - Open Integration: designed for interoperability with distributed
+//                       systems, security-critical infrastructure,
+//                       autonomous agents, and research environments.
+//
+// Quorum Time is developed as an open-source project with a focus on
+// clarity, auditability, and long-term maintainability. Contributions,
+// issue reports, and discussions are welcome.
+//
+// Licensed under the Apache License, Version 2.0 (the "License").
+// You may obtain a copy of the License at:
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// This implementation is intended for open research, practical
+// deployment, and community-driven evolution of verifiable time and
+// distributed trust standards.
+//
 syntax = "proto3";
 
 package uml001;
@@ -17,12 +57,20 @@ message TimeResponse {
   uint64 unix_timestamp       = 1;
   int64  drift_applied        = 2;
   uint64 last_updated_unix    = 3;
+  // De-scoped in current runtime API: always 0.
+  // Versioned state is exposed through internal shared-state events and
+  // TimeAnchor proofs, not GetTime.
   uint64 monotonic_version    = 4;
+  // De-scoped in current runtime API: always empty.
+  // Use TimeAnchor.proof / SignedState::anchor_proof for cryptographic proofs.
   string signature            = 5;
   string leader_id            = 6;
+  // De-scoped in current runtime API: always empty.
+  // Key binding is carried in SignedState/AnchorProof verification path.
   string key_id               = 7;
 
-  // Optional: Anchors the passport to a specific alignment
+  // De-scoped in current runtime API: always empty.
+  // Alignment session context is returned by AlignTime.session_id.
   string alignment_context_id = 8;
 }
 
@@ -39,7 +87,8 @@ message AlignTimeResponse {
   // Server-authoritative anchor (BFT clock / local hash derived)
   bytes  remote_anchor    = 2;
 
-  // Signature over canonical payload (reserved; currently empty)
+  // De-scoped in current runtime API: always empty.
+  // Use TimeAnchor.proof / SignedState::anchor_proof for cryptographic proofs.
   bytes  signature_proof  = 3;
 
   uint64 server_timestamp = 4;
@@ -50,5 +99,7 @@ message GetStatusRequest {}
 message StatusResponse {
   bool   operational      = 1;
   uint32 quorum_threshold = 2;
+  // De-scoped in current runtime API: always 0.
+  // Runtime versioning is carried by shared-state event payloads.
   uint64 current_version  = 3;
 }

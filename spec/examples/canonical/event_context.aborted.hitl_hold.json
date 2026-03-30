@@ -1,0 +1,38 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "event": {
+    "logical_time_ns": 1700000000000000000,
+    "event_id": "uml001.worker.ntp_sync",
+    "payload": "cmVxdWlyZXNfaGl0bD0x",
+    "signature": "",
+    "key_id": "",
+    "gossip": {
+      "hops": 0,
+      "ttl": 1,
+      "validated": false,
+      "origin_node_id": ""
+    }
+  },
+  "event_hash": "",
+  "merkle_leaf": "",
+  "vault_head_before": "",
+  "vault_head_after": "",
+  "received_at_ns": 1700000000000000000,
+  "processed_at_ns": 1700000000000000200,
+  "hop_count": 0,
+  "is_converged": false,
+  "vault_written": false,
+  "gossip_forwarded": false,
+  "quorum_updated": false,
+  "aborted": true,
+  "audit_stage": "HitlGateStage",
+  "audit_reason": "hitl_hold_blocked",
+  "grpc_unix_time": 0,
+  "grpc_drift": 0,
+  "grpc_quorum_threshold": 0,
+  "grpc_operational": true,
+  "grpc_align_session_id": "",
+  "grpc_align_remote_anchor": "",
+  "grpc_align_server_ts": 0,
+  "rest_shared_state_ok": false
+}

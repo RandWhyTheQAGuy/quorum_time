@@ -1,0 +1,11 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "monotonic_version": 7,
+  "warp_score": 0.125,
+  "shared_agreed_time": 1700000100,
+  "shared_applied_drift": -2,
+  "leader_system_time_at_sync": 1700000100,
+  "signature_hex": "abcdef",
+  "leader_id": "leader-A",
+  "key_id": "k1"
+}

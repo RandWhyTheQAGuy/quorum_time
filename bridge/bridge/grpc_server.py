@@ -1,3 +1,43 @@
+# Quorum Time — Open Trusted Time & Distributed Verification Framework
+# Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+# SPDX-License-Identifier: Apache-2.0
+#
+# Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+# system designed for modern distributed environments. It provides a
+# cryptographically anchored notion of time that can be aligned,
+# audited, and shared across domains without requiring centralized
+# trust.
+#
+# This project also includes the Aegis Semantic Passport components,
+# which complement Quorum Time by offering structured, verifiable
+# identity and capability attestations for agents and services.
+#
+# Core capabilities:
+#   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+#                      with drift bounds, authority attestation, and
+#                      cross-domain alignment (AlignTime).
+#
+#   - Transparency Logging: append-only, hash-chained audit records
+#                           for time events, alignment proofs, and
+#                           key-rotation operations.
+#
+#   - Open Integration: designed for interoperability with distributed
+#                       systems, security-critical infrastructure,
+#                       autonomous agents, and research environments.
+#
+# Quorum Time is developed as an open-source project with a focus on
+# clarity, auditability, and long-term maintainability. Contributions,
+# issue reports, and discussions are welcome.
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may obtain a copy of the License at:
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# This implementation is intended for open research, practical
+# deployment, and community-driven evolution of verifiable time and
+# distributed trust standards.
+#
 """
 bridge/grpc_server.py
 
@@ -35,8 +75,8 @@ Service definition (equivalent proto):
       string iso8601            = 3;
       double uncertainty_ms     = 4;
       double drift_ppm          = 5;
-      repeated string accepted  = 6;
-      repeated string rejected  = 7;
+      repeated string accepted_sources  = 6;
+      repeated string rejected_sources  = 7;
       string quorum_hash        = 8;
     }
 """
@@ -44,8 +84,10 @@ Service definition (equivalent proto):
 from __future__ import annotations
 
 import logging
+import sys
 from concurrent import futures
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional
 
 import grpc
@@ -61,12 +103,21 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 try:
-    # If the caller has pre-generated stubs available, prefer them
-    from bridge_pb2 import AttestedTimeResponse, GetTimeRequest, TimeResponse  # type: ignore
-    from bridge_pb2_grpc import BridgeTimeServiceServicer, add_BridgeTimeServiceServicer_to_server  # type: ignore
+    # Prefer package-local generated stubs.
+    from .bridge_pb2 import AttestedTimeResponse, GetTimeRequest, TimeResponse  # type: ignore
+    # Generated grpc stubs import bridge_pb2 with an absolute module name.
+    # Register an alias so package-local import contexts still work.
+    sys.modules.setdefault("bridge_pb2", sys.modules[__package__ + ".bridge_pb2"])
+    from .bridge_pb2_grpc import BridgeTimeServiceServicer, add_BridgeTimeServiceServicer_to_server  # type: ignore
     _STUBS_AVAILABLE = True
 except ImportError:
-    _STUBS_AVAILABLE = False
+    try:
+        # Fallback for top-level import contexts.
+        from bridge_pb2 import AttestedTimeResponse, GetTimeRequest, TimeResponse  # type: ignore
+        from bridge_pb2_grpc import BridgeTimeServiceServicer, add_BridgeTimeServiceServicer_to_server  # type: ignore
+        _STUBS_AVAILABLE = True
+    except ImportError:
+        _STUBS_AVAILABLE = False
 
 # ---------------------------------------------------------------------------
 # Reflection-free implementation using grpc.experimental.proto_reflection
@@ -126,8 +177,8 @@ class _BridgeServicer:
         resp.iso8601 = dt.strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z"
         resp.uncertainty_ms = at.uncertainty_ms
         resp.drift_ppm = at.drift_ppm
-        resp.accepted.extend(at.accepted_sources)
-        resp.rejected.extend(at.rejected_sources)
+        resp.accepted_sources.extend(at.accepted_sources)
+        resp.rejected_sources.extend(at.rejected_sources)
         resp.quorum_hash = at.quorum_hash_hex
         return resp
 
@@ -136,6 +187,9 @@ def build_grpc_server(
     state: ClockState,
     port: int,
     max_workers: int = 10,
+    tls_cert_path: str = "",
+    tls_key_path: str = "",
+    tls_client_ca_path: str = "",
 ) -> Optional[grpc.Server]:
     """
     Build and return the gRPC server.  Returns None if stubs are not available
@@ -152,5 +206,17 @@ def build_grpc_server(
     servicer = _BridgeServicer(state)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers))
     add_BridgeTimeServiceServicer_to_server(servicer, server)
-    server.add_insecure_port(f"[::]:{port}")
+    if tls_cert_path and tls_key_path:
+        cert = Path(tls_cert_path).read_bytes()
+        key = Path(tls_key_path).read_bytes()
+        root = Path(tls_client_ca_path).read_bytes() if tls_client_ca_path else None
+        creds = grpc.ssl_server_credentials(
+            [(key, cert)],
+            root_certificates=root,
+            require_client_auth=bool(root),
+        )
+        bound_port = server.add_secure_port(f"[::]:{port}", creds)
+    else:
+        bound_port = server.add_insecure_port(f"[::]:{port}")
+    setattr(server, "_aegis_bound_port", bound_port)
     return server

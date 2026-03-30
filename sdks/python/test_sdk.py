@@ -1,3 +1,43 @@
+# Quorum Time — Open Trusted Time & Distributed Verification Framework
+# Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+# SPDX-License-Identifier: Apache-2.0
+#
+# Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+# system designed for modern distributed environments. It provides a
+# cryptographically anchored notion of time that can be aligned,
+# audited, and shared across domains without requiring centralized
+# trust.
+#
+# This project also includes the Aegis Semantic Passport components,
+# which complement Quorum Time by offering structured, verifiable
+# identity and capability attestations for agents and services.
+#
+# Core capabilities:
+#   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+#                      with drift bounds, authority attestation, and
+#                      cross-domain alignment (AlignTime).
+#
+#   - Transparency Logging: append-only, hash-chained audit records
+#                           for time events, alignment proofs, and
+#                           key-rotation operations.
+#
+#   - Open Integration: designed for interoperability with distributed
+#                       systems, security-critical infrastructure,
+#                       autonomous agents, and research environments.
+#
+# Quorum Time is developed as an open-source project with a focus on
+# clarity, auditability, and long-term maintainability. Contributions,
+# issue reports, and discussions are welcome.
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may obtain a copy of the License at:
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# This implementation is intended for open research, practical
+# deployment, and community-driven evolution of verifiable time and
+# distributed trust standards.
+#
 """
 tests/test_sdk.py
 =================
@@ -46,6 +86,9 @@ from uml001.sync_daemon import (
     SharedClockState, InMemorySharedStore, BFTSyncDaemon,
 )
 
+from uml001 import pipeline_event_ids
+from uml001.runtime_mode import RuntimeMode, mode_from_string, mode_to_string
+
 
 # ============================================================
 # Fixtures
@@ -88,8 +131,8 @@ def reset_registry():
 def _signed_obs(authority, ts, seq, hmac_key, key_id="default"):
     payload = f"{authority}|{key_id}|{ts}|{seq}"
     sig = hmac_sha256_hex(payload, hmac_key)
-    return TimeObservation(authority_id=authority, timestamp=ts,
-                           signature=sig, sequence=seq, key_id=key_id)
+    return TimeObservation(server_hostname=authority, unix_seconds=ts,
+                           signature_hex=sig, sequence=seq, key_id=key_id)
 
 
 AUTHORITIES = {
@@ -339,8 +382,11 @@ class TestNtpFetcher:
         f, key = self._fetcher()
         raw = NtpObservation("time.google.com", 1_700_000_000, 50, 1)
         obs = f._sign_observation(raw)
-        expected = hmac_sha256_hex(f"{obs.authority_id}|{obs.timestamp}|{obs.sequence}", key)
-        assert obs.signature == expected
+        expected = hmac_sha256_hex(
+            f"{obs.server_hostname}|{obs.key_id}|{obs.unix_seconds}|{obs.sequence}",
+            key,
+        )
+        assert obs.signature_hex == expected
 
     def test_state_save_load(self):
         f, _ = self._fetcher()
@@ -591,3 +637,17 @@ class TestEndToEnd:
 
         vault.persist_ntp_sequences({"time.google.com": 3})
         assert vault.load_ntp_sequences().get("time.google.com") == 3
+
+
+# ============================================================
+# Pipeline IDs + runtime mode (schema/SDK parity)
+# ============================================================
+
+class TestPipelineParity:
+    def test_pipeline_constants_unique(self):
+        assert len(pipeline_event_ids.ALL_KNOWN) == len(set(pipeline_event_ids.ALL_KNOWN))
+
+    def test_runtime_mode_roundtrip(self):
+        assert mode_from_string("RECOVERY") == RuntimeMode.RECOVERY
+        assert mode_to_string(RuntimeMode.HITL_HOLD) == "HITL_HOLD"
+        assert mode_from_string("nosuch") is None

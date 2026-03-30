@@ -134,8 +134,8 @@
  *     bft.verify.unknown_authority
  *     bft.sync.quorum_insufficient
  *     bft.shared_state.committed
- *   Updated pattern enforces this structure:
- *     "^bft\\.[a-z0-9_]+\\.[a-z0-9_.]+$"
+ *   Updated pattern enforces this structure and adds non-BFT audit families:
+ *     "^(bft|pipeline|runtime)\\.[a-z0-9_]+\\.[a-z0-9_.]+$"
  *   This rejects "bft.foo" while accepting all keys in the AUDIT SURFACE
  *   table in bft_quorum_clock.h.
  *
@@ -486,7 +486,8 @@ inline constexpr const char* BFT_VAULT_SYNC_LOG_SCHEMA = R"json(
  * bft_quorum_clock.h have the two-segment form; the tightened pattern
  * rejects any deviation at the schema layer before it reaches the vault.
  *
- * Event type values (matches AUDIT SURFACE in bft_quorum_clock.h):
+ * Event type values (matches AUDIT SURFACE in bft_quorum_clock.h, plus
+ * pipeline/runtime control plane audit family):
  *   bft.cold_start.drift_clamped
  *   bft.verify.unknown_authority
  *   bft.verify.replay_detected
@@ -499,6 +500,10 @@ inline constexpr const char* BFT_VAULT_SYNC_LOG_SCHEMA = R"json(
  *   bft.sync.committed
  *   bft.shared_state.drift_ceiling
  *   bft.shared_state.committed
+ *   pipeline.event
+ *   pipeline.quarantine
+ *   runtime.mode.transition
+ *   runtime.mode.reject
  */
 inline constexpr const char* BFT_VAULT_SECURITY_SCHEMA = R"json(
 {
@@ -524,8 +529,8 @@ inline constexpr const char* BFT_VAULT_SECURITY_SCHEMA = R"json(
       "type": "string",
       "minLength": 1,
       "maxLength": 128,
-      "pattern": "^bft\\.[a-z0-9_]+\\.[a-z0-9_.]+$",
-      "description": "Structured event identifier in the form 'bft.<subsystem>.<event>'. At least two dot-separated segments after 'bft.' are required; single-segment keys (e.g. 'bft.foo') are rejected. Never user-controlled. See AUDIT SURFACE table in bft_quorum_clock.h for the complete list of valid keys."
+      "pattern": "^(bft|pipeline|runtime)\\.[a-z0-9_]+\\.[a-z0-9_.]+$",
+      "description": "Structured event identifier in the form '<domain>.<subsystem>.<event>' where domain is one of bft, pipeline, runtime. At least two dot-separated segments after the domain are required; single-segment keys are rejected. Never user-controlled. See AUDIT SURFACE table in bft_quorum_clock.h and pipeline/runtime docs for valid keys."
     },
     "detail": {
       "type": "string",

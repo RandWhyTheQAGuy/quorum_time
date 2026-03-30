@@ -1,4 +1,5 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:uml001:crypto:KeyMetadata",
   "title": "CryptoKeyMetadata",
@@ -10,15 +11,28 @@
     "rotation_policy"
   ],
   "properties": {
-    "key_id": { "type": "string" },
+    "key_id": {
+      "type": "string"
+    },
     "algorithm": {
       "type": "string",
-      "enum": ["AES-256-GCM", "Ed25519", "SHA-256"]
+      "enum": [
+        "AES-256-GCM",
+        "Ed25519",
+        "SHA-256"
+      ]
     },
-    "created_at": { "type": "integer", "minimum": 0 },
+    "created_at": {
+      "type": "integer",
+      "minimum": 0
+    },
     "rotation_policy": {
       "type": "string",
-      "enum": ["manual", "time-based", "usage-based"]
+      "enum": [
+        "manual",
+        "time-based",
+        "usage-based"
+      ]
     }
   },
   "additionalProperties": false

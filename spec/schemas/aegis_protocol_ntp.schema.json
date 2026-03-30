@@ -1,4 +1,5 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "UML-001 NTP Observation Fetcher Configuration",
   "type": "object",
@@ -27,14 +28,30 @@
       "items": {
         "type": "object",
         "properties": {
-          "hostname": { "type": "string" },
-          "max_rtt_ms": { "type": "integer", "minimum": 1 },
-          "timeout_ms": { "type": "integer", "minimum": 1 }
+          "hostname": {
+            "type": "string"
+          },
+          "max_rtt_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1
+          }
         },
-        "required": ["hostname", "max_rtt_ms"]
+        "required": [
+          "hostname",
+          "max_rtt_ms"
+        ]
       },
       "minItems": 1
     }
   },
-  "required": ["hmac_key_hex", "stratum_max", "quorum_size", "servers"]
+  "required": [
+    "hmac_key_hex",
+    "stratum_max",
+    "quorum_size",
+    "servers"
+  ]
 }

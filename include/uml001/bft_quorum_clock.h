@@ -47,6 +47,7 @@
 
 #include "uml001/strong_clock.h"
 #include "uml001/ntp_observation_fetcher.h"
+#include <atomic>
 #include <cstdint>
 #include <mutex>
 #include <optional>
@@ -107,6 +108,9 @@ public:
 private:
     std::int64_t get_dynamic_drift_ceiling(double warp_score) const;
     std::int64_t get_dynamic_drift_step(double warp_score) const;
+    void latch_fail_closed_unlocked(const std::string& reason, const std::string& detail) const;
+    std::uint64_t system_now_unix() const;
+    void refresh_runtime_hint(std::uint64_t t) const;
 
     BftClockConfig config_;
     std::unordered_set<std::string> trusted_authorities_;
@@ -115,9 +119,13 @@ private:
     mutable std::mutex lock_;
     std::int64_t  current_drift_{0};
     std::uint64_t last_sync_unix_{0};
+    std::uint64_t last_sync_steady_unix_{0};
     mutable std::uint64_t last_monotonic_read_{0};
     std::uint64_t last_shared_version_{0};
     std::unordered_map<std::string, std::uint64_t> authority_sequences_;
+    mutable std::atomic<std::uint64_t> runtime_time_hint_{0};
+    mutable bool fail_closed_latched_{false};
+    mutable bool fail_closed_prequorum_logged_{false};
 };
 
 } // namespace uml001

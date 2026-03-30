@@ -58,6 +58,10 @@
 #include "uml001/simple_hash_provider.h"
 #include "uml001/governor.h"
 #include "uml001/clock_service_impl.h"
+#include "uml001/event_orchestrator.h"
+#include "uml001/pipeline_bootstrap.h"
+#include "uml001/pipeline_event_codec.h"
+#include "uml001/pipeline_event_ids.h"
 
 #include <grpcpp/grpcpp.h>
 #include "clock_service.grpc.pb.h"
@@ -164,12 +168,15 @@ int main(int argc, char** argv) {
 
     uml001::NtpObservationFetcher fetcher("", "", servers, 3, 15, 5);
     uml001::ClockGovernor         governor(5);
+    uml001::EventOrchestrator orchestrator(&clock, vault_ptr.get());
+    auto pipeline_runtime = uml001::register_default_pipeline(
+        orchestrator, *vault_ptr, clock, governor, hash_provider);
 
     // ========================================================
     // gRPC SERVER
     // ========================================================
 
-    uml001::ClockServiceImpl service(clock, *vault_ptr, governor, hash_provider);
+    uml001::ClockServiceImpl service(orchestrator, clock);
 
     grpc::ServerBuilder builder;
     builder.AddListeningPort(cfg.grpc_addr, grpc::InsecureServerCredentials());
@@ -185,8 +192,17 @@ int main(int argc, char** argv) {
         while (!g_shutdown.load()) {
             try {
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-                auto obs = fetcher.fetch();
-                clock.update_and_sync(obs, 0.0);
+                auto observations = fetcher.fetch();
+                if (observations.empty()) {
+                    continue;
+                }
+                std::string payload;
+                uml001::pipeline::encode_ntp_sync_payload(observations, 0.0, &payload);
+                uml001::SignedState event;
+                event.set_event_id(uml001::pipeline::WORKER_NTP_SYNC);
+                event.set_logical_time_ns(clock.now_unix() * 1000000000ULL);
+                event.set_payload(payload);
+                orchestrator.ingest(event);
             } catch (...) {
                 uml001::vault_log("error", "background loop failure");
             }

@@ -1,0 +1,26 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:aegis:ConvergencePolicy",
+  "title": "ConvergencePolicy",
+  "type": "object",
+  "required": [
+    "quorum_size",
+    "require_origin_diversity",
+    "min_ack_sources"
+  ],
+  "properties": {
+    "quorum_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "require_origin_diversity": {
+      "type": "boolean"
+    },
+    "min_ack_sources": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}

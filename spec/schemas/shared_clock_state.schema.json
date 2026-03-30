@@ -1,13 +1,17 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://uml001.org/schema/shared_clock_state.json",
+  "$id": "urn:uml001:bft:SharedClockState",
   "title": "SharedClockState",
   "type": "object",
   "required": [
     "agreed_time",
     "applied_drift",
     "last_updated_unix",
-    "key_version"
+    "key_version",
+    "monotonic_version",
+    "leader_id",
+    "signature_hex"
   ],
   "properties": {
     "agreed_time": {
@@ -28,6 +32,21 @@
       "type": "integer",
       "minimum": 1,
       "description": "Version of cryptographic key in effect."
+    },
+    "monotonic_version": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Anti-replay counter."
+    },
+    "leader_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Passport ID of proposer/leader."
+    },
+    "signature_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]+$",
+      "description": "HMAC-SHA256 or Ed25519 signature."
     }
   },
   "additionalProperties": false

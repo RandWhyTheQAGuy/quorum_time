@@ -1,3 +1,43 @@
+# Quorum Time — Open Trusted Time & Distributed Verification Framework
+# Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+# SPDX-License-Identifier: Apache-2.0
+#
+# Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+# system designed for modern distributed environments. It provides a
+# cryptographically anchored notion of time that can be aligned,
+# audited, and shared across domains without requiring centralized
+# trust.
+#
+# This project also includes the Aegis Semantic Passport components,
+# which complement Quorum Time by offering structured, verifiable
+# identity and capability attestations for agents and services.
+#
+# Core capabilities:
+#   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+#                      with drift bounds, authority attestation, and
+#                      cross-domain alignment (AlignTime).
+#
+#   - Transparency Logging: append-only, hash-chained audit records
+#                           for time events, alignment proofs, and
+#                           key-rotation operations.
+#
+#   - Open Integration: designed for interoperability with distributed
+#                       systems, security-critical infrastructure,
+#                       autonomous agents, and research environments.
+#
+# Quorum Time is developed as an open-source project with a focus on
+# clarity, auditability, and long-term maintainability. Contributions,
+# issue reports, and discussions are welcome.
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may obtain a copy of the License at:
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# This implementation is intended for open research, practical
+# deployment, and community-driven evolution of verifiable time and
+# distributed trust standards.
+#
 """
 uml001.ntp_fetcher
 ==================
@@ -57,6 +97,19 @@ class TimeObservation:
     unix_seconds: int
     signature_hex: str
     sequence: int
+
+    # Backward-compat aliases used by older SDK paths/tests.
+    @property
+    def authority_id(self) -> str:
+        return self.server_hostname
+
+    @property
+    def timestamp(self) -> int:
+        return self.unix_seconds
+
+    @property
+    def signature(self) -> str:
+        return self.signature_hex
 
 class NtpObservationFetcher:
     def __init__(
@@ -145,8 +198,8 @@ class NtpObservationFetcher:
             self._sequences[raw.server_hostname] = self._sequences.get(raw.server_hostname, 0) + 1
             seq = self._sequences[raw.server_hostname]
 
-        # REPLAY PROTECTION: Match server-side string concatenation "host:ts:seq"
-        payload = f"{raw.server_hostname}:{raw.unix_seconds}:{seq}"
+        # Canonical payload matches C++/BFT clock verification path.
+        payload = f"{raw.server_hostname}|{self._key_id}|{raw.unix_seconds}|{seq}"
         signature = hmac_sha256_hex(payload, self._hmac_key_hex)
 
         return TimeObservation(
@@ -156,3 +209,11 @@ class NtpObservationFetcher:
             signature_hex=signature,
             sequence=seq
         )
+
+    def save_sequence_state(self) -> dict[str, int]:
+        with self._seq_lock:
+            return dict(self._sequences)
+
+    def load_sequence_state(self, state: dict[str, int]) -> None:
+        with self._seq_lock:
+            self._sequences = dict(state)

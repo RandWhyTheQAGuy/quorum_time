@@ -1,9 +1,24 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$id": "https://uml001.example.com/schema/bft_shared_state.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "BFT Shared State Message",
   "type": "object",
   "properties": {
+    "$comment": {
+      "type": "string",
+      "description": "Optional SPDX / project notice for file-level metadata (not part of runtime shared-state payload)."
+    },
+    "monotonic_version": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonic shared-state version used for replay protection."
+    },
+    "warp_score": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Current warp score bucket input used for dynamic drift ceilings."
+    },
     "leader_id": {
       "type": "string",
       "description": "Logical identifier of the cluster leader node."
@@ -33,6 +48,8 @@
     }
   },
   "required": [
+    "monotonic_version",
+    "warp_score",
     "leader_id",
     "key_id",
     "shared_agreed_time",

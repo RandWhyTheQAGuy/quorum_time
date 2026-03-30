@@ -44,6 +44,8 @@
  * distributed trust standards.
  */
 #include "uml001/rest_handlers.h"
+#include "uml001/pipeline_event_codec.h"
+#include "uml001/pipeline_event_ids.h"
 
 #include <pistache/http.h>
 #include <pistache/router.h>
@@ -53,12 +55,70 @@ using json = nlohmann::json;
 
 namespace uml001::rest {
 
+namespace {
+constexpr const char* kSharedStateFields[] = {
+    "monotonic_version",
+    "warp_score",
+    "shared_agreed_time",
+    "shared_applied_drift",
+    "leader_system_time_at_sync",
+    "signature_hex",
+    "leader_id",
+    "key_id"
+};
+
+template <typename T>
+bool extract_typed_field(const json& body,
+                         const char* field,
+                         T* out,
+                         ColdVault& vault,
+                         Pistache::Http::ResponseWriter& resp)
+{
+    try {
+        *out = body.at(field).get<T>();
+        return true;
+    } catch (const std::exception&) {
+        vault.log_security_event("rest.time.shared_state.bad_request",
+                                 std::string("bad_type=") + field);
+        resp.send(Pistache::Http::Code::Bad_Request, "Invalid shared-state field types");
+        return false;
+    }
+}
+
+bool reject_unknown_fields(const json& body,
+                           ColdVault& vault,
+                           Pistache::Http::ResponseWriter& resp)
+{
+    if (!body.is_object()) {
+        vault.log_security_event("rest.time.shared_state.bad_request", "reason=non_object");
+        resp.send(Pistache::Http::Code::Bad_Request, "Invalid shared-state JSON object");
+        return true;
+    }
+    for (const auto& item : body.items()) {
+        bool known = false;
+        for (const char* f : kSharedStateFields) {
+            if (item.key() == f) {
+                known = true;
+                break;
+            }
+        }
+        if (!known) {
+            vault.log_security_event("rest.time.shared_state.bad_request",
+                                     std::string("unknown_field=") + item.key());
+            resp.send(Pistache::Http::Code::Bad_Request, "Unknown shared-state fields are not allowed");
+            return true;
+        }
+    }
+    return false;
+}
+} // namespace
+
 TimeApiHandler::TimeApiHandler(
-    std::shared_ptr<BFTQuorumTrustedClock> clock,
+    EventOrchestrator&                     orchestrator,
     RestAuthConfig                         auth_config,
     ColdVault&                             vault
 )
-    : clock_(std::move(clock))
+    : orchestrator_(orchestrator)
     , auth_(std::move(auth_config))
     , vault_(vault)
 {}
@@ -117,6 +177,11 @@ bool TimeApiHandler::check_auth(
         "rest.auth.failed",
         "endpoint=" + endpoint_name + " reason=" + failure_reason
     );
+    SignedState event;
+    event.set_event_id(pipeline::REST_AUTH_FAILED);
+    event.set_logical_time_ns(0);
+    event.set_payload("endpoint=" + endpoint_name + ";reason=" + failure_reason);
+    orchestrator_.ingest(event);
     return false;
 }
 
@@ -130,7 +195,11 @@ void TimeApiHandler::handle_now(
         return;
     }
 
-    uint64_t t = clock_->now_unix();
+    SignedState event;
+    event.set_event_id(pipeline::REST_TIME_NOW);
+    event.set_logical_time_ns(0);
+    const auto ctx = orchestrator_.ingest_with_context(event);
+    uint64_t t = ctx.grpc_unix_time;
     json j = { {"unix_time", t} };
 
     vault_.log_security_event("rest.time.now", "unix_time=" + std::to_string(t));
@@ -155,46 +224,14 @@ void TimeApiHandler::handle_sync(
         return;
     }
 
-    double warp = body.value("warp_score", 0.0);
+    SignedState event;
+    event.set_event_id(pipeline::REST_TIME_SYNC);
+    event.set_logical_time_ns(0);
+    event.set_payload(body.dump());
+    orchestrator_.ingest(event);
 
-    std::vector<TimeObservation> obs;
-    for (auto& o : body["observations"]) {
-        TimeObservation t;
-        t.server_hostname = o["server_hostname"];
-        t.key_id          = o["key_id"];
-        t.unix_seconds    = o["unix_seconds"];
-        t.signature_hex   = o["signature_hex"];
-        t.sequence        = o["sequence"];
-        obs.push_back(t);
-    }
-
-    auto result = clock_->update_and_sync(obs, warp);
-    if (!result) {
-        vault_.log_security_event(
-            "rest.time.sync.failed",
-            "warp_score=" + std::to_string(warp)
-        );
-        resp.send(Pistache::Http::Code::Conflict,
-                  "Sync failed (quorum or drift ceiling)");
-        return;
-    }
-
-    // JSON field name stays "applied_drift" to match BFT_SYNC_RESULT_SCHEMA,
-    // but the value comes from BftSyncResult::drift_step.
-    json j = {
-        {"agreed_time",      result->agreed_time},
-        {"applied_drift",    result->drift_step},
-        {"accepted_sources", result->accepted_sources},
-        {"outliers_ejected", result->outliers_ejected},
-        {"rejected_sources", result->rejected_sources}
-    };
-
-    vault_.log_security_event(
-        "rest.time.sync.ok",
-        "agreed_time=" + std::to_string(result->agreed_time)
-    );
-
-    resp.send(Pistache::Http::Code::Ok, j.dump());
+    resp.send(Pistache::Http::Code::Forbidden,
+              "Direct sync mutation disabled; use convergence pipeline");
 }
 
 void TimeApiHandler::handle_shared_state(
@@ -215,37 +252,64 @@ void TimeApiHandler::handle_shared_state(
         return;
     }
 
-    // New fields: monotonic_version (uint64) + warp_score (double, optional)
-    uint64_t monotonic_version = body.value("monotonic_version", uint64_t{0});
-    double   warp              = body.value("warp_score", 0.0);
+    if (reject_unknown_fields(body, vault_, resp)) {
+        return;
+    }
+    for (const char* f : kSharedStateFields) {
+        if (!body.contains(f)) {
+            vault_.log_security_event(
+                "rest.time.shared_state.bad_request",
+                std::string("missing_field=") + f);
+            resp.send(Pistache::Http::Code::Bad_Request, "Missing required shared-state fields");
+            return;
+        }
+    }
 
-    bool ok = clock_->apply_shared_state(
-        body["shared_agreed_time"],
-        body["shared_applied_drift"],
-        body["leader_system_time_at_sync"],
-        body["signature_hex"],
-        body["leader_id"],
-        body["key_id"],
-        monotonic_version,
-        warp
-    );
+    uint64_t monotonic_version = 0;
+    double warp_score = 0.0;
+    uint64_t shared_agreed_time = 0;
+    int64_t shared_applied_drift = 0;
+    uint64_t leader_system_time_at_sync = 0;
+    std::string signature_hex;
+    std::string leader_id;
+    std::string key_id;
 
-    if (!ok) {
-        vault_.log_security_event(
-            "rest.time.shared_state.rejected",
-            "leader=" + body["leader_id"].get<std::string>()
-        );
-        resp.send(Pistache::Http::Code::Conflict,
-                  "Shared state rejected");
+    if (!extract_typed_field(body, "monotonic_version", &monotonic_version, vault_, resp) ||
+        !extract_typed_field(body, "warp_score", &warp_score, vault_, resp) ||
+        !extract_typed_field(body, "shared_agreed_time", &shared_agreed_time, vault_, resp) ||
+        !extract_typed_field(body, "shared_applied_drift", &shared_applied_drift, vault_, resp) ||
+        !extract_typed_field(body, "leader_system_time_at_sync", &leader_system_time_at_sync, vault_, resp) ||
+        !extract_typed_field(body, "signature_hex", &signature_hex, vault_, resp) ||
+        !extract_typed_field(body, "leader_id", &leader_id, vault_, resp) ||
+        !extract_typed_field(body, "key_id", &key_id, vault_, resp)) {
         return;
     }
 
-    vault_.log_security_event(
-        "rest.time.shared_state.adopted",
-        "leader=" + body["leader_id"].get<std::string>()
-    );
+    std::string payload;
+    // Keep warp_score in the encoded payload so downstream signature verification
+    // can cryptographically bind drift-ceiling policy inputs.
+    pipeline::encode_shared_state_payload(
+        monotonic_version,
+        warp_score,
+        shared_agreed_time,
+        shared_applied_drift,
+        leader_system_time_at_sync,
+        signature_hex,
+        leader_id,
+        key_id,
+        &payload);
 
-    resp.send(Pistache::Http::Code::Ok, "Shared state adopted");
+    SignedState event;
+    event.set_event_id(pipeline::REST_TIME_SHARED_STATE);
+    event.set_logical_time_ns(0);
+    event.set_payload(payload);
+    const auto ctx = orchestrator_.ingest_with_context(event);
+    if (ctx.rest_shared_state_ok) {
+        resp.send(Pistache::Http::Code::Ok, "{\"status\":\"applied\"}");
+        return;
+    }
+    resp.send(Pistache::Http::Code::Forbidden,
+              "Shared-state rejected by convergence or signature/version checks");
 }
 
 } // namespace uml001::rest

@@ -1,4 +1,5 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$id": "https://uml001.example.com/schema/trusted_authorities.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Trusted Time Authorities",
@@ -14,6 +15,8 @@
       }
     }
   },
-  "required": ["trusted_authorities"],
+  "required": [
+    "trusted_authorities"
+  ],
   "additionalProperties": false
 }

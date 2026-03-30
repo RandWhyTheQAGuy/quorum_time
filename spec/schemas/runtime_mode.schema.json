@@ -1,0 +1,16 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:aegis:RuntimeMode",
+  "title": "RuntimeMode",
+  "description": "Operational mode for RuntimeModeMachine (HITL / degradation). Payload for uml001.control.set_mode is plain ASCII name. Source: include/uml001/runtime_mode_machine.h",
+  "type": "string",
+  "enum": [
+    "COLD_START",
+    "QUORUM_ACTIVE",
+    "DEGRADED",
+    "ISOLATED",
+    "RECOVERY",
+    "HITL_HOLD"
+  ]
+}

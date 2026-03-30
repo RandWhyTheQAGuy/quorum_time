@@ -1,63 +1,64 @@
+/*
+ * Quorum Time — Open Trusted Time & Distributed Verification Framework
+ * Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+ * system designed for modern distributed environments. It provides a
+ * cryptographically anchored notion of time that can be aligned,
+ * audited, and shared across domains without requiring centralized
+ * trust.
+ *
+ * This project also includes the Aegis Semantic Passport components,
+ * which complement Quorum Time by offering structured, verifiable
+ * identity and capability attestations for agents and services.
+ *
+ * Core capabilities:
+ *   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+ *                      with drift bounds, authority attestation, and
+ *                      cross-domain alignment (AlignTime).
+ *
+ *   - Transparency Logging: append-only, hash-chained audit records
+ *                           for time events, alignment proofs, and
+ *                           key-rotation operations.
+ *
+ *   - Open Integration: designed for interoperability with distributed
+ *                       systems, security-critical infrastructure,
+ *                       autonomous agents, and research environments.
+ *
+ * Quorum Time is developed as an open-source project with a focus on
+ * clarity, auditability, and long-term maintainability. Contributions,
+ * issue reports, and discussions are welcome.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This implementation is intended for open research, practical
+ * deployment, and community-driven evolution of verifiable time and
+ * distributed trust standards.
+ */
 #include <pistache/endpoint.h>
 #include <pistache/router.h>
 
 #include <unordered_set>
-#include <optional>
 #include <filesystem>
-#include <ctime>
 #include <memory>
 #include <string>
 
 #include "uml001/bft_quorum_clock.h"
+#include "uml001/event_orchestrator.h"
+#include "uml001/pipeline_bootstrap.h"
 #include "uml001/rest_handlers.h"
 #include "uml001/rest_auth_config.h"
-#include "uml001/vault.h"
+#include "uml001/simple_file_vault_backend.h"
+#include "uml001/simple_hash_provider.h"
 #include "uml001/strong_clock.h"
-#include "uml001/hash_provider.h"
+#include "uml001/vault.h"
 
 using namespace uml001;
 using namespace uml001::rest;
-
-// ------------------------------------------------------------
-// Dummy implementations for testing / REST server bring-up
-// ------------------------------------------------------------
-
-// Minimal strong clock for ColdVault + BFT clock
-class DummyStrongClock : public IStrongClock {
-public:
-    std::uint64_t now_unix() const override {
-        return static_cast<std::uint64_t>(std::time(nullptr));
-    }
-
-    std::int64_t get_current_drift() const override {
-        return 0;
-    }
-};
-
-// Minimal hash provider for ColdVault
-class DummyHashProvider : public IHashProvider {
-public:
-    std::string sha256(const std::string& input) override {
-        // Deterministic, trivial hash for testing
-        return "dummy_" + input;
-    }
-};
-
-// Minimal backend that satisfies IVaultBackend
-class DummyVaultBackend : public IVaultBackend {
-public:
-    void append_line(const std::string&) override {
-        // No-op
-    }
-
-    std::optional<std::string> read_last_line() override {
-        return std::nullopt;
-    }
-
-    void rotate() override {
-        // No-op
-    }
-};
 
 int main() {
     // --------------------------------------------------------
@@ -79,31 +80,32 @@ int main() {
     // --------------------------------------------------------
 
     BftClockConfig cfg;
-    std::unordered_set<std::string> authorities = {"pool.ntp.org"};
+    cfg.min_quorum = 3;
+    cfg.fail_closed = false;
+    std::unordered_set<std::string> authorities = {
+        "time.cloudflare.com", "time.google.com", "time.nist.gov"
+    };
 
-    // Dummy clock + hash provider
-    DummyStrongClock strong_clock;
-    DummyHashProvider hash_provider;
+    OsStrongClock strong_clock;
+    SimpleHashProvider hash_provider;
 
-    // Dummy vault backend
-    auto backend = std::make_unique<DummyVaultBackend>();
+    auto backend = std::make_shared<SimpleFileVaultBackend>(
+        std::filesystem::path("/tmp/uml001_dummy_vault") / "vault.log");
 
     // ColdVault configuration
     ColdVault::Config vault_cfg;
     vault_cfg.base_directory = std::filesystem::path("/tmp/uml001_dummy_vault");
     vault_cfg.max_file_size_bytes = 10 * 1024 * 1024; // 10MB
     vault_cfg.max_file_age_seconds = 86400;           // 24h
-    vault_cfg.fsync_on_write = false;
 
-    // Construct the ColdVault
-    ColdVault vault(vault_cfg, std::move(backend), strong_clock, hash_provider);
+    auto vault = std::make_shared<ColdVault>(vault_cfg, backend, strong_clock, hash_provider);
 
-    // BFT quorum clock using the dummy vault
-    auto clock = std::make_shared<BFTQuorumTrustedClock>(
-        cfg,
-        authorities,
-        vault
-    );
+    auto clock = std::make_shared<BFTQuorumTrustedClock>(cfg, authorities, vault);
+    ClockGovernor governor(3);
+    EventOrchestrator orchestrator(clock.get(), vault.get());
+    auto pipeline_runtime = register_default_pipeline(
+        orchestrator, *vault, *clock, governor, hash_provider);
+    (void)pipeline_runtime;
 
     // --------------------------------------------------------
     // REST auth + handlers
@@ -112,7 +114,7 @@ int main() {
     auth.mode = RestAuthMode::API_KEY;
     auth.api_key = "supersecret";
 
-    TimeApiHandler handler(clock, auth, vault);
+    TimeApiHandler handler(orchestrator, auth, *vault);
     handler.setup_routes(router);
 
     server.setHandler(router.handler());

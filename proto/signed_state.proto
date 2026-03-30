@@ -1,0 +1,77 @@
+// Quorum Time — Open Trusted Time & Distributed Verification Framework
+// Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+// SPDX-License-Identifier: Apache-2.0
+//
+// Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+// system designed for modern distributed environments. It provides a
+// cryptographically anchored notion of time that can be aligned,
+// audited, and shared across domains without requiring centralized
+// trust.
+//
+// This project also includes the Aegis Semantic Passport components,
+// which complement Quorum Time by offering structured, verifiable
+// identity and capability attestations for agents and services.
+//
+// Core capabilities:
+//   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+//                      with drift bounds, authority attestation, and
+//                      cross-domain alignment (AlignTime).
+//
+//   - Transparency Logging: append-only, hash-chained audit records
+//                           for time events, alignment proofs, and
+//                           key-rotation operations.
+//
+//   - Open Integration: designed for interoperability with distributed
+//                       systems, security-critical infrastructure,
+//                       autonomous agents, and research environments.
+//
+// Quorum Time is developed as an open-source project with a focus on
+// clarity, auditability, and long-term maintainability. Contributions,
+// issue reports, and discussions are welcome.
+//
+// Licensed under the Apache License, Version 2.0 (the "License").
+// You may obtain a copy of the License at:
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// This implementation is intended for open research, practical
+// deployment, and community-driven evolution of verifiable time and
+// distributed trust standards.
+//
+syntax = "proto3";
+
+package uml001;
+
+// Compact binary anchor proof for runtime validation.
+message AnchorProof {
+  uint32 version = 1;
+  bool is_merkle_root = 2;
+  string observation_hash = 3;
+  uint32 quorum_size = 4;
+  string authority_set = 5;
+  string event_id = 6;
+  string event_hash = 7;
+}
+
+// Metadata for the Gossip Transport Layer
+message GossipState {
+  uint32 hops = 1;           // Number of nodes this message has passed through
+  uint32 ttl = 2;            // Time-to-live (max hops)
+  bool validated = 3;        // True if cross-verified by a peer network
+  string origin_node_id = 4; // Fingerprint of the first broadcaster
+}
+
+// The core envelope for all Quorum Time and Aegis Protocol events
+message SignedState {
+  uint64 logical_time_ns = 1; // Anchored Quorum Time
+  string event_id = 2;        // Unique identifier for the event
+  bytes payload = 3;          // Serialized event data (NTP, Passport, etc.)
+  bytes signature = 4;        // HMAC or Asymmetric signature
+  string key_id = 5;          // ID of the key used for signing
+  
+  // Phase 1 Integration: Gossip metadata
+  GossipState gossip = 6;     
+
+  // Optional schema-native anchor proof envelope.
+  AnchorProof anchor_proof = 7;
+}

@@ -1,4 +1,5 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:uml001:vault:Config",
   "title": "ColdVaultConfig",
@@ -6,10 +7,7 @@
   "required": [
     "base_directory",
     "max_file_size_bytes",
-    "max_file_age_seconds",
-    "fsync_on_write",
-    "encryption_enabled",
-    "sign_rotation"
+    "max_file_age_seconds"
   ],
   "properties": {
     "base_directory": {
@@ -23,15 +21,6 @@
     "max_file_age_seconds": {
       "type": "integer",
       "minimum": 60
-    },
-    "fsync_on_write": {
-      "type": "boolean"
-    },
-    "encryption_enabled": {
-      "type": "boolean"
-    },
-    "sign_rotation": {
-      "type": "boolean"
     }
   },
   "additionalProperties": false

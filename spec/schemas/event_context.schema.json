@@ -1,0 +1,140 @@
+{
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uml001:aegis:EventContext",
+  "title": "EventContext",
+  "description": "Single-owner execution envelope for EventOrchestrator::ingest (Maestro pipeline). Mirrors include/uml001/event_context.h. Nested event uses signed_state_envelope.schema.json.",
+  "type": "object",
+  "required": [
+    "event"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$comment": {
+      "type": "string",
+      "description": "Optional SPDX / project notice for file-level metadata (not part of runtime EventContext)."
+    },
+    "event": {
+      "$ref": "signed_state_envelope.schema.json"
+    },
+    "event_hash": {
+      "type": "string",
+      "description": "SHA-256 hex over canonical serialized SignedState bytes"
+    },
+    "merkle_leaf": {
+      "type": "string"
+    },
+    "vault_head_before": {
+      "type": "string"
+    },
+    "vault_head_after": {
+      "type": "string"
+    },
+    "received_at_ns": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "processed_at_ns": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hop_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "is_converged": {
+      "type": "boolean"
+    },
+    "vault_written": {
+      "type": "boolean"
+    },
+    "gossip_forwarded": {
+      "type": "boolean"
+    },
+    "quorum_updated": {
+      "type": "boolean"
+    },
+    "aborted": {
+      "type": "boolean"
+    },
+    "audit_stage": {
+      "type": "string"
+    },
+    "audit_reason": {
+      "type": "string"
+    },
+    "grpc_unix_time": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "grpc_drift": {
+      "type": "integer"
+    },
+    "grpc_quorum_threshold": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "grpc_operational": {
+      "type": "boolean"
+    },
+    "grpc_align_session_id": {
+      "type": "string"
+    },
+    "grpc_align_remote_anchor": {
+      "type": "string"
+    },
+    "grpc_align_server_ts": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "rest_sync_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "agreed_time": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "drift_step": {
+          "type": "integer"
+        },
+        "applied_drift": {
+          "type": "integer"
+        },
+        "clustered_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "discarded_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warp_score_bucket": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "accepted_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rejected_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outliers_ejected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rest_shared_state_ok": {
+      "type": "boolean"
+    }
+  }
+}

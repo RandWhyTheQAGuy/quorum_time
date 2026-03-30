@@ -49,10 +49,7 @@
 
 #include "clock_service.grpc.pb.h"
 #include "uml001/bft_quorum_clock.h"
-#include "uml001/vault.h"
-#include "uml001/vault_logger.h"
-#include "uml001/hash_provider.h"
-#include "uml001/governor.h"
+#include "uml001/event_orchestrator.h"
 
 namespace uml001 {
 
@@ -66,10 +63,8 @@ namespace uml001 {
  */
 class ClockServiceImpl final : public uml001::ClockService::Service {
 public:
-    ClockServiceImpl(BFTQuorumTrustedClock& clock,
-                     ColdVault&             vault,
-                     ClockGovernor&         governor,
-                     IHashProvider&         hash_provider);
+    ClockServiceImpl(EventOrchestrator& orchestrator,
+                     BFTQuorumTrustedClock& clock);
 
     grpc::Status GetTime(grpc::ServerContext*,
                          const uml001::GetTimeRequest*,
@@ -88,10 +83,8 @@ private:
     std::string bytes_to_hex(const std::string& bytes) const;
 
 private:
+    EventOrchestrator&     orchestrator_;
     BFTQuorumTrustedClock& clock_;
-    ColdVault&             vault_;
-    ClockGovernor&         governor_;
-    IHashProvider&         hash_;
 };
 
 } // namespace uml001

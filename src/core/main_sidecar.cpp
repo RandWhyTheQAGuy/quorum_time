@@ -87,11 +87,8 @@ static void run_sidecar_sync_loop(
         try {
             auto observations = fetcher->fetch();
             if (!observations.empty()) {
-                auto result = clock->update_and_sync(observations);
-                if (result.has_value()) {
-                    std::cout << "[SIDECAR SYNC] Consensus reached: " 
-                              << result->agreed_time << "\n";
-                }
+                std::cout << "[SIDECAR SYNC] Direct mutation blocked; "
+                             "convergence pipeline required\n";
             }
         } catch (const std::exception& e) {
             std::cerr << "[SIDECAR ERROR] Sync failed: " << e.what() << "\n";

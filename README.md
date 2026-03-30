@@ -1,240 +1,325 @@
-# Quorum Time – Distributed Byzantine-Resilient Clock & Trusted Identity System
+<!--
+  Quorum Time — Open Trusted Time & Distributed Verification Framework
+  Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+  SPDX-License-Identifier: Apache-2.0
 
-**License:** Apache 2.0  
-**Repository:** [quorum_time](https://github.com/RandWhyTheQAGuy/quorum_time)
+  Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+  system designed for modern distributed environments. It provides a
+  cryptographically anchored notion of time that can be aligned,
+  audited, and shared across domains without requiring centralized
+  trust.
 
----
+  This project also includes the Aegis Semantic Passport components,
+  which complement Quorum Time by offering structured, verifiable
+  identity and capability attestations for agents and services.
 
-## Overview
+  Core capabilities:
+    - BFT Quorum Time: multi-authority, tamper-evident time agreement
+                       with drift bounds, authority attestation, and
+                       cross-domain alignment (AlignTime).
 
-Quorum Time is a high-assurance distributed clock and identity system designed for:
+    - Transparency Logging: append-only, hash-chained audit records
+                            for time events, alignment proofs, and
+                            key-rotation operations.
 
-- Reliable timekeeping across distributed systems
-- Cryptographically verifiable timestamps
-- Strong auditability and policy enforcement
+    - Open Integration: designed for interoperability with distributed
+                        systems, security-critical infrastructure,
+                        autonomous agents, and research environments.
 
-This repository implements a complete **Byzantine-tolerant time authority**, sidecar client, NTP observation fetcher, key rotation, vault storage, and REST API integration.
+  Quorum Time is developed as an open-source project with a focus on
+  clarity, auditability, and long-term maintainability. Contributions,
+  issue reports, and discussions are welcome.
 
----
+  Licensed under the Apache License, Version 2.0 (the "License").
+  You may obtain a copy of the License at:
 
-## Use Cases:
+      http://www.apache.org/licenses/LICENSE-2.0
 
-- Distributed control systems requiring trusted time and ordering
-- Autonomous agent networks with verifiable identity and policy enforcement
-- Critical logging and audit backplanes
-- Defense, aerospace, and high-assurance financial systems
+  This implementation is intended for open research, practical
+  deployment, and community-driven evolution of verifiable time and
+  distributed trust standards.
 
----
+-->
+# Quorum Time
 
-## Key Components
+Open, verifiable, Byzantine-resilient trusted-time framework with deterministic event orchestration, append-only audit trails, and bridge services for REST, WebSocket, gRPC, and NTP consumers.
 
-### 1. BFT Quorum Clock
+## Table Of Contents
 
-- Implements a **Byzantine Fault Tolerant (BFT) clock**.
-- Generates time states agreed upon by a quorum of nodes.
-- Clients verify signed epochs to ensure trustworthy timestamps.
-- Includes **median NTP observation aggregation** and skew correction.
+- [What This Project Is](#what-this-project-is)
+- [Core Architecture](#core-architecture)
+- [Security Model](#security-model)
+- [Repository Layout](#repository-layout)
+- [Prerequisites](#prerequisites)
+- [Build](#build)
+- [Test](#test)
+- [Run](#run)
+- [Bridge Sidecar](#bridge-sidecar)
+- [APIs And Contracts](#apis-and-contracts)
+- [Operations](#operations)
+- [Troubleshooting](#troubleshooting)
+- [Development Workflow](#development-workflow)
+- [License](#license)
 
-### 2. Vault & Key Management
+## What This Project Is
 
-- `ColdVault`, `FileVaultBackend`, and `SimpleFileVaultBackend` for secure key storage.
-- Automatic key rotation and lifecycle management.
-- SHA-256 / AES-256 / HMAC support via OpenSSL bindings.
+`Quorum Time` provides:
 
-### 3. REST & Python SDK
+- Byzantine fault tolerant (BFT) time convergence from multi-source observations.
+- Deterministic event processing through a single orchestration pipeline.
+- Fail-closed validation for critical signatures and shared-state transitions.
+- Append-only vault logging with Merkle-aware integrity paths.
+- Runtime control-plane stages for mode handling, HITL gates, recovery, circuit breaking, and quarantine.
+- A Python bridge sidecar exposing normalized consumption interfaces.
 
-- REST APIs for time retrieval, policy validation, and clock state queries.
-- Python SDK (`client/python/uml001_client`) wraps core library functionality.
-- Example scripts for **warm boot**, **skew correction**, and sidecar integration.
+## Core Architecture
 
-### 4. NTP Observation Fetcher
+### Runtime Plane (Aegis)
 
-- Collects offsets from **multiple NTP servers**.
-- Computes **median offset** and hashes observations for tamper-evidence.
+- **`EventOrchestrator`** is the single execution spine.
+- All runtime mutations must flow through `EventOrchestrator::ingest(...)`.
+- Pipeline stages enforce policy and safety (passport validation, vault write, gossip handling, Merkle updates, convergence, quorum/state apply, control-plane stages).
 
----
+### Data/Proof Plane
 
-## Deployment Architecture
+- `SignedState` protobuf envelopes carry event payload, gossip metadata, and optional anchor proof.
+- Shared-state and sync payloads are encoded/decoded through `pipeline_event_codec`.
+- Signature verification uses registered authority key material (`crypto_verify`).
 
-Quorum Time operates on the principle of Byzantine Fault Tolerance (BFT). To maintain a trusted state, the system requires a specific node count based on the number of tolerated failures ($f$):
+### Audit/Storage Plane
 
-- **Minimum Nodes:** $3f + 1$ (e.g., to tolerate 1 malicious/failed node, you must deploy at least 4 nodes).
-- **Consensus Threshold:** A quorum of $2f + 1$ nodes must sign a time epoch before it is considered "Trusted."
-- **Discovery:** Nodes identify peers via a local `peers.json` configuration or a gRPC-based discovery service.
+- `ColdVault` persists append-only logs and operational security events.
+- Shared-state snapshots and authority sequence state are persisted and recoverable on startup.
 
----
+## Security Model
 
-## Project Structure
+Design principles:
 
-- `src/core` – C++ implementations:
-  - `bft_quorum_clock.cpp/h`
-  - `ntp_observation_fetcher.cpp/h`
-  - `vault_logger.cpp`
-  - `key_rotation_manager.cpp`
-  - `simple_file_vault_backend.cpp`
-- `include/uml001` – core headers for integration
-- `client/python` – Python SDK
-- `rest/` – REST server and handler implementations
-- `spec/schemas/` – JSON schema definitions for configs and payloads
-- `tests/` – Unit and integration tests
-- `tools/` – Debug and helper scripts
+- **Fail-closed first:** invalid/missing signatures, decode failures, stale versions, and policy violations reject state mutation.
+- **Determinism over convenience:** canonical payload forms and strict decode behavior reduce ambiguity.
+- **No silent errors:** security-relevant failures emit audit events.
+- **Control-plane authorization:** runtime mode transitions happen via signed control events, not free-form payload markers.
 
----
+Current posture:
 
-## Configuration
+- Suitable for internal environments with normal risk assumptions.
+- For high-threat production environments, keep TLS/mTLS, listener readiness gates, strict config validation, and full smoke tests mandatory.
 
-The system is configured via JSON. A standard node requires a `config.json` defining its role, vault location, and peer list:
+## Repository Layout
 
-``` json
-{
-  "node_id": "node-alpha-01",
-  "bind_address": "0.0.0.0:8080",
-  "vault": {
-    "type": "file",
-    "path": "/etc/quorum/vault.dat"
-  },
-  "ntp_sources": ["pool.ntp.org", "time.google.com"],
-  "peers": [
-    {"id": "node-beta-02", "address": "10.0.0.5:8080"},
-    {"id": "node-gamma-03", "address": "10.0.0.6:8080"}
-  ]
-}
-```
+- `include/uml001/`: public headers.
+- `src/core/`: core runtime, clock, orchestrator, pipeline stages.
+- `src/gossip/`: dedup and convergence support.
+- `src/rest/` and `rest/`: REST server/handlers.
+- `proto/`: protobuf definitions (`signed_state.proto`, `clock_service.proto`).
+- `bridge/`: Python bridge runtime, tests, containerization.
+- `sdks/python/`: Python SDK modules.
+- `spec/schemas/`: JSON Schema contracts.
+- `spec/examples/canonical/`: canonical examples validated against schemas.
+- `tests/`: C++ and Python validation/regression tests.
+- `tools/`: helper and analysis tools.
 
----
+## Prerequisites
 
-## Building the Project
+Minimum recommended toolchain:
 
-### 1. Requirements
-
-- C++17 or newer
+- C++17 compiler
 - CMake 3.20+
-- OpenSSL 3.0+
-- Protobuf / gRPC
-- Python 3.14 (for SDK and tests)
+- OpenSSL 3.x
+- Protobuf + gRPC toolchain
+- Python 3.14
 
-### 2. Build Core Library
+Bridge Python minimums (aligned with generated stubs):
 
-```./build.sh```
+- `grpcio>=1.78.0`
+- `grpcio-tools>=1.78.0`
+- `protobuf>=6.31.1`
+- `fastapi>=0.111.0`
+- `uvicorn[standard]>=0.29.0`
 
-### 3. Build Python SDK
+## Build
 
-```./build_python.sh```
+### Core C++ Build
 
-### 4. Build Full SDK
-
-```./build_sdk.sh```
-
-### 5. Running Tests
-
-```pytest tests/```
-
----
-
-## Usage Examples:
-
-### Python: Fetch Trusted Time:
-
-``` python
-from client.python.uml001_client import QuorumClockClient
-
-client = QuorumClockClient("http://localhost:8080")
-time_state = client.get_trusted_time()
-print(time_state)
+```bash
+./build.sh
 ```
 
-### C++: Fetch NTP Observation:
+Or directly:
 
-``` c++
-#include "uml001/ntp_observation_fetcher.h"
-
-std::vector<std::string> servers = {"pool.ntp.org", "time.google.com"};
-uml001::NtpObservationFetcher fetcher(servers);
-auto obs = fetcher.fetch_observation();
-std::cout << "Median offset: " << obs.median_offset << std::endl;
+```bash
+cmake -S . -B build
+cmake --build build
 ```
 
-### Sidecar Warm Boot:
+### Python Extension / SDK Helpers
 
-``` python
-python example_warm_boot.py
+```bash
+./build_python.sh
+./build_sdk.sh
 ```
 
-## System Integration Notes :
+## Test
 
-- Impact: Running Quorum Clock requires quorum nodes; clients perform signature verification for each epoch.
-- Vault Management: Persistent storage required for keys and transparency logs; supports file and HSM backends.
-- Network: gRPC and REST endpoints require secure transport (TLS recommended).
-- Audit: All timestamps and identity claims are verifiable and tied to cryptographic proofs.
+### C++ Test Binaries
 
-## Contributing:
+This repo primarily produces executable test targets in `build/`.
 
-- Fork the repo and clone locally.
-- Follow coding standards (C++17, clang-format).
-- Write tests in tests/ and ensure coverage.
-- Submit pull requests with a detailed description and rationale.
+Typical pass:
 
----
+```bash
+./build/test_pipeline_wiring
+./build/test_shared_state_internal_event
+./build/test_service_ingress_pipeline
+./build/test_shared_state_route_contract
+./build/test_default_gossip_provider
+./build/test_bft_shared_state_schema_contract
+./build/test_control_plane_stages
+./build/test_schema_catalog_consistency
+./build/test_gossip_security_regressions
+./build/test_pipeline_codec_decode_hardening
+```
 
-## License:
+### Python/Schema/Bridge Tests
 
-### This project is licensed under Apache License 2.0:
+```bash
+python3 -m pytest tests/test_schema_validator.py -q
+python3 -m pytest bridge/tests/test_config_tls_validation.py -q
+python3 -m pytest bridge/tests/test_server_main_startup_invariants.py -q
+python3 -m pytest bridge/tests/test_grpc_startup_smoke.py -q
+```
 
-- Allows commercial and defense use
-- Permits modification and redistribution
-- Requires preservation of license and attribution
+## Run
 
-## Standards Conformance
+### Main C++ Service
 
-### NTPv4
+```bash
+./build/aegis_clock_server
+```
 
-Time synchronization protocol for distributed systems
-- https://www.rfc-editor.org/rfc/rfc5905.html
+### Python Bridge
+
+```bash
+python3 -m bridge.server_main
+```
+
+Bridge process hosts:
+
+- REST (`:8080` by default)
+- WebSocket (`:8081` by default)
+- gRPC (`:9090` by default)
+- NTP UDP (`:1123` by default)
+
+## Bridge Sidecar
+
+### Local Build/Test Script
+
+```bash
+./bridge/build_bridge.sh
+```
+
+Optional image build:
+
+```bash
+./bridge/build_bridge.sh --docker
+```
+
+### Container
+
+```bash
+docker build -t yourorg/aegis-bridge:latest -f bridge/Dockerfile .
+```
+
+Notes:
+
+- Docker image/tooling versions are pinned to satisfy generated gRPC stub/runtime requirements.
+- Healthcheck uses TCP-connect style probing to avoid TLS/plaintext mismatch assumptions.
+
+## APIs And Contracts
 
 ### gRPC
 
-Remote Procedure Call framework
-- https://grpc.io/
+- Protos: `proto/clock_service.proto`, `bridge/bridge/proto/bridge.proto`.
+- Canonical server implementation: `src/core/clock_service_impl.cpp`.
 
-### JSON Schema
+### REST
 
-Data structure validation and definition
-- https://json-schema.org/specification.html
+- Handler entrypoint: `src/rest/rest_handlers.cpp`.
+- Shared-state route enforces strict required fields and rejects unknown fields to match schema `additionalProperties: false`.
 
-### OpenAPI v3
+### Schemas
 
-API specification format for REST services
-- https://spec.openapis.org/oas/v3.1.1.html
+- Catalog: `spec/schemas/catalog.json`.
+- Key contracts include:
+  - `signed_state_envelope.schema.json`
+  - `event_context.schema.json`
+  - `bft_shared_state.schema.json`
 
-### Cryptography (OpenSSL / FIPS)
+### Canonical Examples
 
-Standard hashes (SHA‑256), encryption (AES‑256)
-- https://www.openssl.org/
+- Under `spec/examples/canonical/`.
+- Intended to validate machine-readable contract and runtime expectations together.
 
-### Apache License 2.0
+## Operations
 
-Permissive open‑source license
-- https://www.apache.org/licenses/LICENSE-2.0
+Recommended deployment checks:
 
-## Security Standards Conformance:
+- Build succeeds (`cmake --build build`).
+- C++ regression tests pass.
+- Bridge startup invariants pass.
+- gRPC bridge smoke test passes.
+- Runtime startup logs show listeners healthy in intended mode.
 
-### SHA-256 (Secure Hash Standard)
+Production-leaning posture:
 
-Provides the cryptographic foundation for all identifiers and integrity checks within the protocol.
-- https://csrc.nist.gov/publications/detail/fips/180/4/final
+- Use TLS/mTLS where applicable.
+- Enforce bearer token and mTLS CA requirements in bridge config.
+- Keep fail-closed behavior enabled for unsafe uncertain states.
+- Persist vault data on durable storage.
 
-### Binary Merkle Tree (RFC 6962 inspired)
+## Troubleshooting
 
-Used in the TransparencyLog to provide verifiable, append-only integrity for all security events.
-- https://datatracker.ietf.org/doc/html/rfc6962
+- **`ModuleNotFoundError: uvicorn` in bridge tests**
+  - Install bridge deps in active environment:
+  - `python3 -m pip install "uvicorn[standard]>=0.29.0" fastapi grpcio grpcio-tools protobuf websockets pytest pytest-asyncio httpx`
 
+- **gRPC runtime mismatch with generated stubs**
+  - Ensure `grpcio`, `grpcio-tools`, and `protobuf` meet minimums in `bridge/pyproject.toml`.
 
-### Multi-Party Authorization (MPA)
+- **Bridge listener readiness failures in production mode**
+  - Validate cert/key/CA paths, bearer token config, and port availability.
 
-Enforced by the MultiPartyRevocationController, requiring a consensus threshold of independent approvals before a security credential is invalidated.
-- https://csrc.nist.gov/publications/detail/sp/800-204d/final
+- **Shared-state rejected**
+  - Check signature payload inputs, version monotonicity, and drift policy inputs (`warp_score` is signature-bound).
 
-### Byzantine Fault Tolerance (BFT)
+## Development Workflow
 
-The consensus model used by the Quorum Clock to maintain a trusted temporal reference in environments where nodes may be compromised or malicious.
-- https://lamport.azurewebsites.net/pubs/byz.pdf
+- Keep all behavioral changes routed through orchestrator pipeline semantics.
+- Add/adjust tests with each security or contract change.
+- Keep schema and canonical examples in sync with runtime behavior.
+- Prefer fail-closed handling for parse/validation edges.
+- Use focused regression tests before broad scans.
+
+### License headers
+
+Source files carry a consistent Apache-2.0 / copyright notice:
+
+- C/C++: block comment (`/* ... */`).
+- Python, shell, CMake, Dockerfile, YAML: `#` lines (after shebang when present).
+- Protobuf: `//` lines.
+- Markdown: HTML comment at the top of the file.
+- JSON: root-level `"$comment"` string (schemas allow optional `"$comment"` on instances where `additionalProperties` would otherwise reject it).
+- `LICENSE.md`: plain-text notice followed by the unmodified Apache 2.0 license text.
+
+To apply or refresh headers after adding files, run:
+
+```bash
+python3 tools/apply_spdx_headers.py --dry-run   # preview
+python3 tools/apply_spdx_headers.py             # write
+```
+
+The tool skips files that already contain `SPDX-License-Identifier: Apache-2.0` or the project copyright line, and skips generated protobuf outputs (`*_pb2.py`, `*.pb.h`, …) and `build/`.
+
+## License
+
+Apache License 2.0. See `LICENSE.md`.

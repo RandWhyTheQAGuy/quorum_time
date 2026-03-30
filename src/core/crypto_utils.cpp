@@ -52,6 +52,7 @@
 #include <openssl/rand.h>
 #include <iomanip>
 #include <sstream>
+#include <cctype>
 #include <mutex>
 #include <unordered_map>
 
@@ -79,6 +80,29 @@ static std::vector<uint8_t> hex_to_bytes(const std::string& hex) {
         out.push_back(std::stoi(hex.substr(i, 2), nullptr, 16));
     }
     return out;
+}
+
+static bool try_hex_to_bytes(const std::string& hex, std::vector<uint8_t>* out)
+{
+    if (!out) return false;
+    out->clear();
+    if ((hex.size() % 2) != 0) return false;
+    out->reserve(hex.size() / 2);
+    for (size_t i = 0; i < hex.size(); i += 2) {
+        const unsigned char hi = static_cast<unsigned char>(hex[i]);
+        const unsigned char lo = static_cast<unsigned char>(hex[i + 1]);
+        if (!std::isxdigit(hi) || !std::isxdigit(lo)) {
+            out->clear();
+            return false;
+        }
+        try {
+            out->push_back(static_cast<uint8_t>(std::stoi(hex.substr(i, 2), nullptr, 16)));
+        } catch (...) {
+            out->clear();
+            return false;
+        }
+    }
+    return true;
 }
 
 // 1. Implementation for sha256_hex
@@ -165,7 +189,10 @@ bool crypto_verify(const std::string& payload, const std::string& signature_hex,
     EVP_MAC_CTX_free(ctx);
     EVP_MAC_free(mac_obj);
 
-    std::vector<uint8_t> sig_bytes = hex_to_bytes(signature_hex);
+    std::vector<uint8_t> sig_bytes;
+    if (!try_hex_to_bytes(signature_hex, &sig_bytes)) {
+        return false;
+    }
     return (mac_len == sig_bytes.size() && CRYPTO_memcmp(mac.data(), sig_bytes.data(), mac_len) == 0);
 }
 

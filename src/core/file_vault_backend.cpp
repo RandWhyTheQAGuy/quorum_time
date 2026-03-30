@@ -141,7 +141,14 @@ void FileVaultBackend::archive_current() {
     const auto archive_dir = base_dir_ / "archive";
     std::filesystem::create_directories(archive_dir);
 
-    const auto new_path = archive_dir / active_file_.filename();
+    auto new_path = archive_dir / active_file_.filename();
+    if (std::filesystem::exists(new_path)) {
+        const auto ts = strong_clock_.now_unix();
+        new_path = archive_dir / ("vault_" + std::to_string(ts) + "_archived.log");
+        if (std::filesystem::exists(new_path)) {
+            throw std::runtime_error("Refusing to overwrite archived vault file: " + new_path.string());
+        }
+    }
     std::filesystem::rename(active_file_, new_path);
 }
 

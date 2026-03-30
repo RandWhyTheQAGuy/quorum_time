@@ -1,3 +1,43 @@
+# Quorum Time — Open Trusted Time & Distributed Verification Framework
+# Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+# SPDX-License-Identifier: Apache-2.0
+#
+# Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+# system designed for modern distributed environments. It provides a
+# cryptographically anchored notion of time that can be aligned,
+# audited, and shared across domains without requiring centralized
+# trust.
+#
+# This project also includes the Aegis Semantic Passport components,
+# which complement Quorum Time by offering structured, verifiable
+# identity and capability attestations for agents and services.
+#
+# Core capabilities:
+#   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+#                      with drift bounds, authority attestation, and
+#                      cross-domain alignment (AlignTime).
+#
+#   - Transparency Logging: append-only, hash-chained audit records
+#                           for time events, alignment proofs, and
+#                           key-rotation operations.
+#
+#   - Open Integration: designed for interoperability with distributed
+#                       systems, security-critical infrastructure,
+#                       autonomous agents, and research environments.
+#
+# Quorum Time is developed as an open-source project with a focus on
+# clarity, auditability, and long-term maintainability. Contributions,
+# issue reports, and discussions are welcome.
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may obtain a copy of the License at:
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# This implementation is intended for open research, practical
+# deployment, and community-driven evolution of verifiable time and
+# distributed trust standards.
+#
 """
 uml001.bft_clock
 ================
@@ -93,7 +133,7 @@ def register_hmac_authority(authority_id: str, hmac_key_hex: str, key_id: str = 
     Parameters
     ----------
     authority_id:
-        Hostname / identifier used in ``TimeObservation.authority_id``.
+        Hostname / identifier used in ``TimeObservation.server_hostname``.
     hmac_key_hex:
         64-hex-char HMAC key shared with the ``NtpObservationFetcher``.
     key_id:
@@ -209,18 +249,21 @@ class BFTQuorumTrustedClock:
         3. HMAC-SHA-256 signature via registered key
         """
         # 1. Authority whitelist
-        if obs.authority_id not in self._trusted_authorities:
+        authority_id = getattr(obs, "server_hostname", getattr(obs, "authority_id", ""))
+        timestamp = getattr(obs, "unix_seconds", getattr(obs, "timestamp", 0))
+        signature = getattr(obs, "signature_hex", getattr(obs, "signature", ""))
+
+        if authority_id not in self._trusted_authorities:
             return False
 
         # 2. Replay-window check
-        last_seq = self._authority_sequences.get(obs.authority_id, 0)
+        last_seq = self._authority_sequences.get(authority_id, 0)
         if obs.sequence <= last_seq:
             return False
 
         # 3. Signature verification
-        # Canonical payload: authority_id|key_id|timestamp|sequence
-        payload = f"{obs.authority_id}|{obs.key_id}|{obs.timestamp}|{obs.sequence}"
-        return crypto_verify(payload, obs.signature, obs.authority_id, obs.key_id)
+        payload = f"{authority_id}|{obs.key_id}|{timestamp}|{obs.sequence}"
+        return crypto_verify(payload, signature, authority_id, obs.key_id)
 
     # ------------------------------------------------------------------
     # BFT synchronisation
@@ -251,7 +294,8 @@ class BFTQuorumTrustedClock:
         # Step 1 – verify
         for obs in observations:
             if self._verify_observation(obs):
-                valid_timestamps.append(obs.timestamp)
+                ts = getattr(obs, "unix_seconds", getattr(obs, "timestamp", 0))
+                valid_timestamps.append(ts)
                 valid_observations.append(obs)
             else:
                 rejected += 1
@@ -312,7 +356,8 @@ class BFTQuorumTrustedClock:
         with self._lock:
             self._current_drift = proposed_total
             for obs in valid_observations:
-                self._authority_sequences[obs.authority_id] = obs.sequence
+                authority_id = getattr(obs, "server_hostname", getattr(obs, "authority_id", ""))
+                self._authority_sequences[authority_id] = obs.sequence
 
         # Step 7 – audit
         self._vault.log_sync_event(agreed_time, drift_step, self._current_drift)

@@ -1,3 +1,43 @@
+# Quorum Time — Open Trusted Time & Distributed Verification Framework
+# Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy)
+# SPDX-License-Identifier: Apache-2.0
+#
+# Quorum Time is an open, verifiable, Byzantine-resilient trusted-time
+# system designed for modern distributed environments. It provides a
+# cryptographically anchored notion of time that can be aligned,
+# audited, and shared across domains without requiring centralized
+# trust.
+#
+# This project also includes the Aegis Semantic Passport components,
+# which complement Quorum Time by offering structured, verifiable
+# identity and capability attestations for agents and services.
+#
+# Core capabilities:
+#   - BFT Quorum Time: multi-authority, tamper-evident time agreement
+#                      with drift bounds, authority attestation, and
+#                      cross-domain alignment (AlignTime).
+#
+#   - Transparency Logging: append-only, hash-chained audit records
+#                           for time events, alignment proofs, and
+#                           key-rotation operations.
+#
+#   - Open Integration: designed for interoperability with distributed
+#                       systems, security-critical infrastructure,
+#                       autonomous agents, and research environments.
+#
+# Quorum Time is developed as an open-source project with a focus on
+# clarity, auditability, and long-term maintainability. Contributions,
+# issue reports, and discussions are welcome.
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may obtain a copy of the License at:
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# This implementation is intended for open research, practical
+# deployment, and community-driven evolution of verifiable time and
+# distributed trust standards.
+#
 """
 bridge/config.py
 
@@ -66,6 +106,32 @@ class BridgeConfig:
     log_level: str = "INFO"
     insecure_dev: bool = False
 
+    def tls_enabled(self) -> bool:
+        return bool(self.mtls_server_cert and self.mtls_server_key)
+
+    def validate(self) -> None:
+        cert = bool(self.mtls_server_cert)
+        key = bool(self.mtls_server_key)
+        ca = bool(self.mtls_ca_cert)
+
+        if cert != key:
+            raise ValueError("mtls_server_cert and mtls_server_key must be set together")
+        if ca and not (cert and key):
+            raise ValueError("mtls_ca_cert requires mtls_server_cert and mtls_server_key")
+        if (cert or key or ca) and self.insecure_dev:
+            # Explicitly reject contradictory security mode to avoid ambiguity.
+            raise ValueError("TLS/mTLS cannot be combined with insecure_dev mode")
+        if not self.insecure_dev:
+            if not (cert and key):
+                raise ValueError("production mode requires TLS server cert/key")
+            # Require explicit client-auth posture for all surfaces:
+            # - bearer tokens protect REST/WS
+            # - mTLS CA protects gRPC
+            if not self.bearer_tokens.strip():
+                raise ValueError("production mode requires bearer token auth")
+            if not ca:
+                raise ValueError("production mode requires mtls_ca_cert for gRPC client auth")
+
 
 def _env(key: str, default: str = "") -> str:
     return os.environ.get(key, default)
@@ -99,7 +165,7 @@ def parse_config(argv: list[str] | None = None) -> BridgeConfig:
 
     args = parser.parse_args(argv)
 
-    return BridgeConfig(
+    cfg = BridgeConfig(
         data_dir=args.data_dir,
         upstream_grpc_host=args.upstream_host,
         upstream_grpc_port=args.upstream_port,
@@ -121,3 +187,5 @@ def parse_config(argv: list[str] | None = None) -> BridgeConfig:
         log_level=args.log_level,
         insecure_dev=args.insecure_dev,
     )
+    cfg.validate()
+    return cfg

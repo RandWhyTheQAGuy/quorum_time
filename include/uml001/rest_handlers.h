@@ -49,7 +49,7 @@
 #include <pistache/router.h>
 #include <memory>
 
-#include "bft_quorum_clock.h"
+#include "event_orchestrator.h"
 #include "rest_auth_config.h"
 
 namespace uml001::rest {
@@ -71,7 +71,7 @@ namespace uml001::rest {
 class TimeApiHandler {
 public:
     TimeApiHandler(
-        std::shared_ptr<BFTQuorumTrustedClock> clock,
+        EventOrchestrator&                     orchestrator,
         RestAuthConfig                         auth_config,
         ColdVault&                             vault
     );
@@ -95,7 +95,7 @@ private:
         const Pistache::Rest::Request& req,
         Pistache::Http::ResponseWriter resp);
 
-    std::shared_ptr<BFTQuorumTrustedClock> clock_;
+    EventOrchestrator&                     orchestrator_;
     RestAuthConfig                         auth_;
     ColdVault&                             vault_;
 };

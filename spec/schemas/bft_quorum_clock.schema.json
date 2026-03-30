@@ -1,4 +1,5 @@
 {
+  "$comment": "Quorum Time — Open Trusted Time & Distributed Verification Framework. Copyright 2026 Randy Spickler (github.com/RandWhyTheQAGuy). SPDX-License-Identifier: Apache-2.0",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BFT Quorum Clock Configuration and Payloads",
   "description": "Schemas for configuring the BFT clock and validating inbound time observations.",
@@ -15,7 +16,7 @@
         },
         "max_cluster_skew": {
           "type": "integer",
-          "minimum": 0,
+          "minimum": 1,
           "description": "Maximum allowable spread (in seconds) between the highest and lowest timestamps in a trimmed cluster."
         },
         "max_drift_step": {
@@ -38,7 +39,13 @@
           "description": "If true, the system will hard-abort when safety bounds like max_total_drift are breached."
         }
       },
-      "required": ["min_quorum", "max_cluster_skew", "max_drift_step", "max_total_drift", "fail_closed"]
+      "required": [
+        "min_quorum",
+        "max_cluster_skew",
+        "max_drift_step",
+        "max_total_drift",
+        "fail_closed"
+      ]
     },
     "TimeObservation": {
       "type": "object",
@@ -70,7 +77,13 @@
           "description": "Strictly monotonically increasing counter to prevent replay attacks."
         }
       },
-      "required": ["authority_id", "key_id", "timestamp", "signature", "sequence"]
+      "required": [
+        "authority_id",
+        "key_id",
+        "timestamp",
+        "signature",
+        "sequence"
+      ]
     }
   }
 }
